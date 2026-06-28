@@ -1,0 +1,80 @@
+{
+  "meta": {
+    "chart_id": "hemorrhage",
+    "title": "Catastrophic Hemorrhage",
+    "source": "SARC SOP",
+    "source_pages": [10],
+    "notes": [
+      "Venous hemorrhage: blood flows out (can be alarming). Arterial hemorrhage: blood spurts out in time with the heartbeat.",
+      "At this stage, the venous bleeding must be controlled.",
+      "Record the time (24:00 format) when the tourniquet was applied: on the tourniquet and on the PCR.",
+      "Tourniquet during Mass Casualty Incident: record application on the triage chart; if possible the patient should be supervised by a witness (to prevent the tourniquet from being removed); depending on circumstances (unconsciousness, no witness, etc.) note a distinguishing mark on the patient's forehead."
+    ]
+  },
+  "entry": "hem_01",
+  "nodes": {
+    "hem_01": {
+      "type": "instruction",
+      "text": "Control of external bleeding: direct compression on the wound; compression dressing; if available, hemostatic compression dressing.",
+      "page": 10,
+      "provenance": "source",
+      "next": "hem_02"
+    },
+    "hem_02": {
+      "type": "question",
+      "text": "Active bleeding?",
+      "page": 10,
+      "provenance": "source",
+      "options": [
+        { "answer": "yes", "next": "hem_03" },
+        { "answer": "no", "next": "hem_08" }
+      ]
+    },
+    "hem_03": {
+      "type": "instruction",
+      "text": "Second compression bandage on top of the first.",
+      "page": 10,
+      "provenance": "source",
+      "next": "hem_04"
+    },
+    "hem_04": {
+      "type": "question",
+      "text": "Active bleeding?",
+      "page": 10,
+      "provenance": "source",
+      "options": [
+        { "answer": "yes", "next": "hem_05" },
+        { "answer": "no", "next": "hem_08" }
+      ]
+    },
+    "hem_05": {
+      "type": "instruction",
+      "text": "Installation of tourniquet. (Position: one palm's width above the wound, between the heart and the wound; not on the joints. Effectiveness: stop of bleeding. This is a very painful procedure; ensure the patient does not remove the tourniquet.)",
+      "page": 10,
+      "provenance": "source",
+      "next": "hem_06"
+    },
+    "hem_06": {
+      "type": "question",
+      "text": "Active bleeding?",
+      "page": 10,
+      "provenance": "source",
+      "options": [
+        { "answer": "yes", "next": "hem_05" },
+        { "answer": "no", "next": "hem_07" }
+      ]
+    },
+    "hem_07": {
+      "type": "action",
+      "text": "Urgent and safe transport to a health center.",
+      "page": 10,
+      "provenance": "source"
+    },
+    "hem_08": {
+      "type": "action",
+      "text": "Transport to a health center.",
+      "page": 10,
+      "provenance": "source"
+    }
+  }
+}

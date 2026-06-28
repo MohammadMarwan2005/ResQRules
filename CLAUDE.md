@@ -43,9 +43,14 @@ PDFs are **not** in a single folder. They live at the repo root and in `Traumati
 - **Never invent, infer, or "improve" medical content.** Transcribe only what the box shows.
   Unreadable/ambiguous → `"text": "[UNCLEAR: best guess]"` and list it for human review.
 - **Every node cites its source page** (`"page": <n>`).
-- Any edge you add that is **not drawn on the chart** (e.g. a safe-exit so a one-armed
-  decision diamond is walkable, or a "repeat until…" loop-back) must be flagged in the
-  extraction report as ADDED/DERIVED. Do not bury it.
+- **Every node sets `provenance`** = `source` | `derived` | `added` (see SCHEMA.md) — the
+  faithfulness audit trail. `source` = transcribed from a drawn box/arrow; `derived` = the
+  literal meaning of a box but not itself drawn (e.g. a "repeat until…" loop-back); `added` =
+  tool-added for navigation, not on the chart. An individual `option` may override provenance
+  for one edge. `derived`/`added` never carry invented clinical content.
+- Any edge you add that is **not drawn on the chart** (safe-exit for a one-armed diamond) →
+  `added`; a loop-back that is only the literal meaning of a "repeat until…" box → `derived`.
+  Both must ALSO be flagged in the extraction report. Do not bury them.
 - Cross-tree / hub transfers, and any jump to an out-of-scope or absent chart, are modelled
   as a `jump` node that **degrades gracefully** (engine prints `would transfer to <X>`)
   instead of crashing.

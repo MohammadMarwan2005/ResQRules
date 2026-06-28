@@ -17,15 +17,17 @@
       "type": "question",
       "text": "Suspect foreign body obstruction? (Universal sign: hands to throat, inability to talk, cough, or breathe, panicked expression, cyanosis)",
       "page": 7,
+      "provenance": "source",
       "options": [
         { "answer": "yes", "next": "chk_02" },
-        { "answer": "no", "next": "chk_13" }
+        { "answer": "no", "next": "chk_13", "provenance": "added" }
       ]
     },
     "chk_02": {
       "type": "question",
       "text": "Effective cough?",
       "page": 7,
+      "provenance": "source",
       "options": [
         { "answer": "yes", "next": "chk_03" },
         { "answer": "no", "next": "chk_04" }
@@ -34,12 +36,14 @@
     "chk_03": {
       "type": "action",
       "text": "Encourage coughing. Continuous assessment.",
-      "page": 7
+      "page": 7,
+      "provenance": "source"
     },
     "chk_04": {
       "type": "question",
       "text": "Is the patient conscious or unconscious?",
       "page": 7,
+      "provenance": "source",
       "options": [
         { "answer": "Conscious patient", "next": "chk_05" },
         { "answer": "Unconscious patient", "next": "chk_12" }
@@ -49,6 +53,7 @@
       "type": "question",
       "text": "Conscious patient — patient category?",
       "page": 7,
+      "provenance": "source",
       "options": [
         { "answer": "Adult / Child", "next": "chk_06" },
         { "answer": "Infant / Pregnant / Obese", "next": "chk_07" }
@@ -58,24 +63,28 @@
       "type": "instruction",
       "text": "Adult / Child: 5 back blows, then 5 abdominal thrusts.",
       "page": 7,
+      "provenance": "source",
       "next": "chk_08"
     },
     "chk_07": {
       "type": "instruction",
       "text": "Infant / Pregnant / Obese: 5 back blows, then 5 chest thrusts. [Infant: face-down on your forearm with the head lower than the body for the 5 back blows, then turn them face-up and give 5 chest thrusts with two fingers below the nipple line.]",
       "page": 7,
+      "provenance": "source",
       "next": "chk_08"
     },
     "chk_08": {
       "type": "instruction",
       "text": "Repeat the cycles until airway is cleared or patient becomes unconscious.",
       "page": 7,
+      "provenance": "source",
       "next": "chk_09"
     },
     "chk_09": {
       "type": "question",
       "text": "Airway is cleared?",
       "page": 7,
+      "provenance": "source",
       "options": [
         { "answer": "yes", "next": "chk_11" },
         { "answer": "no", "next": "chk_10" }
@@ -85,29 +94,33 @@
       "type": "question",
       "text": "Victim become unconscious?",
       "page": 7,
+      "provenance": "source",
       "options": [
         { "answer": "yes", "next": "chk_12" },
-        { "answer": "no", "next": "chk_08" }
+        { "answer": "no", "next": "chk_08", "provenance": "derived" }
       ]
     },
     "chk_11": {
       "type": "action",
       "text": "Transport to a health center.",
-      "page": 7
+      "page": 7,
+      "provenance": "source"
     },
     "chk_12": {
       "type": "jump",
-      "text": "CPR algorithm. (Chart shows downstream: Start CPR; after each set of chest compressions, check in the mouth; then urgent and safe transport to a health center.)",
+      "text": "CPR algorithm. (Choking-specific transition: after each set of chest compressions, check in the mouth for the foreign body.)",
       "page": 7,
+      "provenance": "source",
       "target_chart": "cpr_adult",
-      "target_node": "entry"
+      "target_node": "cpr_01"
     },
     "chk_13": {
       "type": "jump",
       "text": "No foreign-body obstruction suspected — return to General Intervention Process & Patient Assessment.",
       "page": 7,
+      "provenance": "added",
       "target_chart": "general_assessment",
-      "target_node": "entry"
+      "target_node": "gen_01"
     }
   }
 }

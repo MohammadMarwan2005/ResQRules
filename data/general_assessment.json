@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "chart_id": "general_assessment",
+    "title": "General Intervention Process & Patient Assessment",
+    "source": "SARC SOP",
+    "source_pages": [1],
+    "notes": [
+      "Swim-lane phases on the chart: Preliminary Assessment (SSS) -> Primary Assessment -> Secondary Assessment -> Continuous Assessment.",
+      "Side mnemonics are reference aids transcribed into the relevant node text: SETUP, AVPU, ABCDE, SAMPLER, OPQRST, GCS, PERRLA, Vital signs.",
+      "'Need reinforcement?' and 'Determine the number of patients' are scene reminders shown beside the preliminary phase."
+    ]
+  },
+  "entry": "gen_01",
+  "nodes": {
+    "gen_01": {
+      "type": "instruction",
+      "text": "Safety: ensure safety & security for staff, patient(s) and bystanders. [SETUP: Stop (take a few seconds), Environment, Traffic, Unpredictable, PPE (Personal Protective Equipment).]",
+      "page": 1,
+      "provenance": "source",
+      "next": "gen_02"
+    },
+    "gen_02": {
+      "type": "instruction",
+      "text": "Scene Evaluation: mechanism of injury; environmental factors. Determine the number of patients. Need reinforcement?",
+      "page": 1,
+      "provenance": "source",
+      "next": "gen_03"
+    },
+    "gen_03": {
+      "type": "instruction",
+      "text": "Situation Evaluation: first general impression; main complaint.",
+      "page": 1,
+      "provenance": "source",
+      "next": "gen_04"
+    },
+    "gen_04": {
+      "type": "question",
+      "text": "Life threatening bleeding?",
+      "page": 1,
+      "provenance": "source",
+      "options": [
+        { "answer": "yes", "next": "gen_05" },
+        { "answer": "no", "next": "gen_06" }
+      ]
+    },
+    "gen_05": {
+      "type": "jump",
+      "text": "Catastrophic Hemorrhage.",
+      "page": 1,
+      "provenance": "source",
+      "target_chart": "hemorrhage",
+      "target_node": "hem_01"
+    },
+    "gen_06": {
+      "type": "instruction",
+      "text": "Primary Assessment — Look-Listen-Feel-Do. AVPU: Alert & Awake / Verbal response / Pain stimuli response / Unconscious. ABCDE: Airway (open mouth) & Axis; Breathing (look, listen, feel); Circulation (skin colour, capillary refill, pulse quality); Disability (neurologic); Expose & Protect - Evacuate (priority).",
+      "page": 1,
+      "provenance": "source",
+      "next": "gen_07"
+    },
+    "gen_07": {
+      "type": "question",
+      "text": "Intervention Strategy — is the patient stable or unstable?",
+      "page": 1,
+      "provenance": "source",
+      "options": [
+        { "answer": "Stable", "next": "gen_08" },
+        { "answer": "Unstable", "next": "gen_09" }
+      ]
+    },
+    "gen_08": {
+      "type": "instruction",
+      "text": "Stable: regular care continuation.",
+      "page": 1,
+      "provenance": "source",
+      "next": "gen_10"
+    },
+    "gen_09": {
+      "type": "instruction",
+      "text": "Unstable: immediate action: BLS. Limit time on site.",
+      "page": 1,
+      "provenance": "source",
+      "next": "gen_10"
+    },
+    "gen_10": {
+      "type": "instruction",
+      "text": "Secondary Assessment — Measure (equipment) - Look-Listen-Feel-Do: medical history; vital signs; pain scale. [SAMPLER: Signs & Symptoms, Allergies, Medication, Past history, Last oral intake, Events, Risk factors. OPQRST: Onset, Provoked by, Quality, Radiation, Severity, Time. Vital signs: B respiration rate + SpO2; C heart rate + blood pressure; D Glasgow Coma Scale + pupils + blood sugar; E temperature. GCS: eye-opening (1-4), verbal (1-5), motor (1-6). PERRLA: Pupils Equal Round Reactive to Light Accommodation.]",
+      "page": 1,
+      "provenance": "source",
+      "next": "gen_11"
+    },
+    "gen_11": {
+      "type": "action",
+      "text": "Continuous Assessment & Orientation: reassessment of patient; strategy & treatment; determine the most appropriate care center.",
+      "page": 1,
+      "provenance": "source"
+    }
+  }
+}

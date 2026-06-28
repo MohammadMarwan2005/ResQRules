@@ -1,0 +1,169 @@
+{
+  "meta": {
+    "chart_id": "cpr_adult",
+    "title": "Cardio-Respiratory Arrest Adult (signs of puberty are visible)",
+    "source": "SARC SOP",
+    "source_pages": [3],
+    "notes": [
+      "Timing swim-lane: rhythm analysis '1 min. or less', each CPR cycle block '2 min.', then 'anticipation of evacuation' / 'continuous assessment'.",
+      "The quality of the compression is a priority (Class I, LoE B).",
+      "After 2 min. compressions-ventilations, replace the person doing chest compressions (ERC, 2015).",
+      "Limit ventilation volume; observe normal lifting of the chest (risk of gastric filling and silent vomiting).",
+      "Follow the SARC instructions in case of a deceased person.",
+      "When possible, allow the family to see that the first responders are doing whatever is possible to save the patient's life.",
+      "[1] = 'check for signs of life' (the recurring footnote referenced after resuming CPR)."
+    ]
+  },
+  "entry": "cpr_01",
+  "nodes": {
+    "cpr_01": {
+      "type": "instruction",
+      "text": "Patient evaluation: no sign of life. (Unresponsive; open the airway chin lift / jaw thrust; check-listen-feel max 10 sec; gasping is not considered efficient breathing; don't waste time checking pulse; evidence of trauma: consider maintaining the head-neck-trunk axis until final immobilisation.)",
+      "page": 3,
+      "provenance": "source",
+      "next": "cpr_02"
+    },
+    "cpr_02": {
+      "type": "instruction",
+      "text": "CPR 30:2 until AED is ready. (30 compressions: push hard and fast in the middle of the chest 5-6 cm but not more than 6 cm, 2 hands, rate 100-120/min, full chest recoil, minimise interruptions; 2 ventilations with BVM + oxygen in max 10 sec; if possible use an oropharyngeal cannula; manual suction device ready.)",
+      "page": 3,
+      "provenance": "source",
+      "next": "cpr_03"
+    },
+    "cpr_03": {
+      "type": "question",
+      "text": "Rhythm analysis (round 1). Do not touch the patient during analysis.",
+      "page": 3,
+      "provenance": "source",
+      "options": [
+        { "answer": "Shock indicated", "next": "cpr_04" },
+        { "answer": "Shock not indicated", "next": "cpr_05" }
+      ]
+    },
+    "cpr_04": {
+      "type": "instruction",
+      "text": "1 shock, then CPR 30:2 for 2 min / 5-6 cycles. (Do not touch the patient during analysis and shock. After resuming CPR, check for signs of life [1].)",
+      "page": 3,
+      "provenance": "source",
+      "next": "cpr_06"
+    },
+    "cpr_05": {
+      "type": "instruction",
+      "text": "Shock not indicated: CPR 30:2 for 2 min / 5-6 cycles. (After resuming CPR, check for signs of life [1].)",
+      "page": 3,
+      "provenance": "source",
+      "next": "cpr_06"
+    },
+    "cpr_06": {
+      "type": "question",
+      "text": "Rhythm analysis (round 2). Switch roles for compressions / ventilations. Do not touch the patient during analysis.",
+      "page": 3,
+      "provenance": "source",
+      "options": [
+        { "answer": "Shock indicated", "next": "cpr_07" },
+        { "answer": "Shock not indicated", "next": "cpr_08" }
+      ]
+    },
+    "cpr_07": {
+      "type": "instruction",
+      "text": "1 shock, then CPR 30:2 for 2 min / 5-6 cycles. (Do not touch the patient during analysis and shock. After resuming CPR, check for signs of life [1].)",
+      "page": 3,
+      "provenance": "source",
+      "next": "cpr_09"
+    },
+    "cpr_08": {
+      "type": "instruction",
+      "text": "Shock not indicated: CPR 30:2 for 2 min / 5-6 cycles. (After resuming CPR, check for signs of life [1].)",
+      "page": 3,
+      "provenance": "source",
+      "next": "cpr_09"
+    },
+    "cpr_09": {
+      "type": "question",
+      "text": "Rhythm analysis (round 3). Switch roles for compressions / ventilations. Do not touch the patient during shock.",
+      "page": 3,
+      "provenance": "source",
+      "options": [
+        { "answer": "Shock indicated", "next": "cpr_10" },
+        { "answer": "Shock not indicated", "next": "cpr_11" }
+      ]
+    },
+    "cpr_10": {
+      "type": "instruction",
+      "text": "1 shock, then CPR 30:2. Prepare for evacuation. (After resuming CPR, check for signs of life [1].)",
+      "page": 3,
+      "provenance": "source",
+      "next": "cpr_13"
+    },
+    "cpr_11": {
+      "type": "question",
+      "text": "[1] Sign of life?",
+      "page": 3,
+      "provenance": "source",
+      "options": [
+        { "answer": "yes", "next": "cpr_12" },
+        { "answer": "no", "next": "cpr_14" }
+      ]
+    },
+    "cpr_12": {
+      "type": "question",
+      "text": "Adequate ventilation?",
+      "page": 3,
+      "provenance": "source",
+      "options": [
+        { "answer": "yes", "next": "cpr_15" },
+        { "answer": "no", "next": "cpr_16" }
+      ]
+    },
+    "cpr_13": {
+      "type": "instruction",
+      "text": "Evacuation from the place of intervention to the ambulance: find the best balance between minimal interruption of chest compressions and moving to the ambulance in order to quickly reach the appropriate care center for advanced care.",
+      "page": 3,
+      "provenance": "source",
+      "next": "cpr_17"
+    },
+    "cpr_14": {
+      "type": "instruction",
+      "text": "CPR 30:2. Prepare for evacuation.",
+      "page": 3,
+      "provenance": "source",
+      "next": "cpr_13"
+    },
+    "cpr_15": {
+      "type": "instruction",
+      "text": "Maintain SpO2 between 94-98%; in any case, nonrebreather mask 10-15 l/min (according to the SARC Manual Training & Oxygen Administration Protocol); continue to monitor closely (possible new cardiac arrest); keep temperature between 32-36 C.",
+      "page": 3,
+      "provenance": "source",
+      "next": "cpr_18"
+    },
+    "cpr_16": {
+      "type": "jump",
+      "text": "Upper Airway management.",
+      "page": 3,
+      "provenance": "source",
+      "target_chart": "airway",
+      "target_node": "air_01"
+    },
+    "cpr_17": {
+      "type": "jump",
+      "text": "CPR during transport.",
+      "page": 3,
+      "provenance": "source",
+      "target_chart": "cpr_during_transport",
+      "target_node": "entry"
+    },
+    "cpr_18": {
+      "type": "instruction",
+      "text": "Evacuation.",
+      "page": 3,
+      "provenance": "source",
+      "next": "cpr_19"
+    },
+    "cpr_19": {
+      "type": "action",
+      "text": "Transport to an appropriate health center (cardiology).",
+      "page": 3,
+      "provenance": "source"
+    }
+  }
+}

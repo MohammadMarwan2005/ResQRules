@@ -1,0 +1,84 @@
+{
+  "meta": {
+    "chart_id": "airway",
+    "title": "Upper Airway Management",
+    "source": "SARC SOP",
+    "source_pages": [8],
+    "notes": [
+      "Modelled SHALLOW: this is a hub reference point called by other charts (e.g. CPR adult). Top-level decisions and outbound jumps are captured; the conscious/unconscious ventilation sub-branches and the second 'efficient spontaneous breathing?' check are consolidated into air_05.",
+      "The chart's inline 'Spine immobilisation criteria' reference (chart #11, out of scope) is kept as a textual reference in air_02 rather than a separate jump node, per the SHALLOW model.",
+      "Efficient breathing criteria: SpO2 > 90%; no straining, use of accessory muscles or nasal flaring; no cyanosis; patient is not distressed.",
+      "Suction only the visible part of the mouth; remove reachable foreign bodies with a hooked finger (unconscious: beware of bites).",
+      "BVM rate: adult 10-12/min (one every 5-6 s); child-infant 20-30/min (one every 2-3 s) (AHA 2020); deliver each breath over 1 second; favor 4-hand ventilation if possible. Excessive ventilation is harmful."
+    ]
+  },
+  "entry": "air_01",
+  "nodes": {
+    "air_01": {
+      "type": "question",
+      "text": "Signs of obstruction?",
+      "page": 8,
+      "provenance": "source",
+      "options": [
+        { "answer": "yes", "next": "air_06" },
+        { "answer": "no", "next": "air_02" }
+      ]
+    },
+    "air_02": {
+      "type": "instruction",
+      "text": "Ensure the maintenance of the head-neck-trunk axis. (Refer to Spine stabilisation criteria.)",
+      "page": 8,
+      "provenance": "source",
+      "next": "air_03"
+    },
+    "air_03": {
+      "type": "question",
+      "text": "Efficient spontaneous breathing? (SpO2 > 90%; no straining, accessory muscle use or nasal flaring; no cyanosis; patient not distressed.)",
+      "page": 8,
+      "provenance": "source",
+      "options": [
+        { "answer": "yes", "next": "air_04" },
+        { "answer": "no", "next": "air_05" }
+      ]
+    },
+    "air_04": {
+      "type": "question",
+      "text": "Need oxygen?",
+      "page": 8,
+      "provenance": "source",
+      "options": [
+        { "answer": "yes", "next": "air_08" },
+        { "answer": "no", "next": "air_07" }
+      ]
+    },
+    "air_05": {
+      "type": "instruction",
+      "text": "Manage airway and support ventilation according to conscious vs unconscious / GCS <= 8: head-neck-trunk axis in neutral position; head tilt chin lift (no immobilisation) or jaw thrust (immobilisation); oropharyngeal aspiration / Guedel cannula; ventilation with BVM + O2 tank 15 l/min (conscious patient: assisted ventilation modelled on the patient's breathing).",
+      "page": 8,
+      "provenance": "source",
+      "next": "air_07"
+    },
+    "air_06": {
+      "type": "jump",
+      "text": "Heimlich maneuver.",
+      "page": 8,
+      "provenance": "source",
+      "target_chart": "choking",
+      "target_node": "chk_01"
+    },
+    "air_07": {
+      "type": "action",
+      "text": "Transport to an appropriate health center.",
+      "page": 8,
+      "provenance": "source"
+    },
+    "air_08": {
+      "type": "jump",
+      "text": "Oxygen algorythm.",
+      "page": 8,
+      "provenance": "source",
+      "target_chart": "oxygen",
+      "target_node": "entry"
+    }
+  }
+}

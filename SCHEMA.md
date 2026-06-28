@@ -18,9 +18,11 @@ chart logic.
       "type": "question | instruction | action | jump",
       "text": "faithful text transcribed from the chart",
       "page": 7,                      // source page for THIS node (required)
+      "provenance": "source",         // REQUIRED: source | derived | added (audit trail)
 
       // type == "question" only:
-      "options": [ { "answer": "yes", "next": "<node_id>" }, ... ],
+      "options": [ { "answer": "yes", "next": "<node_id>",
+                     "provenance": "derived" }, ... ],   // OPTIONAL per-edge override
 
       // type == "instruction" only:
       "next": "<node_id>",
@@ -44,6 +46,28 @@ chart logic.
 | `instruction` | a do-this step that flows on | single `next` → a local node id |
 | `action`      | a terminal leaf (stop) | none |
 | `jump`        | one-way cross-tree / hub transfer | `target_chart` (+ `target_node`); resolved in another file |
+
+## Provenance (faithfulness audit trail) — REQUIRED on every node
+Every node carries `provenance`; an individual `option` may override it for one edge.
+| value | meaning |
+|-------|---------|
+| `source`  | transcribed directly from a box/arrow drawn on the chart |
+| `derived` | the literal meaning of a drawn box, but not itself a drawn box/arrow — e.g. a "repeat the cycles until…" loop-back edge |
+| `added`   | tool-added for navigation only, NOT on the chart — e.g. a safe-exit so a one-armed decision diamond is walkable |
+
+Rules:
+- A `derived`/`added` node or option must never carry invented **clinical** content; it only
+  encodes navigation/structure. Anything `added`/`derived` is also called out in the
+  extraction report.
+- When the *node* is a real box but one *edge* off it is derived/added, keep the node
+  `source` and set `provenance` on that single `option`.
+
+## SHALLOW charts
+A chart may be modelled SHALLOW (e.g. #8 Upper Airway — a hub reference point). Capture the
+top-level decisions and outbound jumps; consolidate deep sub-branches into a single
+`instruction`/`action`, and note the consolidation in the report. Consolidated nodes stay
+`source` (they transcribe real boxes, merged) — the merge is a modelling choice, not invented
+content.
 
 ## Conventions
 - **Node ids**: short chart prefix + number, e.g. `chk_01`, `chk_02` (avoids cross-chart
