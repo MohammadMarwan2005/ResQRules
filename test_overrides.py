@@ -15,7 +15,8 @@ Run:  python3 test_overrides.py
 """
 import builtins
 
-from engine import ResQRules, Position, Active, Danger, Bleeding, StillBleeding, load_all
+from engine import (ResQRules, Position, Active, Danger, Bleeding, StillBleeding,
+                    SignOfLife, load_all)
 
 NODES, NODE_CHART, LOADED = load_all("data")
 
@@ -98,5 +99,40 @@ assert "catastrophic_bleeding" in ResQRules.FIRED
 assert ResQRules.TIERS == [1, 2] and ResQRules.OUTCOME == "hem_08"
 assert e.cur_chart == "hemorrhage"
 print("  PASS: override jumped into hemorrhage, escalation loop ran identically\n")
+
+# ---- TEST 6: CF high confidence in sign of life -> ventilation branch ----
+e = fresh()
+e.start("cpr_11")
+drive(e, ["1"])                                # "certain" (CF +1.0)
+print("TEST 6 CF route:", ResQRules.CF_ROUTE, "pos", e.cur_nid)
+assert ResQRules.CF_ROUTE[0] == "ventilation" and ResQRules.CF_ROUTE[1] == "cpr_12"
+assert e.cur_nid == "cpr_12"
+print("  PASS: certain sign of life -> ventilation (cpr_12)\n")
+
+# ---- TEST 7: CF doubt/unsure -> CPR branch ("if in doubt, compress") ----
+e = fresh()
+e.start("cpr_11")
+drive(e, ["3"])                                # "unsure" (CF +0.2)
+print("TEST 7 CF route:", ResQRules.CF_ROUTE, "pos", e.cur_nid)
+assert ResQRules.CF_ROUTE[0] == "cpr" and ResQRules.CF_ROUTE[1] == "cpr_14"
+assert e.cur_nid == "cpr_14"
+print("  PASS: unsure -> CPR (cpr_14), the ambiguous middle tips to compressions\n")
+
+# ---- TEST 8: boundary at the threshold (0.5, inclusive) ----
+for cf_val, exp_branch, exp_next in [(0.5, "ventilation", "cpr_12"), (0.49, "cpr", "cpr_14")]:
+    e = fresh()
+    e.start("cpr_11")
+    e.declare(SignOfLife(cf=cf_val))           # bypass prompt; test the threshold rule directly
+    drive(e, [])
+    print(f"TEST 8 cf={cf_val} -> {ResQRules.CF_ROUTE}")
+    assert ResQRules.CF_ROUTE[0] == exp_branch and ResQRules.CF_ROUTE[1] == exp_next
+print("  PASS: cf == 0.5 -> ventilation (>= inclusive); cf 0.49 -> CPR\n")
+
+# ---- guard: certain endpoints unchanged (CF only changes the ambiguous middle) ----
+e = fresh(); e.start("cpr_11"); drive(e, ["4"])     # "none" -> CPR
+assert ResQRules.CF_ROUTE[0] == "cpr"
+e = fresh(); e.start("cpr_11"); drive(e, ["2"])     # "likely" (0.6) -> ventilation
+assert ResQRules.CF_ROUTE[0] == "ventilation"
+print("  PASS: endpoints preserved (none -> CPR, likely -> ventilation)\n")
 
 print("ALL TESTS PASS")

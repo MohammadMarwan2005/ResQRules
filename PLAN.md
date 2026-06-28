@@ -32,7 +32,8 @@ Any jump into one of these is a graceful `jump` stub today.
 - **Phase 3:** the real inference layer — see rubric mapping below.
   - **3a — primary-survey override [BUILT].** Hybrid input + 4 danger overrides + salience + guard.
   - **3b — hemorrhage escalation loop [BUILT].** Semantic tier fact that accumulates in working memory.
-  - **3c — not built yet:** certainty factors; cross-protocol return-stack.
+  - **3c — certainty factor [BUILT].** One node (cpr_11 sign-of-life): graded confidence, thresholded, drives routing.
+  - **3d — not built yet:** cross-protocol return-stack.
 
 ## Inference layer 3a — primary-survey override (BUILT)
 
@@ -113,6 +114,44 @@ change, so a danger asserted mid-loop (n/p/u) jumps out cleanly with no stale ti
 - **Early exit:** "controlled" at tier 1, 2 (mid), and 3 each exit cleanly.
 - **Integration:** override-into-hemorrhage then loop behaves identically to arriving by normal walk.
 
+## Inference layer 3c — certainty factor (BUILT)
+
+### What it demonstrates (distinct rubric point — see table)
+**Reasoning under uncertainty via a certainty factor.** At ONE decision node a graded confidence
+value — not a binary yes/no — drives the routing. (Contrast 3a salience/conflict-resolution and
+3b working-memory accumulation.)
+
+### Anchor (in-scope, source-quoted)
+`cpr_adult` node **`cpr_11` "[1] Sign of life?"**, justified by the page-3 annotation on the
+breathing/pulse assessment: *"Gasping is not considered efficient breathing"* and *"Don't waste
+time checking pulse"* — an ambiguous vital-sign judgment the protocol resolves toward the worse
+case (no sign of life → keep compressing).
+
+### Mechanism (Experta has NO native CF, so we model it as real data + a rule)
+Experta 1.9.4 ships no certainty-factor / FuzzyCLIPS support (verified). So the CF is a real
+numeric `Field` on a `SignOfLife(cf)` fact, and a rule (`cf_sign_of_life`, salience 20) thresholds
+it — this drives routing, it is not display-only. Config lives in `cpr_11.cf` in the JSON:
+- prompt maps four answers to CF values: `certain 1.0 / likely 0.6 / unsure 0.2 / none -1.0`.
+- `threshold 0.5`: **CF ≥ 0.5 → ventilation (`cpr_12`)**, else **→ CPR (`cpr_14`, aggressive)**.
+
+### Threshold value + conservative rationale
+Threshold = **0.5**, but the conservative bias actually lives in the **scale**: genuine doubt
+("unsure") is scored **0.2**, not 0.5 — because the source treats gasping as not-breathing and a
+doubtful pulse as unreliable. So an uncertain assessment is "low confidence in life," and the 0.5
+cutoff keeps you compressing — **"if in doubt, compress."** Endpoints are unchanged from a plain
+yes/no (certain → ventilation; none → CPR); the CF only changes the **ambiguous middle**
+(unsure → CPR). Boundary is inclusive (cf = 0.5 → ventilation).
+
+### CF vs. override (one notch softer)
+A **danger assertion** (3a, `not_breathing`/`no_pulse`) is a *binary, high-salience hard jump* —
+the paramedic is sure. The **CF** is for the *uncertain* case: the paramedic isn't sure there's a
+sign of life, so a graded confidence tips a single decision. Same clinical instinct ("err toward
+compressing"), one notch softer — a threshold on confidence rather than an outright override.
+
+### Proven (`test_overrides.py` TEST 6-8 + endpoint guard; live sessions a/b/c)
+- certain/likely → ventilation; unsure/none → CPR; boundary cf = 0.5 inclusive → ventilation.
+- override still hard-jumps on an outright `not_breathing`; existing 3a/3b tests unaffected.
+
 ## KBS rubric → where it lives
 | KBS concept | In ResQRules |
 |-------------|--------------|
@@ -121,5 +160,5 @@ change, so a danger asserted mid-loop (n/p/u) jumps out cleanly with no stale ti
 | **Salience** | [BUILT 3a] primary-survey overrides get high salience (100/90/80) so they pre-empt the normal walk (0) regardless of current node — salience = clinical precedence (see table above). |
 | **Conflict resolution** | [BUILT 3a] when several rules are eligible (override vs. walk, or two dangers at once), salience + Experta's strategy decide which fires — proven in `test_overrides.py`, not hand-sequenced. |
 | **Working-memory state accumulation** | [BUILT 3b] the hemorrhage escalation tier is a fact `Bleeding(tier=N)` that advances across rule firings; the rule reasons over current tier + a re-asserted `StillBleeding` fact (semantic loop, not a drawn back-edge). |
-| **Certainty factors** | Phase 3: `certainty` on nodes where the source implies "if unsure…"; combine CFs along a path to express confidence in the recommendation. |
+| **Certainty factors / reasoning under uncertainty** | [BUILT 3c] at `cpr_11` a graded confidence (`SignOfLife(cf)`, scale certain/likely/unsure/none) is thresholded by a rule to drive routing; conservative scale tips genuine doubt toward CPR ("if in doubt, compress"). One node, one threshold. |
 | **Hubs / sub-routines** | `jump` nodes (#8 Airway, #10 Hemorrhage, CPR) modelled as cross-tree transfers; Phase 2 return-stack lets a sub-routine return. |

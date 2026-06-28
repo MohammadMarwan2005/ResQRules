@@ -100,6 +100,14 @@
       "text": "[1] Sign of life?",
       "page": 3,
       "provenance": "source",
+      "cf": {
+        "prompt": "Confidence the patient has a SIGN OF LIFE (breathing/pulse)? — gasping is NOT efficient breathing; do not rely on a doubtful pulse.",
+        "scale": { "certain": 1.0, "likely": 0.6, "unsure": 0.2, "none": -1.0 },
+        "threshold": 0.5,
+        "confident_next": "cpr_12",
+        "doubt_next": "cpr_14",
+        "rationale": "Conservative. The bias lives in the scale: genuine doubt ('unsure') is scored 0.2 (low confidence in life), not 0.5, because the source treats gasping as not-breathing and a doubtful pulse as unreliable. With threshold 0.5, anything short of clear confidence keeps compressions going — 'if in doubt, compress'."
+      },
       "options": [
         { "answer": "yes", "next": "cpr_12" },
         { "answer": "no", "next": "cpr_14" }

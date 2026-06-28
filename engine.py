@@ -59,10 +59,15 @@ class StillBleeding(Fact):    # transient recheck answer ("yes"/"no")
     answer = Field(str, mandatory=True)
 
 
+class SignOfLife(Fact):       # CERTAINTY FACTOR: graded confidence there IS a sign of life
+    cf = Field(float, mandatory=True)
+
+
 class ResQRules(KnowledgeEngine):
     FIRED = []     # override firing log (test_overrides.py)
     TIERS = []     # escalation tiers applied, in order (test proof of strict increase)
     OUTCOME = None # exit node id of the escalation loop
+    CF_ROUTE = None  # ("ventilation"|"cpr", next_node, cf) — CF routing log (tests)
 
     def __init__(self, nodes, node_chart, loaded):
         super().__init__()
@@ -135,6 +140,21 @@ class ResQRules(KnowledgeEngine):
                 return ("still", "no")
             print("   (enter 1, 2, or danger letter n/p/u)")
 
+    def _cf_prompt(self, node):
+        cfg = node["cf"]
+        keys = list(cfg["scale"].keys())
+        print(f"   ?? {cfg['prompt']}")
+        for i, k in enumerate(keys, 1):
+            print(f"   {i}) {k}  (CF {cfg['scale'][k]:+.2f})")
+        print("   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious")
+        while True:
+            r = input("   > ").strip().lower()
+            if r in DANGERS:
+                return ("danger", DANGERS[r])
+            if r.isdigit() and 1 <= int(r) <= len(keys):
+                return ("cf", float(cfg["scale"][keys[int(r) - 1]]))
+            print("   (enter a listed number, or a danger letter b/n/p/u)")
+
     # ---- BASELINE walker: lowest salience; suppressed while a Bleeding tier is active ----
     @Rule(AS.p << Position(nid=MATCH.nid), AS.a << Active(chart=MATCH.c),
           NOT(Bleeding()), salience=0)
@@ -155,6 +175,13 @@ class ResQRules(KnowledgeEngine):
                 self._halt(p)
                 print(f"   >> would transfer to chart '{tc}' (node '{tn}') — not loaded <<")
                 print("=== END (jump stub) ===")
+            return
+        if t == "question" and "cf" in node:          # CERTAINTY-FACTOR decision node
+            kind, payload = self._cf_prompt(node)
+            if kind == "danger":
+                self.declare(Danger(kind=payload))     # override still hard-jumps (binary)
+            else:
+                self.declare(SignOfLife(cf=payload))   # leave Position; the CF rule thresholds it
             return
         kind, payload = self._prompt(node)
         if kind == "danger":
@@ -232,6 +259,22 @@ class ResQRules(KnowledgeEngine):
             ResQRules.OUTCOME = out
             self._move(p, a, out)
 
+    # ---- CERTAINTY FACTOR: threshold an ambiguous sign-of-life assessment ----
+    @Rule(AS.s << SignOfLife(cf=MATCH.cf),
+          AS.p << Position(nid=MATCH.pn), AS.a << Active(chart=MATCH.c), salience=20)
+    def cf_sign_of_life(self, s, p, a, cf, pn, c):
+        cfg = self.nodes[pn]["cf"]
+        t = cfg["threshold"]
+        self.retract(s)
+        if cf >= t:                                       # confident there IS a sign of life
+            print(f"   ~ CF {cf:+.2f} >= {t:+.2f}: confident sign of life -> ventilation branch")
+            ResQRules.CF_ROUTE = ("ventilation", cfg["confident_next"], cf)
+            self._move(p, a, cfg["confident_next"])
+        else:                                             # doubt / low confidence
+            print(f"   ~ CF {cf:+.2f} <  {t:+.2f}: doubt -> CPR branch (if in doubt, compress)")
+            ResQRules.CF_ROUTE = ("cpr", cfg["doubt_next"], cf)
+            self._move(p, a, cfg["doubt_next"])
+
 
 def load_all(data_dir="data"):
     nodes, node_chart, loaded = {}, {}, set()
@@ -248,7 +291,7 @@ def load_all(data_dir="data"):
 def main(path):
     chart = json.load(open(path))
     nodes, node_chart, loaded = load_all(os.path.dirname(path) or "data")
-    ResQRules.FIRED, ResQRules.TIERS, ResQRules.OUTCOME = [], [], None
+    ResQRules.FIRED, ResQRules.TIERS, ResQRules.OUTCOME, ResQRules.CF_ROUTE = [], [], None, None
     print(f"=== {chart['meta']['title']}  ({chart['meta']['chart_id']}) ===")
     print(f"(loaded charts: {', '.join(sorted(loaded))})")
     e = ResQRules(nodes, node_chart, loaded)
