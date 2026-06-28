@@ -30,8 +30,9 @@ Any jump into one of these is a graceful `jump` stub today.
 - **Phase 2:** extract the other 4 in-scope charts (#1, #3, #8 shallow, #10), wire hub jumps
   between them and a return-stack so a `jump` can come back.
 - **Phase 3:** the real inference layer — see rubric mapping below.
-  - **3a — primary-survey override [BUILT].** Hybrid input + 4 danger overrides + salience + guard (this section).
-  - **3b — not built yet:** hemorrhage "still bleeding?" re-check loop with certainty factors; cross-protocol return-stack.
+  - **3a — primary-survey override [BUILT].** Hybrid input + 4 danger overrides + salience + guard.
+  - **3b — hemorrhage escalation loop [BUILT].** Semantic tier fact that accumulates in working memory.
+  - **3c — not built yet:** certainty factors; cross-protocol return-stack.
 
 ## Inference layer 3a — primary-survey override (BUILT)
 
@@ -75,6 +76,43 @@ protocol, it does **not** jump — it re-prompts the current node (no re-entry, 
 `test_overrides.py` TEST 2 and live session (c): re-asserting `not_breathing` inside CPR keeps the
 position and never restarts the protocol.
 
+## Inference layer 3b — hemorrhage escalation loop (BUILT)
+
+### What it demonstrates (distinct rubric point — see table)
+**Accumulation of state in working memory across rule firings.** The escalation *tier* is a fact
+`Bleeding(tier=N)` that advances each pass; the rule reasons over **(current tier + a re-asserted
+`StillBleeding` fact)** to choose the next action. This is the engine reasoning over working
+memory — not a flowchart sending control back to the same box. (Contrast 3a, which is about
+salience/conflict-resolution.)
+
+### The escalation (tiers mapped onto `hemorrhage.json`'s existing nodes — read, not reinvented)
+| tier | intervention node | recheck node | terminal? |
+|----:|-------------------|--------------|-----------|
+| 1 | `hem_01` direct pressure / compression / hemostatic dressing | `hem_02` | |
+| 2 | `hem_03` second compression bandage | `hem_04` | |
+| 3 | `hem_05` tourniquet | `hem_06` | **yes** |
+
+Rules: `hem_enter` (sal 50) starts the loop on arrival at `hem_01` (works whether reached by normal
+walk via `gen_05` **or** by the catastrophic_bleeding override); `hem_apply` (sal 10) applies the
+tier-N intervention, moves `Position` to the recheck node (so the override menu still works), and
+prompts; `hem_decide` (sal 10) reasons over tier + `StillBleeding`:
+- **still bleeding & N < 3** → retract `Bleeding(N)`, declare `Bleeding(N+1)` (**ADVANCE**, never re-asks N).
+- **still bleeding & N = 3 (terminal)** → **HOLD** (no tier 4), route to urgent transport (`hem_07`).
+- **controlled** → exit to post-control transport (`hem_08` for tiers 1-2; `hem_07` after tourniquet).
+
+The baseline `walk` rule carries `NOT(Bleeding())`, so it cedes control while the loop owns the
+patient and resumes only for the terminal transport leaf. `_move` clears loop facts on a protocol
+change, so a danger asserted mid-loop (n/p/u) jumps out cleanly with no stale tier.
+
+### Guards proven (`test_overrides.py` TEST 3-5, live sessions a/b/c)
+- **Advance, don't spin:** tiers visited = `[1,2,3]`, strictly increasing, each once.
+- **Terminal holds:** "still bleeding" at the tourniquet tier produces no tier 4 / no crash / no
+  infinite loop — it routes to urgent transport. (Note: the chart *draws* a re-apply loop
+  `hem_06.yes -> hem_05`; the semantic model intentionally caps at the terminal tier and routes to
+  urgent transport instead of looping forever — flagged as a deliberate divergence from the drawn edge.)
+- **Early exit:** "controlled" at tier 1, 2 (mid), and 3 each exit cleanly.
+- **Integration:** override-into-hemorrhage then loop behaves identically to arriving by normal walk.
+
 ## KBS rubric → where it lives
 | KBS concept | In ResQRules |
 |-------------|--------------|
@@ -82,5 +120,6 @@ position and never restarts the protocol.
 | **Forward chaining** | Experta RETE matches the `Current` fact, fires the generic walk rule, asserts the next `Current` → chains forward through the tree. |
 | **Salience** | [BUILT 3a] primary-survey overrides get high salience (100/90/80) so they pre-empt the normal walk (0) regardless of current node — salience = clinical precedence (see table above). |
 | **Conflict resolution** | [BUILT 3a] when several rules are eligible (override vs. walk, or two dangers at once), salience + Experta's strategy decide which fires — proven in `test_overrides.py`, not hand-sequenced. |
+| **Working-memory state accumulation** | [BUILT 3b] the hemorrhage escalation tier is a fact `Bleeding(tier=N)` that advances across rule firings; the rule reasons over current tier + a re-asserted `StillBleeding` fact (semantic loop, not a drawn back-edge). |
 | **Certainty factors** | Phase 3: `certainty` on nodes where the source implies "if unsure…"; combine CFs along a path to express confidence in the recommendation. |
 | **Hubs / sub-routines** | `jump` nodes (#8 Airway, #10 Hemorrhage, CPR) modelled as cross-tree transfers; Phase 2 return-stack lets a sub-routine return. |

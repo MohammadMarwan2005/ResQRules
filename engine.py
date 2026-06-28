@@ -1,67 +1,90 @@
 #!/usr/bin/env python3
-"""ResQRules engine — generic data-driven walker + primary-survey OVERRIDE layer.
+"""ResQRules engine — generic walker + primary-survey OVERRIDE + hemorrhage ESCALATION loop.
 
-BASELINE (low salience): ONE generic rule walks any chart JSON, forward-chaining on a
-single `Position` fact (handles question / instruction / action / jump).
+Layers, by salience:
+  100/90/80  primary-survey OVERRIDES  — danger observations preempt + jump to a protocol.
+  50         hem_enter                 — entering hemorrhage starts the semantic tier loop.
+  10         hem_apply / hem_decide    — the hemorrhage escalation loop (this build).
+  0          walk (baseline)           — generic data-driven chart walker.
 
-INFERENCE LAYER (this build): the user is a paramedic. At EVERY prompt they may, instead of
-answering, assert one of a FIXED menu of DANGER OBSERVATIONS (b/n/p/u). A high-salience
-override @Rule per danger PREEMPTS the current node and jumps to the correct protocol.
-Salience encodes clinical precedence (see PLAN.md):
-    catastrophic_bleeding 100  >  not_breathing/no_pulse 90  >  unconscious 80  >  walk 0.
+HEMORRHAGE ESCALATION (this build) — a SEMANTIC rule, not a drawn edge. The escalation TIER is
+a fact `Bleeding(tier=N)` that ACCUMULATES in working memory: each "still bleeding -> yes"
+advances N -> N+1 and applies the next intervention; the rule reasons over (current tier +
+a re-asserted StillBleeding fact). Tier strictly increases; the tourniquet tier is terminal
+(holds, routes to urgent transport — no tier 4, no spin); "controlled" exits to the post-control
+path. The baseline walker carries NOT(Bleeding()) so it cedes control while the loop runs and
+resumes for the exit/transport leaf. Interventions/recheck text are READ from hemorrhage.json.
 
-GUARD: an `Active(chart=...)` fact tracks the current protocol; each override retracts the
-Danger it handled (so it fires ONCE) and, if we are ALREADY in the target protocol, it does
-NOT jump — it just re-prompts the current node (no re-entry, no loop).
-
-NOT in this build: hemorrhage re-check loop, certainty factors, return-stack.
+NOT in this build: certainty factors, return-stack.
 """
 import glob
 import json
 import os
 import sys
 
-from experta import KnowledgeEngine, Rule, Fact, Field, MATCH, AS, TEST
+from experta import KnowledgeEngine, Rule, Fact, Field, MATCH, AS, TEST, NOT
 
-# danger letter (menu key) -> danger kind asserted as a fact
 DANGERS = {"b": "catastrophic_bleeding", "n": "not_breathing",
            "p": "no_pulse", "u": "unconscious"}
-# salience = clinical precedence (documented in PLAN.md)
 SAL = {"catastrophic_bleeding": 100, "not_breathing": 90, "no_pulse": 90, "unconscious": 80}
+
+# Hemorrhage escalation tiers, mapped onto hemorrhage.json's existing nodes (read, not reinvented).
+HEM_TIERS = {
+    1: {"apply": "hem_01", "recheck": "hem_02"},   # direct pressure / compression / hemostatic dressing
+    2: {"apply": "hem_03", "recheck": "hem_04"},   # second compression bandage
+    3: {"apply": "hem_05", "recheck": "hem_06"},   # tourniquet (TERMINAL)
+}
+HEM_TERMINAL = 3
+HEM_POST_CONTROL = "hem_08"   # controlled by pressure/dressing (tiers 1-2) -> transport
+HEM_URGENT = "hem_07"         # tourniquet outcomes (tier 3) -> urgent transport
 
 
 class Position(Fact):
-    """Where we are. Exactly one at a time."""
     nid = Field(str, mandatory=True)
 
 
-class Active(Fact):
-    """GUARD: the protocol/chart we are currently in. Exactly one at a time."""
+class Active(Fact):           # GUARD: protocol we are in
     chart = Field(str, mandatory=True)
 
 
-class Danger(Fact):
-    """A paramedic danger observation; transient — retracted once an override handles it."""
+class Danger(Fact):           # transient paramedic observation
     kind = Field(str, mandatory=True)
 
 
+class Bleeding(Fact):         # ESCALATION TIER — accumulates across loop passes
+    tier = Field(int, mandatory=True)
+
+
+class StillBleeding(Fact):    # transient recheck answer ("yes"/"no")
+    answer = Field(str, mandatory=True)
+
+
 class ResQRules(KnowledgeEngine):
-    FIRED = []  # class-level log of override firings (used by test_overrides.py)
+    FIRED = []     # override firing log (test_overrides.py)
+    TIERS = []     # escalation tiers applied, in order (test proof of strict increase)
+    OUTCOME = None # exit node id of the escalation loop
 
     def __init__(self, nodes, node_chart, loaded):
         super().__init__()
         self.nodes = nodes
         self.node_chart = node_chart
         self.loaded = loaded
-        self.cur_nid = None          # plain mirror of Position, for test introspection
+        self.cur_nid = None
         self.cur_chart = None
 
-    # ---- working-memory transitions (keep exactly one Position + one Active) ----
+    # ---- working-memory transitions ----
     def start(self, entry):
         ch = self.node_chart[entry]
         self.declare(Position(nid=entry))
         self.declare(Active(chart=ch))
         self.cur_nid, self.cur_chart = entry, ch
+
+    def _facts_of(self, cls):
+        return [self.facts[i] for i in list(self.facts) if isinstance(self.facts[i], cls)]
+
+    def _clear_loop_state(self):
+        for f in self._facts_of(Bleeding) + self._facts_of(StillBleeding):
+            self.retract(f)
 
     def _move(self, p, a, nid):
         self.retract(p)
@@ -70,13 +93,14 @@ class ResQRules(KnowledgeEngine):
         if a["chart"] != ch:
             self.retract(a)
             self.declare(Active(chart=ch))
+            self._clear_loop_state()       # leaving a protocol clears its loop facts
         self.cur_nid, self.cur_chart = nid, ch
 
     def _halt(self, p):
         self.retract(p)
         self.cur_nid = None
 
-    # ---- input (the hybrid menu: normal choices + the fixed danger menu) ----
+    # ---- input ----
     def _prompt(self, node):
         if node["type"] == "question":
             normal = [(o["answer"], o["next"]) for o in node["options"]]
@@ -93,8 +117,27 @@ class ResQRules(KnowledgeEngine):
                 return ("advance", normal[int(r) - 1][1])
             print("   (enter a listed number, or a danger letter b/n/p/u)")
 
-    # ---- BASELINE walker: LOWEST salience ----
-    @Rule(AS.p << Position(nid=MATCH.nid), AS.a << Active(chart=MATCH.c), salience=0)
+    def _recheck_prompt(self, rnode, rnid, n):
+        print(f"   [{rnid}] {rnode['text']}  (recheck after tier {n})")
+        print("   1) yes — still bleeding")
+        print("   2) no  — bleeding controlled")
+        print("   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious")
+        while True:
+            r = input("   > ").strip().lower()
+            if r == "b":                       # already on the bleeding protocol
+                print("   (already managing catastrophic bleeding — continuing escalation)")
+                continue
+            if r in ("n", "p", "u"):
+                return ("danger", DANGERS[r])
+            if r == "1":
+                return ("still", "yes")
+            if r == "2":
+                return ("still", "no")
+            print("   (enter 1, 2, or danger letter n/p/u)")
+
+    # ---- BASELINE walker: lowest salience; suppressed while a Bleeding tier is active ----
+    @Rule(AS.p << Position(nid=MATCH.nid), AS.a << Active(chart=MATCH.c),
+          NOT(Bleeding()), salience=0)
     def walk(self, p, a, nid, c):
         node = self.nodes[nid]
         print(f"\n[{nid}] {node['text']}  (p.{node['page']})")
@@ -115,11 +158,11 @@ class ResQRules(KnowledgeEngine):
             return
         kind, payload = self._prompt(node)
         if kind == "danger":
-            self.declare(Danger(kind=payload))     # leave Position; an override (high salience) handles it
+            self.declare(Danger(kind=payload))
         else:
             self._move(p, a, payload)
 
-    # ---- OVERRIDES: HIGH salience = clinical precedence ----
+    # ---- OVERRIDES: high salience = clinical precedence ----
     @Rule(AS.d << Danger(kind="catastrophic_bleeding"),
           AS.p << Position(nid=MATCH.pn), AS.a << Active(chart=MATCH.c), salience=100)
     def ov_bleeding(self, d, p, a, pn, c):
@@ -141,12 +184,53 @@ class ResQRules(KnowledgeEngine):
 
     def _override(self, p, a, pn, active, kind, chart, entry):
         ResQRules.FIRED.append(kind)
-        if active == chart:                        # GUARD: already in target protocol
+        if active == chart:
             print(f"   !! DANGER [{kind}] (sal {SAL[kind]}): already in '{chart}' — staying, no re-entry")
-            self._move(p, a, pn)                    # re-prompt current node; NO jump to entry
+            self._move(p, a, pn)
         else:
             print(f"   !! DANGER [{kind}] (sal {SAL[kind]}): OVERRIDE -> preempt, jump to '{chart}' entry")
             self._move(p, a, entry)
+
+    # ---- HEMORRHAGE ESCALATION LOOP (semantic; tier accumulates in working memory) ----
+    @Rule(Position(nid="hem_01"), Active(chart="hemorrhage"), NOT(Bleeding()), salience=50)
+    def hem_enter(self):
+        print("   >> entering hemorrhage escalation (semantic tier loop) <<")
+        self.declare(Bleeding(tier=1))
+
+    @Rule(AS.b << Bleeding(tier=MATCH.n), NOT(StillBleeding()),
+          AS.p << Position(nid=MATCH.pn), AS.a << Active(chart=MATCH.c), salience=10)
+    def hem_apply(self, b, p, a, n, pn, c):
+        cfg = HEM_TIERS[n]
+        inode = self.nodes[cfg["apply"]]
+        ResQRules.TIERS.append(n)
+        print(f"\n   >> ESCALATION TIER {n}: {inode['text']}  (p.{inode['page']})")
+        self._move(p, a, cfg["recheck"])                      # keep a Position so overrides still work
+        res = self._recheck_prompt(self.nodes[cfg["recheck"]], cfg["recheck"], n)
+        if res[0] == "danger":
+            self.declare(Danger(kind=res[1]))                 # override jumps out; _move clears loop state
+        else:
+            self.declare(StillBleeding(answer=res[1]))
+
+    @Rule(AS.b << Bleeding(tier=MATCH.n), AS.s << StillBleeding(answer=MATCH.ans),
+          AS.p << Position(nid=MATCH.pn), AS.a << Active(chart=MATCH.c), salience=10)
+    def hem_decide(self, b, s, p, a, n, ans, pn, c):
+        self.retract(s)
+        if ans == "yes":
+            if n < HEM_TERMINAL:
+                self.retract(b)
+                self.declare(Bleeding(tier=n + 1))            # ACCUMULATE: tier N -> N+1
+                print(f"   >> still bleeding -> ADVANCE tier {n} -> {n + 1}")
+            else:
+                self.retract(b)
+                print(f"   >> still bleeding at TERMINAL tier {n} (tourniquet): HOLD, no tier {n + 1} -> urgent transport")
+                ResQRules.OUTCOME = HEM_URGENT
+                self._move(p, a, HEM_URGENT)
+        else:
+            self.retract(b)
+            out = HEM_POST_CONTROL if n < HEM_TERMINAL else HEM_URGENT
+            print(f"   >> bleeding controlled at tier {n} -> exit to {out}")
+            ResQRules.OUTCOME = out
+            self._move(p, a, out)
 
 
 def load_all(data_dir="data"):
@@ -164,6 +248,7 @@ def load_all(data_dir="data"):
 def main(path):
     chart = json.load(open(path))
     nodes, node_chart, loaded = load_all(os.path.dirname(path) or "data")
+    ResQRules.FIRED, ResQRules.TIERS, ResQRules.OUTCOME = [], [], None
     print(f"=== {chart['meta']['title']}  ({chart['meta']['chart_id']}) ===")
     print(f"(loaded charts: {', '.join(sorted(loaded))})")
     e = ResQRules(nodes, node_chart, loaded)
