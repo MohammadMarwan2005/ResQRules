@@ -1,7 +1,8 @@
 {
   "meta": {
     "chart_id": "cpr_adult",
-    "title": "Cardio-Respiratory Arrest Adult (signs of puberty are visible)",
+    "title_en": "Cardio-Respiratory Arrest Adult (signs of puberty are visible)",
+    "title_ar": "السكتة القلبية التنفسية للبالغين (مع ظهور علامات البلوغ)",
     "source": "SARC SOP",
     "source_pages": [3],
     "notes": [
@@ -18,90 +19,102 @@
   "nodes": {
     "cpr_01": {
       "type": "instruction",
-      "text": "Patient evaluation: no sign of life. (Unresponsive; open the airway chin lift / jaw thrust; check-listen-feel max 10 sec; gasping is not considered efficient breathing; don't waste time checking pulse; evidence of trauma: consider maintaining the head-neck-trunk axis until final immobilisation.)",
+      "text_en": "Patient evaluation: no sign of life. (Unresponsive; open the airway chin lift / jaw thrust; check-listen-feel max 10 sec; gasping is not considered efficient breathing; don't waste time checking pulse; evidence of trauma: consider maintaining the head-neck-trunk axis until final immobilisation.)",
+      "text_ar": "تقييم المريض: لا توجد علامة حياة. (لا يستجيب؛ افتح مجرى الهواء بإمالة الرأس/دفع الفك؛ افحص-استمع-اشعر لا يزيد عن 10 ثوانٍ؛ اللهث لا يُعدّ تنفساً فعّالاً؛ لا تضيّع الوقت في فحص النبض؛ في حال وجود رضح: فكّر في الحفاظ على محور الرأس والرقبة والجذع حتى التثبيت النهائي.)",
       "page": 3,
       "provenance": "source",
       "next": "cpr_02"
     },
     "cpr_02": {
       "type": "instruction",
-      "text": "CPR 30:2 until AED is ready. (30 compressions: push hard and fast in the middle of the chest 5-6 cm but not more than 6 cm, 2 hands, rate 100-120/min, full chest recoil, minimise interruptions; 2 ventilations with BVM + oxygen in max 10 sec; if possible use an oropharyngeal cannula; manual suction device ready.)",
+      "text_en": "CPR 30:2 until AED is ready. (30 compressions: push hard and fast in the middle of the chest 5-6 cm but not more than 6 cm, 2 hands, rate 100-120/min, full chest recoil, minimise interruptions; 2 ventilations with BVM + oxygen in max 10 sec; if possible use an oropharyngeal cannula; manual suction device ready.)",
+      "text_ar": "CPR 30:2 حتى يكون AED جاهزاً. (30 ضغطة: اضغط بقوة وسرعة في منتصف الصدر 5-6 سم ولا تزيد عن 6 سم، بكلتا اليدين، معدل 100-120/دقيقة، إعادة ارتداد الصدر بالكامل، تقليل الانقطاعات؛ 2 تنفس اصطناعي بـ BVM + أكسجين في أقصى 10 ثوانٍ؛ استخدم قنية البلعوم الفموي إن أمكن؛ جهّز جهاز الشفط اليدوي.)",
       "page": 3,
       "provenance": "source",
       "next": "cpr_03"
     },
     "cpr_03": {
       "type": "question",
-      "text": "Rhythm analysis (round 1). Do not touch the patient during analysis.",
+      "text_en": "Rhythm analysis (round 1). Do not touch the patient during analysis.",
+      "text_ar": "تحليل الإيقاع (الجولة 1). لا تلمس المريض أثناء التحليل.",
       "page": 3,
       "provenance": "source",
       "options": [
-        { "answer": "Shock indicated", "next": "cpr_04" },
-        { "answer": "Shock not indicated", "next": "cpr_05" }
+        { "answer_en": "Shock indicated", "answer_ar": "الصدمة مؤشرة", "next": "cpr_04" },
+        { "answer_en": "Shock not indicated", "answer_ar": "الصدمة غير مؤشرة", "next": "cpr_05" }
       ]
     },
     "cpr_04": {
       "type": "instruction",
-      "text": "1 shock, then CPR 30:2 for 2 min / 5-6 cycles. (Do not touch the patient during analysis and shock. After resuming CPR, check for signs of life [1].)",
+      "text_en": "1 shock, then CPR 30:2 for 2 min / 5-6 cycles. (Do not touch the patient during analysis and shock. After resuming CPR, check for signs of life [1].)",
+      "text_ar": "1 صدمة، ثم CPR 30:2 لمدة 2 دقيقة / 5-6 دورات. (لا تلمس المريض أثناء التحليل والصدمة. بعد استئناف CPR، تحقق من علامات الحياة [1].)",
       "page": 3,
       "provenance": "source",
       "next": "cpr_06"
     },
     "cpr_05": {
       "type": "instruction",
-      "text": "Shock not indicated: CPR 30:2 for 2 min / 5-6 cycles. (After resuming CPR, check for signs of life [1].)",
+      "text_en": "Shock not indicated: CPR 30:2 for 2 min / 5-6 cycles. (After resuming CPR, check for signs of life [1].)",
+      "text_ar": "الصدمة غير مؤشرة: CPR 30:2 لمدة 2 دقيقة / 5-6 دورات. (بعد استئناف CPR، تحقق من علامات الحياة [1].)",
       "page": 3,
       "provenance": "source",
       "next": "cpr_06"
     },
     "cpr_06": {
       "type": "question",
-      "text": "Rhythm analysis (round 2). Switch roles for compressions / ventilations. Do not touch the patient during analysis.",
+      "text_en": "Rhythm analysis (round 2). Switch roles for compressions / ventilations. Do not touch the patient during analysis.",
+      "text_ar": "تحليل الإيقاع (الجولة 2). بادل الأدوار في الضغطات/التنفس. لا تلمس المريض أثناء التحليل.",
       "page": 3,
       "provenance": "source",
       "options": [
-        { "answer": "Shock indicated", "next": "cpr_07" },
-        { "answer": "Shock not indicated", "next": "cpr_08" }
+        { "answer_en": "Shock indicated", "answer_ar": "الصدمة مؤشرة", "next": "cpr_07" },
+        { "answer_en": "Shock not indicated", "answer_ar": "الصدمة غير مؤشرة", "next": "cpr_08" }
       ]
     },
     "cpr_07": {
       "type": "instruction",
-      "text": "1 shock, then CPR 30:2 for 2 min / 5-6 cycles. (Do not touch the patient during analysis and shock. After resuming CPR, check for signs of life [1].)",
+      "text_en": "1 shock, then CPR 30:2 for 2 min / 5-6 cycles. (Do not touch the patient during analysis and shock. After resuming CPR, check for signs of life [1].)",
+      "text_ar": "1 صدمة، ثم CPR 30:2 لمدة 2 دقيقة / 5-6 دورات. (لا تلمس المريض أثناء التحليل والصدمة. بعد استئناف CPR، تحقق من علامات الحياة [1].)",
       "page": 3,
       "provenance": "source",
       "next": "cpr_09"
     },
     "cpr_08": {
       "type": "instruction",
-      "text": "Shock not indicated: CPR 30:2 for 2 min / 5-6 cycles. (After resuming CPR, check for signs of life [1].)",
+      "text_en": "Shock not indicated: CPR 30:2 for 2 min / 5-6 cycles. (After resuming CPR, check for signs of life [1].)",
+      "text_ar": "الصدمة غير مؤشرة: CPR 30:2 لمدة 2 دقيقة / 5-6 دورات. (بعد استئناف CPR، تحقق من علامات الحياة [1].)",
       "page": 3,
       "provenance": "source",
       "next": "cpr_09"
     },
     "cpr_09": {
       "type": "question",
-      "text": "Rhythm analysis (round 3). Switch roles for compressions / ventilations. Do not touch the patient during shock.",
+      "text_en": "Rhythm analysis (round 3). Switch roles for compressions / ventilations. Do not touch the patient during shock.",
+      "text_ar": "تحليل الإيقاع (الجولة 3). بادل الأدوار في الضغطات/التنفس. لا تلمس المريض أثناء الصدمة.",
       "page": 3,
       "provenance": "source",
       "options": [
-        { "answer": "Shock indicated", "next": "cpr_10" },
-        { "answer": "Shock not indicated", "next": "cpr_11" }
+        { "answer_en": "Shock indicated", "answer_ar": "الصدمة مؤشرة", "next": "cpr_10" },
+        { "answer_en": "Shock not indicated", "answer_ar": "الصدمة غير مؤشرة", "next": "cpr_11" }
       ]
     },
     "cpr_10": {
       "type": "instruction",
-      "text": "1 shock, then CPR 30:2. Prepare for evacuation. (After resuming CPR, check for signs of life [1].)",
+      "text_en": "1 shock, then CPR 30:2. Prepare for evacuation. (After resuming CPR, check for signs of life [1].)",
+      "text_ar": "1 صدمة، ثم CPR 30:2. الاستعداد للإخلاء. (بعد استئناف CPR، تحقق من علامات الحياة [1].)",
       "page": 3,
       "provenance": "source",
       "next": "cpr_13"
     },
     "cpr_11": {
       "type": "question",
-      "text": "[1] Sign of life?",
+      "text_en": "[1] Sign of life?",
+      "text_ar": "[1] علامة حياة؟",
       "page": 3,
       "provenance": "source",
       "cf": {
-        "prompt": "Confidence the patient has a SIGN OF LIFE (breathing/pulse)? — gasping is NOT efficient breathing; do not rely on a doubtful pulse.",
+        "prompt_en": "Confidence the patient has a SIGN OF LIFE (breathing/pulse)? — gasping is NOT efficient breathing; do not rely on a doubtful pulse.",
+        "prompt_ar": "ما مدى ثقتك بأن المريض لديه علامة حياة (تنفس/نبض)؟ — اللهث ليس تنفساً فعّالاً؛ لا تعتمد على نبض مشكوك فيه.",
         "scale": { "certain": 1.0, "likely": 0.6, "unsure": 0.2, "none": -1.0 },
         "threshold": 0.5,
         "confident_next": "cpr_12",
@@ -109,44 +122,49 @@
         "rationale": "Conservative. The bias lives in the scale: genuine doubt ('unsure') is scored 0.2 (low confidence in life), not 0.5, because the source treats gasping as not-breathing and a doubtful pulse as unreliable. With threshold 0.5, anything short of clear confidence keeps compressions going — 'if in doubt, compress'."
       },
       "options": [
-        { "answer": "yes", "next": "cpr_12" },
-        { "answer": "no", "next": "cpr_14" }
+        { "answer_en": "yes", "answer_ar": "نعم", "next": "cpr_12" },
+        { "answer_en": "no", "answer_ar": "لا", "next": "cpr_14" }
       ]
     },
     "cpr_12": {
       "type": "question",
-      "text": "Adequate ventilation?",
+      "text_en": "Adequate ventilation?",
+      "text_ar": "هل التهوية كافية؟",
       "page": 3,
       "provenance": "source",
       "options": [
-        { "answer": "yes", "next": "cpr_15" },
-        { "answer": "no", "next": "cpr_16" }
+        { "answer_en": "yes", "answer_ar": "نعم", "next": "cpr_15" },
+        { "answer_en": "no", "answer_ar": "لا", "next": "cpr_16" }
       ]
     },
     "cpr_13": {
       "type": "instruction",
-      "text": "Evacuation from the place of intervention to the ambulance: find the best balance between minimal interruption of chest compressions and moving to the ambulance in order to quickly reach the appropriate care center for advanced care.",
+      "text_en": "Evacuation from the place of intervention to the ambulance: find the best balance between minimal interruption of chest compressions and moving to the ambulance in order to quickly reach the appropriate care center for advanced care.",
+      "text_ar": "الإخلاء من موقع التدخل إلى سيارة الإسعاف: اجد أفضل توازن بين الحد الأدنى من انقطاع ضغطات الصدر والتحرك إلى سيارة الإسعاف للوصول بسرعة إلى مركز الرعاية المناسب للرعاية المتقدمة.",
       "page": 3,
       "provenance": "source",
       "next": "cpr_17"
     },
     "cpr_14": {
       "type": "instruction",
-      "text": "CPR 30:2. Prepare for evacuation.",
+      "text_en": "CPR 30:2. Prepare for evacuation.",
+      "text_ar": "CPR 30:2. الاستعداد للإخلاء.",
       "page": 3,
       "provenance": "source",
       "next": "cpr_13"
     },
     "cpr_15": {
       "type": "instruction",
-      "text": "Maintain SpO2 between 94-98%; in any case, nonrebreather mask 10-15 l/min (according to the SARC Manual Training & Oxygen Administration Protocol); continue to monitor closely (possible new cardiac arrest); keep temperature between 32-36 C.",
+      "text_en": "Maintain SpO2 between 94-98%; in any case, nonrebreather mask 10-15 l/min (according to the SARC Manual Training & Oxygen Administration Protocol); continue to monitor closely (possible new cardiac arrest); keep temperature between 32-36 C.",
+      "text_ar": "حافظ على SpO2 بين 94-98%؛ في جميع الأحوال، قناع غير معاد التنفس 10-15 ل/دقيقة (وفق بروتوكول تدريب SARC وإدارة الأكسجين)؛ استمر في المراقبة الدقيقة (احتمال سكتة قلبية جديدة)؛ حافظ على الحرارة بين 32-36 درجة.",
       "page": 3,
       "provenance": "source",
       "next": "cpr_18"
     },
     "cpr_16": {
       "type": "jump",
-      "text": "Upper Airway management.",
+      "text_en": "Upper Airway management.",
+      "text_ar": "إدارة الجهاز التنفسي العلوي.",
       "page": 3,
       "provenance": "source",
       "target_chart": "airway",
@@ -154,7 +172,8 @@
     },
     "cpr_17": {
       "type": "jump",
-      "text": "CPR during transport.",
+      "text_en": "CPR during transport.",
+      "text_ar": "CPR أثناء النقل.",
       "page": 3,
       "provenance": "source",
       "target_chart": "cpr_during_transport",
@@ -162,14 +181,16 @@
     },
     "cpr_18": {
       "type": "instruction",
-      "text": "Evacuation.",
+      "text_en": "Evacuation.",
+      "text_ar": "الإخلاء.",
       "page": 3,
       "provenance": "source",
       "next": "cpr_19"
     },
     "cpr_19": {
       "type": "action",
-      "text": "Transport to an appropriate health center (cardiology).",
+      "text_en": "Transport to an appropriate health center (cardiology).",
+      "text_ar": "نقل إلى مركز صحي مناسب (أمراض القلب).",
       "page": 3,
       "provenance": "source"
     }

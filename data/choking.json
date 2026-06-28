@@ -1,7 +1,8 @@
 {
   "meta": {
     "chart_id": "choking",
-    "title": "Heimlich Maneuver",
+    "title_en": "Heimlich Maneuver",
+    "title_ar": "مناورة هايملك",
     "source": "SARC SOP",
     "source_pages": [7],
     "notes": [
@@ -15,100 +16,112 @@
   "nodes": {
     "chk_01": {
       "type": "question",
-      "text": "Suspect foreign body obstruction? (Universal sign: hands to throat, inability to talk, cough, or breathe, panicked expression, cyanosis)",
+      "text_en": "Suspect foreign body obstruction? (Universal sign: hands to throat, inability to talk, cough, or breathe, panicked expression, cyanosis)",
+      "text_ar": "هل يُشتبه في انسداد جسم غريب؟ (العلامة العالمية: اليدان على الحلق، عدم القدرة على الكلام أو السعال أو التنفس، تعبير مذعور، زرقة)",
       "page": 7,
       "provenance": "source",
       "options": [
-        { "answer": "yes", "next": "chk_02" },
-        { "answer": "no", "next": "chk_13", "provenance": "added" }
+        { "answer_en": "yes", "answer_ar": "نعم", "next": "chk_02" },
+        { "answer_en": "no", "answer_ar": "لا", "next": "chk_13", "provenance": "added" }
       ]
     },
     "chk_02": {
       "type": "question",
-      "text": "Effective cough?",
+      "text_en": "Effective cough?",
+      "text_ar": "هل السعال فعّال؟",
       "page": 7,
       "provenance": "source",
       "options": [
-        { "answer": "yes", "next": "chk_03" },
-        { "answer": "no", "next": "chk_04" }
+        { "answer_en": "yes", "answer_ar": "نعم", "next": "chk_03" },
+        { "answer_en": "no", "answer_ar": "لا", "next": "chk_04" }
       ]
     },
     "chk_03": {
       "type": "action",
-      "text": "Encourage coughing. Continuous assessment.",
+      "text_en": "Encourage coughing. Continuous assessment.",
+      "text_ar": "شجّع على السعال. التقييم المستمر.",
       "page": 7,
       "provenance": "source"
     },
     "chk_04": {
       "type": "question",
-      "text": "Is the patient conscious or unconscious?",
+      "text_en": "Is the patient conscious or unconscious?",
+      "text_ar": "هل المريض واعٍ أم فاقد الوعي؟",
       "page": 7,
       "provenance": "source",
       "options": [
-        { "answer": "Conscious patient", "next": "chk_05" },
-        { "answer": "Unconscious patient", "next": "chk_12" }
+        { "answer_en": "Conscious patient", "answer_ar": "مريض واعٍ", "next": "chk_05" },
+        { "answer_en": "Unconscious patient", "answer_ar": "مريض فاقد الوعي", "next": "chk_12" }
       ]
     },
     "chk_05": {
       "type": "question",
-      "text": "Conscious patient — patient category?",
+      "text_en": "Conscious patient — patient category?",
+      "text_ar": "مريض واعٍ — ما فئة المريض؟",
       "page": 7,
       "provenance": "source",
       "options": [
-        { "answer": "Adult / Child", "next": "chk_06" },
-        { "answer": "Infant / Pregnant / Obese", "next": "chk_07" }
+        { "answer_en": "Adult / Child", "answer_ar": "بالغ / طفل", "next": "chk_06" },
+        { "answer_en": "Infant / Pregnant / Obese", "answer_ar": "رضيع / حامل / بدين", "next": "chk_07" }
       ]
     },
     "chk_06": {
       "type": "instruction",
-      "text": "Adult / Child: 5 back blows, then 5 abdominal thrusts.",
+      "text_en": "Adult / Child: 5 back blows, then 5 abdominal thrusts.",
+      "text_ar": "بالغ / طفل: 5 ضربات على الظهر، ثم 5 ضغطات بطنية.",
       "page": 7,
       "provenance": "source",
       "next": "chk_08"
     },
     "chk_07": {
       "type": "instruction",
-      "text": "Infant / Pregnant / Obese: 5 back blows, then 5 chest thrusts. [Infant: face-down on your forearm with the head lower than the body for the 5 back blows, then turn them face-up and give 5 chest thrusts with two fingers below the nipple line.]",
+      "text_en": "Infant / Pregnant / Obese: 5 back blows, then 5 chest thrusts. [Infant: face-down on your forearm with the head lower than the body for the 5 back blows, then turn them face-up and give 5 chest thrusts with two fingers below the nipple line.]",
+      "text_ar": "رضيع / حامل / بدين: 5 ضربات على الظهر، ثم 5 ضغطات صدرية. [رضيع: وجهه للأسفل على ساعدك مع إمالة الرأس أسفل الجسم للضربات الخمس على الظهر، ثم اقلبه وجهه للأعلى وأعطِه 5 ضغطات صدرية بإصبعين أسفل خط الحلمة.]",
       "page": 7,
       "provenance": "source",
       "next": "chk_08"
     },
     "chk_08": {
       "type": "instruction",
-      "text": "Repeat the cycles until airway is cleared or patient becomes unconscious.",
+      "text_en": "Repeat the cycles until airway is cleared or patient becomes unconscious.",
+      "text_ar": "كرّر الدورات حتى يُفتح مجرى الهواء أو يفقد المريض وعيه.",
       "page": 7,
       "provenance": "source",
       "next": "chk_09"
     },
     "chk_09": {
       "type": "question",
-      "text": "Airway is cleared?",
+      "text_en": "Airway is cleared?",
+      "text_ar": "هل أُزيل الانسداد من مجرى الهواء؟",
       "page": 7,
       "provenance": "source",
       "options": [
-        { "answer": "yes", "next": "chk_11" },
-        { "answer": "no", "next": "chk_10" }
+        { "answer_en": "yes", "answer_ar": "نعم", "next": "chk_11" },
+        { "answer_en": "no", "answer_ar": "لا", "next": "chk_10" }
       ]
     },
     "chk_10": {
       "type": "question",
-      "text": "Victim become unconscious?",
+      "text_en": "Victim become unconscious?",
+      "text_ar": "هل فقد المريض وعيه؟",
       "page": 7,
       "provenance": "source",
       "options": [
-        { "answer": "yes", "next": "chk_12" },
-        { "answer": "no", "next": "chk_08", "provenance": "derived" }
+        { "answer_en": "yes", "answer_ar": "نعم", "next": "chk_12" },
+        { "answer_en": "no", "answer_ar": "لا", "next": "chk_08", "provenance": "derived" }
       ]
     },
     "chk_11": {
       "type": "action",
-      "text": "Transport to a health center.",
+      "text_en": "Transport to a health center.",
+      "text_ar": "نقل إلى مركز صحي.",
       "page": 7,
       "provenance": "source"
     },
     "chk_12": {
       "type": "jump",
-      "text": "CPR algorithm. (Choking-specific transition: after each set of chest compressions, check in the mouth for the foreign body.)",
+      "text_en": "CPR algorithm. (Choking-specific transition: after each set of chest compressions, check in the mouth for the foreign body.)",
+      "text_ar": "خوارزمية CPR. (انتقال خاص بالاختناق: بعد كل مجموعة من ضغطات الصدر، افحص داخل الفم للبحث عن الجسم الغريب.)",
       "page": 7,
       "provenance": "source",
       "target_chart": "cpr_adult",
@@ -116,7 +129,8 @@
     },
     "chk_13": {
       "type": "jump",
-      "text": "No foreign-body obstruction suspected — return to General Intervention Process & Patient Assessment.",
+      "text_en": "No foreign-body obstruction suspected — return to General Intervention Process & Patient Assessment.",
+      "text_ar": "لا يُشتبه في انسداد جسم غريب — العودة إلى عملية التدخل العامة وتقييم المريض.",
       "page": 7,
       "provenance": "added",
       "target_chart": "general_assessment",

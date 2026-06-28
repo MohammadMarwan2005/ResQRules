@@ -1,7 +1,8 @@
 {
   "meta": {
     "chart_id": "airway",
-    "title": "Upper Airway Management",
+    "title_en": "Upper Airway Management",
+    "title_ar": "إدارة الجهاز التنفسي العلوي",
     "source": "SARC SOP",
     "source_pages": [8],
     "notes": [
@@ -16,51 +17,57 @@
   "nodes": {
     "air_01": {
       "type": "question",
-      "text": "Signs of obstruction?",
+      "text_en": "Signs of obstruction?",
+      "text_ar": "هل توجد علامات انسداد؟",
       "page": 8,
       "provenance": "source",
       "options": [
-        { "answer": "yes", "next": "air_06" },
-        { "answer": "no", "next": "air_02" }
+        { "answer_en": "yes", "answer_ar": "نعم", "next": "air_06" },
+        { "answer_en": "no", "answer_ar": "لا", "next": "air_02" }
       ]
     },
     "air_02": {
       "type": "instruction",
-      "text": "Ensure the maintenance of the head-neck-trunk axis. (Refer to Spine stabilisation criteria.)",
+      "text_en": "Ensure the maintenance of the head-neck-trunk axis. (Refer to Spine stabilisation criteria.)",
+      "text_ar": "تأكد من الحفاظ على محور الرأس والرقبة والجذع. (ارجع إلى معايير تثبيت العمود الفقري.)",
       "page": 8,
       "provenance": "source",
       "next": "air_03"
     },
     "air_03": {
       "type": "question",
-      "text": "Efficient spontaneous breathing? (SpO2 > 90%; no straining, accessory muscle use or nasal flaring; no cyanosis; patient not distressed.)",
+      "text_en": "Efficient spontaneous breathing? (SpO2 > 90%; no straining, accessory muscle use or nasal flaring; no cyanosis; patient not distressed.)",
+      "text_ar": "هل التنفس التلقائي فعّال؟ (SpO2 > 90%؛ لا إجهاد ولا استخدام العضلات المساعدة أو اتساع فتحتَي الأنف؛ لا زرقة؛ المريض غير متضايق.)",
       "page": 8,
       "provenance": "source",
       "options": [
-        { "answer": "yes", "next": "air_04" },
-        { "answer": "no", "next": "air_05" }
+        { "answer_en": "yes", "answer_ar": "نعم", "next": "air_04" },
+        { "answer_en": "no", "answer_ar": "لا", "next": "air_05" }
       ]
     },
     "air_04": {
       "type": "question",
-      "text": "Need oxygen?",
+      "text_en": "Need oxygen?",
+      "text_ar": "هل يحتاج إلى أكسجين؟",
       "page": 8,
       "provenance": "source",
       "options": [
-        { "answer": "yes", "next": "air_08" },
-        { "answer": "no", "next": "air_07" }
+        { "answer_en": "yes", "answer_ar": "نعم", "next": "air_08" },
+        { "answer_en": "no", "answer_ar": "لا", "next": "air_07" }
       ]
     },
     "air_05": {
       "type": "instruction",
-      "text": "Manage airway and support ventilation according to conscious vs unconscious / GCS <= 8: head-neck-trunk axis in neutral position; head tilt chin lift (no immobilisation) or jaw thrust (immobilisation); oropharyngeal aspiration / Guedel cannula; ventilation with BVM + O2 tank 15 l/min (conscious patient: assisted ventilation modelled on the patient's breathing).",
+      "text_en": "Manage airway and support ventilation according to conscious vs unconscious / GCS <= 8: head-neck-trunk axis in neutral position; head tilt chin lift (no immobilisation) or jaw thrust (immobilisation); oropharyngeal aspiration / Guedel cannula; ventilation with BVM + O2 tank 15 l/min (conscious patient: assisted ventilation modelled on the patient's breathing).",
+      "text_ar": "أدِر مجرى الهواء وادعم التهوية بحسب الوعي أو فقدانه / GCS <= 8: محور الرأس والرقبة والجذع في وضع محايد؛ إمالة الرأس برفع الذقن (بدون تثبيت) أو دفع الفك (مع تثبيت)؛ شفط البلعوم الفموي / قنية غيدل؛ تنفس اصطناعي بـ BVM + أكسجين 15 ل/دقيقة (مريض واعٍ: تنفس مساعد يتوافق مع تنفس المريض).",
       "page": 8,
       "provenance": "source",
       "next": "air_07"
     },
     "air_06": {
       "type": "jump",
-      "text": "Heimlich maneuver.",
+      "text_en": "Heimlich maneuver.",
+      "text_ar": "مناورة هايملك.",
       "page": 8,
       "provenance": "source",
       "target_chart": "choking",
@@ -68,13 +75,15 @@
     },
     "air_07": {
       "type": "action",
-      "text": "Transport to an appropriate health center.",
+      "text_en": "Transport to an appropriate health center.",
+      "text_ar": "نقل إلى مركز صحي مناسب.",
       "page": 8,
       "provenance": "source"
     },
     "air_08": {
       "type": "jump",
-      "text": "Oxygen algorythm.",
+      "text_en": "Oxygen algorythm.",
+      "text_ar": "خوارزمية الأكسجين.",
       "page": 8,
       "provenance": "source",
       "target_chart": "oxygen",

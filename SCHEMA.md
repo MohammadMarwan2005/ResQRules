@@ -7,37 +7,63 @@ chart logic.
 {
   "meta": {
     "chart_id": "choking",            // stable id, also the JSON filename stem
-    "title": "Heimlich Maneuver",     // chart title, transcribed
+    "title_en": "Heimlich Maneuver",  // English title — source-of-truth anchor
+    "title_ar": "مناورة هايملك",      // Arabic parallel (OPTIONAL; falls back to title_en)
     "source": "SARC SOP",
     "source_pages": [7],              // chart number / page(s) in the master 12-chart deck
     "notes": ["..."]                  // OPTIONAL: chart-level footnotes that aren't a flow box
   },
-  "entry": "<node_id>",               // id of the first node to walk
+  "entry": "<node_id>",               // id of the first node to walk (language-independent)
   "nodes": {
     "<node_id>": {
       "type": "question | instruction | action | jump",
-      "text": "faithful text transcribed from the chart",
+      "text_en": "faithful text transcribed from the chart",   // REQUIRED — source-of-truth
+      "text_ar": "النص بالعربية",                              // OPTIONAL parallel; engine falls back to text_en + [en] flag
       "page": 7,                      // source page for THIS node (required)
-      "provenance": "source",         // REQUIRED: source | derived | added (audit trail)
+      "provenance": "source",         // REQUIRED: source | derived | added (audit trail, language-independent)
 
       // type == "question" only:
-      "options": [ { "answer": "yes", "next": "<node_id>",
-                     "provenance": "derived" }, ... ],   // OPTIONAL per-edge override
+      "options": [ { "answer_en": "yes", "answer_ar": "نعم",  // answer_en REQUIRED; answer_ar OPTIONAL
+                     "next": "<node_id>",                       // node ids are language-independent
+                     "provenance": "derived" }, ... ],          // OPTIONAL per-edge provenance override
 
       // type == "instruction" only:
       "next": "<node_id>",
 
       // type == "jump" only:
-      "target_chart": "cpr_adult",
-      "target_node": "entry",
+      "target_chart": "cpr_adult",    // language-independent
+      "target_node": "entry",         // language-independent
 
       // type == "action": no "next"/"options" (it is a leaf)
 
-      "certainty": 0.0                // OPTIONAL; only where the source implies "if unsure…"
+      // CF block (question nodes with graded confidence only — see cpr_11):
+      "cf": {
+        "prompt_en": "English CF question",  // REQUIRED if cf present
+        "prompt_ar": "سؤال CF بالعربية",     // OPTIONAL parallel; falls back to prompt_en + [en]
+        "scale": { "certain": 1.0, "likely": 0.6, "unsure": 0.2, "none": -1.0 },  // keys are programmatic (always English)
+        "threshold": 0.5,
+        "confident_next": "<node_id>",
+        "doubt_next": "<node_id>"
+      }
     }
   }
 }
 ```
+
+## Language support (`LANG = "en" | "ar"`)
+
+The engine reads a module-level `LANG` flag. All displayed text goes through helpers:
+- `txt(node)` → `node[f"text_{LANG}"]`, falling back to `node["text_en"] + "  [en]"`.
+- `ans(option)` → `option[f"answer_{LANG}"]`, same fallback.
+- `cf_prompt_text(cfg)` → `cfg[f"prompt_{LANG}"]`, same fallback.
+- `meta_title(meta)` → `meta[f"title_{LANG}"]`, same fallback.
+- Engine UI strings (menus, trace lines, END messages) come from `UI[LANG]` dict.
+
+**Language-independence guarantees:**
+- Node ids, `next`, `target_chart`, `target_node`, `entry` — never translated; routing is language-free.
+- `provenance` — structural audit field; language-free.
+- `validate.py` checks `text_en` (required) and reports Arabic coverage separately; validation PASS/FAIL is language-independent.
+- CF scale keys (`certain`/`likely`/`unsure`/`none`) are programmatic dict keys (always English); display labels come from `UI[LANG]["cf_labels"]`.
 
 ## Node types
 | type | meaning | continuation |

@@ -35,13 +35,13 @@ def validate(path):
         if t not in NODE_TYPES:
             errors.append(f"{nid}: bad/missing type {t!r}")
             continue
-        if "text" not in n:
-            errors.append(f"{nid}: missing 'text'")
+        if "text_en" not in n:
+            errors.append(f"{nid}: missing 'text_en'")
         if "page" not in n:
             errors.append(f"{nid}: missing 'page' (every node must cite its source page)")
         if n.get("provenance") not in PROVENANCE:
             errors.append(f"{nid}: provenance must be one of {sorted(PROVENANCE)}, got {n.get('provenance')!r}")
-        if "[UNCLEAR" in n.get("text", ""):
+        if "[UNCLEAR" in n.get("text_en", ""):
             warnings.append(f"{nid}: text flagged [UNCLEAR] — needs human review")
 
         if t == "question":
@@ -49,8 +49,8 @@ def validate(path):
             if not opts:
                 errors.append(f"{nid}: question has no options")
             for o in opts or []:
-                if "answer" not in o or "next" not in o:
-                    errors.append(f"{nid}: option missing answer/next: {o}")
+                if "answer_en" not in o or "next" not in o:
+                    errors.append(f"{nid}: option missing answer_en/next: {o}")
                 elif o["next"] not in nodes:
                     errors.append(f"{nid}: option '{o.get('answer')}' -> unknown node '{o['next']}'")
                 if "provenance" in o and o["provenance"] not in PROVENANCE:
@@ -97,9 +97,17 @@ def validate(path):
         elif t == "jump":
             pass
 
+    # Arabic coverage (informational — not a PASS/FAIL criterion)
+    missing_ar = [nid for nid, n in nodes.items() if "text_ar" not in n]
+
     # report
     print(f"--- validation report: {path} ---")
     print(f"nodes: {len(nodes)} | entry: {entry} | reachable: {len(seen)}")
+    if missing_ar:
+        print(f"Arabic coverage: {len(nodes) - len(missing_ar)}/{len(nodes)} nodes have text_ar "
+              f"(missing: {', '.join(sorted(missing_ar))})")
+    else:
+        print(f"Arabic coverage: all {len(nodes)} nodes have text_ar.")
     if externals:
         print("external jump targets (resolved in other charts / Phase 2):")
         for e in externals:

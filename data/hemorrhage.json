@@ -1,7 +1,8 @@
 {
   "meta": {
     "chart_id": "hemorrhage",
-    "title": "Catastrophic Hemorrhage",
+    "title_en": "Catastrophic Hemorrhage",
+    "title_ar": "النزيف الكارثي",
     "source": "SARC SOP",
     "source_pages": [10],
     "notes": [
@@ -15,64 +16,72 @@
   "nodes": {
     "hem_01": {
       "type": "instruction",
-      "text": "Control of external bleeding: direct compression on the wound; compression dressing; if available, hemostatic compression dressing.",
+      "text_en": "Control of external bleeding: direct compression on the wound; compression dressing; if available, hemostatic compression dressing.",
+      "text_ar": "السيطرة على النزيف الخارجي: ضغط مباشر على الجرح؛ ضمادة ضاغطة؛ إذا توفرت، ضمادة ضاغطة مرقئة للدم.",
       "page": 10,
       "provenance": "source",
       "next": "hem_02"
     },
     "hem_02": {
       "type": "question",
-      "text": "Active bleeding?",
+      "text_en": "Active bleeding?",
+      "text_ar": "هل النزيف نشط؟",
       "page": 10,
       "provenance": "source",
       "options": [
-        { "answer": "yes", "next": "hem_03" },
-        { "answer": "no", "next": "hem_08" }
+        { "answer_en": "yes", "answer_ar": "نعم", "next": "hem_03" },
+        { "answer_en": "no", "answer_ar": "لا", "next": "hem_08" }
       ]
     },
     "hem_03": {
       "type": "instruction",
-      "text": "Second compression bandage on top of the first.",
+      "text_en": "Second compression bandage on top of the first.",
+      "text_ar": "ضمادة ضاغطة ثانية فوق الأولى.",
       "page": 10,
       "provenance": "source",
       "next": "hem_04"
     },
     "hem_04": {
       "type": "question",
-      "text": "Active bleeding?",
+      "text_en": "Active bleeding?",
+      "text_ar": "هل النزيف نشط؟",
       "page": 10,
       "provenance": "source",
       "options": [
-        { "answer": "yes", "next": "hem_05" },
-        { "answer": "no", "next": "hem_08" }
+        { "answer_en": "yes", "answer_ar": "نعم", "next": "hem_05" },
+        { "answer_en": "no", "answer_ar": "لا", "next": "hem_08" }
       ]
     },
     "hem_05": {
       "type": "instruction",
-      "text": "Installation of tourniquet. (Position: one palm's width above the wound, between the heart and the wound; not on the joints. Effectiveness: stop of bleeding. This is a very painful procedure; ensure the patient does not remove the tourniquet.)",
+      "text_en": "Installation of tourniquet. (Position: one palm's width above the wound, between the heart and the wound; not on the joints. Effectiveness: stop of bleeding. This is a very painful procedure; ensure the patient does not remove the tourniquet.)",
+      "text_ar": "تركيب العاصبة. (الموضع: عرض راحة يد واحدة فوق الجرح، بين القلب والجرح؛ لا تضعها على المفاصل. الفعالية: إيقاف النزيف. هذا إجراء مؤلم جداً؛ تأكد من أن المريض لا يزيل العاصبة.)",
       "page": 10,
       "provenance": "source",
       "next": "hem_06"
     },
     "hem_06": {
       "type": "question",
-      "text": "Active bleeding?",
+      "text_en": "Active bleeding?",
+      "text_ar": "هل النزيف نشط؟",
       "page": 10,
       "provenance": "source",
       "options": [
-        { "answer": "yes", "next": "hem_05" },
-        { "answer": "no", "next": "hem_07" }
+        { "answer_en": "yes", "answer_ar": "نعم", "next": "hem_05" },
+        { "answer_en": "no", "answer_ar": "لا", "next": "hem_07" }
       ]
     },
     "hem_07": {
       "type": "action",
-      "text": "Urgent and safe transport to a health center.",
+      "text_en": "Urgent and safe transport to a health center.",
+      "text_ar": "نقل عاجل وآمن إلى مركز صحي.",
       "page": 10,
       "provenance": "source"
     },
     "hem_08": {
       "type": "action",
-      "text": "Transport to a health center.",
+      "text_en": "Transport to a health center.",
+      "text_ar": "نقل إلى مركز صحي.",
       "page": 10,
       "provenance": "source"
     }

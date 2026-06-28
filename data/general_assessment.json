@@ -1,7 +1,8 @@
 {
   "meta": {
     "chart_id": "general_assessment",
-    "title": "General Intervention Process & Patient Assessment",
+    "title_en": "General Intervention Process & Patient Assessment",
+    "title_ar": "عملية التدخل العامة وتقييم المريض",
     "source": "SARC SOP",
     "source_pages": [1],
     "notes": [
@@ -14,38 +15,43 @@
   "nodes": {
     "gen_01": {
       "type": "instruction",
-      "text": "Safety: ensure safety & security for staff, patient(s) and bystanders. [SETUP: Stop (take a few seconds), Environment, Traffic, Unpredictable, PPE (Personal Protective Equipment).]",
+      "text_en": "Safety: ensure safety & security for staff, patient(s) and bystanders. [SETUP: Stop (take a few seconds), Environment, Traffic, Unpredictable, PPE (Personal Protective Equipment).]",
+      "text_ar": "السلامة: تأكد من أمان وسلامة الفريق والمريض/المرضى والمارة. [SETUP: توقف (خذ ثوانٍ)، البيئة، حركة المرور، العوامل غير المتوقعة، PPE (معدات الحماية الشخصية).]",
       "page": 1,
       "provenance": "source",
       "next": "gen_02"
     },
     "gen_02": {
       "type": "instruction",
-      "text": "Scene Evaluation: mechanism of injury; environmental factors. Determine the number of patients. Need reinforcement?",
+      "text_en": "Scene Evaluation: mechanism of injury; environmental factors. Determine the number of patients. Need reinforcement?",
+      "text_ar": "تقييم المشهد: آلية الإصابة؛ العوامل البيئية. حدّد عدد المرضى. هل تحتاج إلى تعزيزات؟",
       "page": 1,
       "provenance": "source",
       "next": "gen_03"
     },
     "gen_03": {
       "type": "instruction",
-      "text": "Situation Evaluation: first general impression; main complaint.",
+      "text_en": "Situation Evaluation: first general impression; main complaint.",
+      "text_ar": "تقييم الحالة: الانطباع العام الأول؛ الشكوى الرئيسية.",
       "page": 1,
       "provenance": "source",
       "next": "gen_04"
     },
     "gen_04": {
       "type": "question",
-      "text": "Life threatening bleeding?",
+      "text_en": "Life threatening bleeding?",
+      "text_ar": "هل هناك نزيف يهدد الحياة؟",
       "page": 1,
       "provenance": "source",
       "options": [
-        { "answer": "yes", "next": "gen_05" },
-        { "answer": "no", "next": "gen_06" }
+        { "answer_en": "yes", "answer_ar": "نعم", "next": "gen_05" },
+        { "answer_en": "no", "answer_ar": "لا", "next": "gen_06" }
       ]
     },
     "gen_05": {
       "type": "jump",
-      "text": "Catastrophic Hemorrhage.",
+      "text_en": "Catastrophic Hemorrhage.",
+      "text_ar": "النزيف الكارثي.",
       "page": 1,
       "provenance": "source",
       "target_chart": "hemorrhage",
@@ -53,45 +59,51 @@
     },
     "gen_06": {
       "type": "instruction",
-      "text": "Primary Assessment — Look-Listen-Feel-Do. AVPU: Alert & Awake / Verbal response / Pain stimuli response / Unconscious. ABCDE: Airway (open mouth) & Axis; Breathing (look, listen, feel); Circulation (skin colour, capillary refill, pulse quality); Disability (neurologic); Expose & Protect - Evacuate (priority).",
+      "text_en": "Primary Assessment — Look-Listen-Feel-Do. AVPU: Alert & Awake / Verbal response / Pain stimuli response / Unconscious. ABCDE: Airway (open mouth) & Axis; Breathing (look, listen, feel); Circulation (skin colour, capillary refill, pulse quality); Disability (neurologic); Expose & Protect - Evacuate (priority).",
+      "text_ar": "التقييم الأولي — انظر-استمع-اشعر-افعل. AVPU: يقظ ومستيقظ / استجابة صوتية / استجابة لمثير الألم / فاقد الوعي. ABCDE: مجرى الهواء (افتح الفم) والمحور؛ التنفس (انظر، استمع، اشعر)؛ الدورة الدموية (لون الجلد، إعادة ملء الشعيرات، جودة النبض)؛ الإعاقة العصبية؛ الكشف والحماية - الإخلاء (الأولوية).",
       "page": 1,
       "provenance": "source",
       "next": "gen_07"
     },
     "gen_07": {
       "type": "question",
-      "text": "Intervention Strategy — is the patient stable or unstable?",
+      "text_en": "Intervention Strategy — is the patient stable or unstable?",
+      "text_ar": "استراتيجية التدخل — هل المريض مستقر أم غير مستقر؟",
       "page": 1,
       "provenance": "source",
       "options": [
-        { "answer": "Stable", "next": "gen_08" },
-        { "answer": "Unstable", "next": "gen_09" }
+        { "answer_en": "Stable", "answer_ar": "مستقر", "next": "gen_08" },
+        { "answer_en": "Unstable", "answer_ar": "غير مستقر", "next": "gen_09" }
       ]
     },
     "gen_08": {
       "type": "instruction",
-      "text": "Stable: regular care continuation.",
+      "text_en": "Stable: regular care continuation.",
+      "text_ar": "مستقر: استمرار الرعاية الاعتيادية.",
       "page": 1,
       "provenance": "source",
       "next": "gen_10"
     },
     "gen_09": {
       "type": "instruction",
-      "text": "Unstable: immediate action: BLS. Limit time on site.",
+      "text_en": "Unstable: immediate action: BLS. Limit time on site.",
+      "text_ar": "غير مستقر: تصرف فوري: BLS. الحدّ من الوقت في الموقع.",
       "page": 1,
       "provenance": "source",
       "next": "gen_10"
     },
     "gen_10": {
       "type": "instruction",
-      "text": "Secondary Assessment — Measure (equipment) - Look-Listen-Feel-Do: medical history; vital signs; pain scale. [SAMPLER: Signs & Symptoms, Allergies, Medication, Past history, Last oral intake, Events, Risk factors. OPQRST: Onset, Provoked by, Quality, Radiation, Severity, Time. Vital signs: B respiration rate + SpO2; C heart rate + blood pressure; D Glasgow Coma Scale + pupils + blood sugar; E temperature. GCS: eye-opening (1-4), verbal (1-5), motor (1-6). PERRLA: Pupils Equal Round Reactive to Light Accommodation.]",
+      "text_en": "Secondary Assessment — Measure (equipment) - Look-Listen-Feel-Do: medical history; vital signs; pain scale. [SAMPLER: Signs & Symptoms, Allergies, Medication, Past history, Last oral intake, Events, Risk factors. OPQRST: Onset, Provoked by, Quality, Radiation, Severity, Time. Vital signs: B respiration rate + SpO2; C heart rate + blood pressure; D Glasgow Coma Scale + pupils + blood sugar; E temperature. GCS: eye-opening (1-4), verbal (1-5), motor (1-6). PERRLA: Pupils Equal Round Reactive to Light Accommodation.]",
+      "text_ar": "التقييم الثانوي — قِس (المعدات) - انظر-استمع-اشعر-افعل: التاريخ الطبي؛ العلامات الحيوية؛ مقياس الألم. [SAMPLER: العلامات والأعراض، الحساسية، الأدوية، التاريخ المرضي السابق، آخر وجبة، الأحداث، عوامل الخطر. OPQRST: البداية، ما يثيره، النوعية، الانتشار، الشدة، الوقت. العلامات الحيوية: B معدل التنفس + SpO2؛ C معدل القلب + ضغط الدم؛ D مقياس GCS + الحدقتان + سكر الدم؛ E الحرارة. GCS: فتح العينين (1-4)، الكلام (1-5)، الحركة (1-6). PERRLA: حدقتان متساويتان مستديرتان تتفاعلان مع الضوء والتكيّف.]",
       "page": 1,
       "provenance": "source",
       "next": "gen_11"
     },
     "gen_11": {
       "type": "action",
-      "text": "Continuous Assessment & Orientation: reassessment of patient; strategy & treatment; determine the most appropriate care center.",
+      "text_en": "Continuous Assessment & Orientation: reassessment of patient; strategy & treatment; determine the most appropriate care center.",
+      "text_ar": "التقييم المستمر والتوجيه: إعادة تقييم المريض؛ الاستراتيجية والعلاج؛ تحديد أنسب مركز رعاية.",
       "page": 1,
       "provenance": "source"
     }
