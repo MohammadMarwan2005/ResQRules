@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "chart_id": "choking",
+    "title": "Heimlich Maneuver",
+    "source": "SARC SOP",
+    "source_pages": [7],
+    "notes": [
+      "Universal sign of choking (hands to throat), inability to talk, cough, or breathe, panicked expression, cyanosis.",
+      "Standing victim: support the patient (they may faint); stand firmly on your feet.",
+      "As a first responder in an ambulance, it is highly likely that upon your arrival, the patient will be unconscious.",
+      "Emphasizing the need for medical assessment."
+    ]
+  },
+  "entry": "chk_01",
+  "nodes": {
+    "chk_01": {
+      "type": "question",
+      "text": "Suspect foreign body obstruction? (Universal sign: hands to throat, inability to talk, cough, or breathe, panicked expression, cyanosis)",
+      "page": 7,
+      "options": [
+        { "answer": "yes", "next": "chk_02" },
+        { "answer": "no", "next": "chk_13" }
+      ]
+    },
+    "chk_02": {
+      "type": "question",
+      "text": "Effective cough?",
+      "page": 7,
+      "options": [
+        { "answer": "yes", "next": "chk_03" },
+        { "answer": "no", "next": "chk_04" }
+      ]
+    },
+    "chk_03": {
+      "type": "action",
+      "text": "Encourage coughing. Continuous assessment.",
+      "page": 7
+    },
+    "chk_04": {
+      "type": "question",
+      "text": "Is the patient conscious or unconscious?",
+      "page": 7,
+      "options": [
+        { "answer": "Conscious patient", "next": "chk_05" },
+        { "answer": "Unconscious patient", "next": "chk_12" }
+      ]
+    },
+    "chk_05": {
+      "type": "question",
+      "text": "Conscious patient — patient category?",
+      "page": 7,
+      "options": [
+        { "answer": "Adult / Child", "next": "chk_06" },
+        { "answer": "Infant / Pregnant / Obese", "next": "chk_07" }
+      ]
+    },
+    "chk_06": {
+      "type": "instruction",
+      "text": "Adult / Child: 5 back blows, then 5 abdominal thrusts.",
+      "page": 7,
+      "next": "chk_08"
+    },
+    "chk_07": {
+      "type": "instruction",
+      "text": "Infant / Pregnant / Obese: 5 back blows, then 5 chest thrusts. [Infant: face-down on your forearm with the head lower than the body for the 5 back blows, then turn them face-up and give 5 chest thrusts with two fingers below the nipple line.]",
+      "page": 7,
+      "next": "chk_08"
+    },
+    "chk_08": {
+      "type": "instruction",
+      "text": "Repeat the cycles until airway is cleared or patient becomes unconscious.",
+      "page": 7,
+      "next": "chk_09"
+    },
+    "chk_09": {
+      "type": "question",
+      "text": "Airway is cleared?",
+      "page": 7,
+      "options": [
+        { "answer": "yes", "next": "chk_11" },
+        { "answer": "no", "next": "chk_10" }
+      ]
+    },
+    "chk_10": {
+      "type": "question",
+      "text": "Victim become unconscious?",
+      "page": 7,
+      "options": [
+        { "answer": "yes", "next": "chk_12" },
+        { "answer": "no", "next": "chk_08" }
+      ]
+    },
+    "chk_11": {
+      "type": "action",
+      "text": "Transport to a health center.",
+      "page": 7
+    },
+    "chk_12": {
+      "type": "jump",
+      "text": "CPR algorithm. (Chart shows downstream: Start CPR; after each set of chest compressions, check in the mouth; then urgent and safe transport to a health center.)",
+      "page": 7,
+      "target_chart": "cpr_adult",
+      "target_node": "entry"
+    },
+    "chk_13": {
+      "type": "jump",
+      "text": "No foreign-body obstruction suspected — return to General Intervention Process & Patient Assessment.",
+      "page": 7,
+      "target_chart": "general_assessment",
+      "target_node": "entry"
+    }
+  }
+}
