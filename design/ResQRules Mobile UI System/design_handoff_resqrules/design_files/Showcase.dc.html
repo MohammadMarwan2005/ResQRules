@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="ds/styles.css">
+<style>
+  html, body { margin: 0; }
+  .rqs-screen { width: 320px; flex-shrink: 0; }
+</style>
+<script src="ds/_ds_bundle.js"></script>
+</helmet>
+<div style="min-height:100vh; background:var(--neutral-100); font-family:var(--font-sans); padding:36px 24px 96px; box-sizing:border-box;">
+  <div style="max-width:1140px; margin:0 auto; display:flex; flex-direction:column; gap:44px;">
+
+    <header style="display:flex; flex-direction:column; gap:10px; border-bottom:1px solid var(--neutral-300); padding-bottom:24px;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span style="font-size:26px; font-weight:var(--weight-bold); color:var(--primary-600);">ResQRules</span>
+        <span style="font-size:26px; font-weight:var(--weight-bold); color:var(--neutral-900);">Component Library</span>
+      </div>
+      <div style="font-size:15px; font-weight:var(--weight-regular); color:var(--neutral-600); line-height:1.5; max-width:680px;">15 production-ready components for the Red Cross / Red Crescent field first-aid app — each shown in English and Arabic (RTL). Composed on the ResQRules design system. The runnable app lives in <span style="font-weight:var(--weight-semibold); color:var(--neutral-900);">ResQRules.dc.html</span>.</div>
+    </header>
+
+    <section style="display:flex; flex-direction:column; gap:16px;">
+      <div style="font-size:13px; font-weight:var(--weight-bold); letter-spacing:0.08em; text-transform:uppercase; color:var(--neutral-600);">Foundations</div>
+      <div style="background:var(--neutral-000); border-radius:var(--radius-lg); box-shadow:var(--elevation-card); padding:24px; display:flex; flex-direction:column; gap:24px;">
+        <div style="display:flex; flex-wrap:wrap; gap:10px;">
+          <sc-for list="{{ swatches }}" as="sw" hint-placeholder-count="9">
+            <div style="display:flex; flex-direction:column; gap:6px; width:104px;">
+              <div style="height:48px; border-radius:var(--radius-md); background:{{ sw.css }}; border:1px solid rgba(0,0,0,0.06);"></div>
+              <div style="font-size:11px; font-weight:var(--weight-semibold); color:var(--neutral-900);">{{ sw.name }}</div>
+              <div style="font-size:11px; color:var(--neutral-600); font-variant-numeric:tabular-nums;">{{ sw.hex }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="height:1px; background:var(--neutral-300);"></div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="font-size:22px; font-weight:var(--weight-bold); color:var(--neutral-900); line-height:1.3;">Display 22 · Bold — chart titles</div>
+          <div style="font-size:18px; font-weight:var(--weight-semibold); color:var(--neutral-900);">Heading 18 · SemiBold — section &amp; AppBar</div>
+          <div style="font-size:16px; font-weight:var(--weight-regular); color:var(--neutral-900); line-height:1.6;">Body 16 · Regular 1.6 — clinical instruction text, tuned for one-handed reading under stress.</div>
+          <div style="font-size:15px; font-weight:var(--weight-semibold); color:var(--neutral-900);">Label 15 · SemiBold — button labels</div>
+          <div style="font-size:12px; font-weight:var(--weight-regular); color:var(--neutral-600);">Caption 12 · Regular — p.7 · Tier 2 / 3 · CF +0.60</div>
+          <div style="font-size:16px; font-weight:var(--weight-regular); color:var(--neutral-900); line-height:1.6;" dir="rtl">نص عربي ١٦ · Noto Sans Arabic — نفس المقاييس، بلا إزاحة عند التبديل.</div>
+        </div>
+      </div>
+    </section>
+
+    <section style="display:flex; flex-direction:column; gap:16px;">
+      <div style="display:flex; align-items:baseline; gap:10px;">
+        <span style="font-size:13px; font-weight:var(--weight-bold); letter-spacing:0.08em; text-transform:uppercase; color:var(--neutral-600);">01 · ChartCard</span>
+        <span style="font-size:13px; color:var(--neutral-600);">home protocol card — urgency accent + bilingual title</span>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div style="font-size:11px; font-weight:var(--weight-semibold); color:var(--neutral-600);">English</div>
+          <dc-import name="ChartCard" urgency="critical" title-en="Catastrophic Hemorrhage" title-ar="النزيف الكارثي" lang="en" hint-size="100%,116px"></dc-import>
+          <dc-import name="ChartCard" urgency="high" title-en="Upper Airway Management" title-ar="إدارة المجرى الهوائي العلوي" lang="en" hint-size="100%,116px"></dc-import>
+          <dc-import name="ChartCard" urgency="standard" title-en="General Intervention Process" title-ar="عملية التدخل العام" lang="en" hint-size="100%,116px"></dc-import>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div style="font-size:11px; font-weight:var(--weight-semibold); color:var(--neutral-600);" dir="rtl">العربية</div>
+          <dc-import name="ChartCard" urgency="critical" title-en="Catastrophic Hemorrhage" title-ar="النزيف الكارثي" lang="ar" hint-size="100%,116px"></dc-import>
+          <dc-import name="ChartCard" urgency="high" title-en="Upper Airway Management" title-ar="إدارة المجرى الهوائي العلوي" lang="ar" hint-size="100%,116px"></dc-import>
+          <dc-import name="ChartCard" urgency="standard" title-en="General Intervention Process" title-ar="عملية التدخل العام" lang="ar" hint-size="100%,116px"></dc-import>
+        </div>
+      </div>
+    </section>
+
+    <section style="display:flex; flex-direction:column; gap:16px;">
+      <div style="display:flex; align-items:baseline; gap:10px;">
+        <span style="font-size:13px; font-weight:var(--weight-bold); letter-spacing:0.08em; text-transform:uppercase; color:var(--neutral-600);">02–08 · Node bodies</span>
+        <span style="font-size:13px; color:var(--neutral-600);">the 6 session body variants — EN + AR</span>
+      </div>
+      <div style="display:flex; flex-wrap:wrap; gap:18px;">
+
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="font-size:11px; font-weight:var(--weight-semibold); color:var(--neutral-900);">Instruction</div>
+          <div class="rqs-screen" style="height:420px; background:var(--neutral-000); border:1px solid var(--neutral-300); border-radius:18px; padding:16px; box-sizing:border-box; overflow:hidden;"><dc-import name="NodeInstruction" lang="en" hint-size="100%,100%"></dc-import></div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="font-size:11px; font-weight:var(--weight-semibold); color:var(--neutral-900);" dir="rtl">تعليمات</div>
+          <div class="rqs-screen" style="height:420px; background:var(--neutral-000); border:1px solid var(--neutral-300); border-radius:18px; padding:16px; box-sizing:border-box; overflow:hidden;"><dc-import name="NodeInstruction" lang="ar" hint-size="100%,100%"></dc-import></div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="font-size:11px; font-weight:var(--weight-semibold); color:var(--neutral-900);">Question</div>
+          <div class="rqs-screen" style="height:420px; background:var(--neutral-000); border:1px solid var(--neutral-300); border-radius:18px; padding:16px; box-sizing:border-box; overflow:hidden;"><dc-import name="NodeQuestion" lang="en" hint-size="100%,100%"></dc-import></div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="font-size:11px; font-weight:var(--weight-semibold); color:var(--neutral-900);" dir="rtl">سؤال</div>
+          <div class="rqs-screen" style="height:420px; background:var(--neutral-000); border:1px solid var(--neutral-300); border-radius:18px; padding:16px; box-sizing:border-box; overflow:hidden;"><dc-import name="NodeQuestion" lang="ar" hint-size="100%,100%"></dc-import></div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="font-size:11px; font-weight:var(--weight-semibold); color:var(--neutral-900);">CF Question</div>
+          <div class="rqs-screen" style="height:520px; background:var(--neutral-000); border:1px solid var(--neutral-300); border-radius:18px; padding:16px; box-sizing:border-box; overflow:hidden;"><dc-import name="NodeCFQuestion" lang="en" hint-size="100%,100%"></dc-import></div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="font-size:11px; font-weight:var(--weight-semibold); color:var(--neutral-900);" dir="rtl">سؤال بعامل اليقين</div>
+          <div class="rqs-screen" style="height:520px; background:var(--neutral-000); border:1px solid var(--neutral-300); border-radius:18px; padding:16px; box-sizing:border-box; overflow:hidden;"><dc-import name="NodeCFQuestion" lang="ar" hint-size="100%,100%"></dc-import></div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="font-size:11px; font-weight:var(--weight-semibold); color:var(--neutral-900);">Hem Question</div>
+          <div class="rqs-screen" style="height:520px; background:var(--neutral-000); border:1px solid var(--neutral-300); border-radius:18px; padding:16px; box-sizing:border-box; overflow:hidden;"><dc-import name="NodeHemQuestion" lang="en" hint-size="100%,100%"></dc-import></div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="font-size:11px; font-weight:var(--weight-semibold); color:var(--neutral-900);" dir="rtl">سؤال النزيف</div>
+          <div class="rqs-screen" style="height:520px; background:var(--neutral-000); border:1px solid var(--neutral-300); border-radius:18px; padding:16px; box-sizing:border-box; overflow:hidden;"><dc-import name="NodeHemQuestion" lang="ar" hint-size="100%,100%"></dc-import></div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="font-size:11px; font-weight:var(--weight-semibold); color:var(--neutral-900);">Action (terminal)</div>
+          <div class="rqs-screen" style="height:420px; background:var(--neutral-000); border:1px solid var(--neutral-300); border-radius:18px; padding:16px; box-sizing:border-box; overflow:hidden;"><dc-import name="NodeAction" lang="en" hint-size="100%,100%"></dc-import></div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="font-size:11px; font-weight:var(--weight-semibold); color:var(--neutral-900);" dir="rtl">إجراء نهائي</div>
+          <div class="rqs-screen" style="height:420px; background:var(--neutral-000); border:1px solid var(--neutral-300); border-radius:18px; padding:16px; box-sizing:border-box; overflow:hidden;"><dc-import name="NodeAction" lang="ar" hint-size="100%,100%"></dc-import></div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="font-size:11px; font-weight:var(--weight-semibold); color:var(--neutral-900);">Jump Stub</div>
+          <div class="rqs-screen" style="height:420px; background:var(--neutral-000); border:1px solid var(--neutral-300); border-radius:18px; padding:16px; box-sizing:border-box; overflow:hidden;"><dc-import name="NodeJumpStub" lang="en" hint-size="100%,100%"></dc-import></div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="font-size:11px; font-weight:var(--weight-semibold); color:var(--neutral-900);" dir="rtl">انتقال غير متوفر</div>
+          <div class="rqs-screen" style="height:420px; background:var(--neutral-000); border:1px solid var(--neutral-300); border-radius:18px; padding:16px; box-sizing:border-box; overflow:hidden;"><dc-import name="NodeJumpStub" lang="ar" hint-size="100%,100%"></dc-import></div>
+        </div>
+
+      </div>
+    </section>
+
+    <section style="display:flex; flex-direction:column; gap:16px;">
+      <div style="display:flex; align-items:baseline; gap:10px;"><span style="font-size:13px; font-weight:var(--weight-bold); letter-spacing:0.08em; text-transform:uppercase; color:var(--neutral-600);">06 · TierBadge</span><span style="font-size:13px; color:var(--neutral-600);">hemorrhage escalation — 3 dots + Tier N / 3</span></div>
+      <div style="background:var(--neutral-000); border-radius:var(--radius-lg); box-shadow:var(--elevation-card); padding:24px; display:flex; flex-wrap:wrap; gap:40px; align-items:flex-start;">
+        <div style="display:flex; flex-direction:column; gap:8px; align-items:center;"><x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.TierBadge" from="./ds/_ds_bundle.js" current="{{ t1 }}" hint-size="70px,40px"></x-import><span style="font-size:11px; color:var(--neutral-600);">tier 1</span></div>
+        <div style="display:flex; flex-direction:column; gap:8px; align-items:center;"><x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.TierBadge" from="./ds/_ds_bundle.js" current="{{ t2 }}" hint-size="70px,40px"></x-import><span style="font-size:11px; color:var(--neutral-600);">tier 2</span></div>
+        <div style="display:flex; flex-direction:column; gap:8px; align-items:center;"><x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.TierBadge" from="./ds/_ds_bundle.js" current="{{ t3 }}" hint-size="70px,40px"></x-import><span style="font-size:11px; color:var(--neutral-600);">tier 3</span></div>
+        <div style="display:flex; flex-direction:column; gap:8px; align-items:center;"><x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.TierBadge" from="./ds/_ds_bundle.js" complete="{{ yes }}" hint-size="70px,40px"></x-import><span style="font-size:11px; color:var(--neutral-600);">complete</span></div>
+        <div style="display:flex; flex-direction:column; gap:8px; align-items:center;"><x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.TierBadge" from="./ds/_ds_bundle.js" current="{{ t2 }}" lang="ar" dir="rtl" hint-size="80px,40px"></x-import><span style="font-size:11px; color:var(--neutral-600);" dir="rtl">المستوى 2</span></div>
+      </div>
+    </section>
+
+    <section style="display:flex; flex-direction:column; gap:16px;">
+      <div style="display:flex; align-items:baseline; gap:10px;"><span style="font-size:13px; font-weight:var(--weight-bold); letter-spacing:0.08em; text-transform:uppercase; color:var(--neutral-600);">09 · DangerPanel</span><span style="font-size:13px; color:var(--neutral-600);">persistent 4-zone bar · EN / AR / loading-lock</span></div>
+      <div style="background:var(--neutral-000); border-radius:var(--radius-lg); box-shadow:var(--elevation-card); padding:24px; display:flex; flex-direction:column; gap:18px;">
+        <div style="display:flex; flex-direction:column; gap:6px;"><span style="font-size:11px; color:var(--neutral-600);">English</span><div style="width:390px; max-width:100%; border-radius:10px; overflow:hidden;"><x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.DangerPanel" from="./ds/_ds_bundle.js" lang="en" hint-size="100%,64px"></x-import></div></div>
+        <div style="display:flex; flex-direction:column; gap:6px;"><span style="font-size:11px; color:var(--neutral-600);" dir="rtl">العربية — mirrored</span><div style="width:390px; max-width:100%; border-radius:10px; overflow:hidden;"><x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.DangerPanel" from="./ds/_ds_bundle.js" lang="ar" dir="rtl" hint-size="100%,64px"></x-import></div></div>
+        <div style="display:flex; flex-direction:column; gap:6px;"><span style="font-size:11px; color:var(--neutral-600);">loading-lock (60% · non-interactive)</span><div style="width:390px; max-width:100%; border-radius:10px; overflow:hidden;"><x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.DangerPanel" from="./ds/_ds_bundle.js" lang="en" locked="{{ yes }}" hint-size="100%,64px"></x-import></div></div>
+      </div>
+    </section>
+
+    <section style="display:flex; flex-direction:column; gap:16px;">
+      <div style="display:flex; align-items:baseline; gap:10px;"><span style="font-size:13px; font-weight:var(--weight-bold); letter-spacing:0.08em; text-transform:uppercase; color:var(--neutral-600);">10 · OverrideToast</span><span style="font-size:13px; color:var(--neutral-600);">jump (⚡) &amp; guard (✓) · EN / AR</span></div>
+      <div style="background:var(--neutral-000); border-radius:var(--radius-lg); box-shadow:var(--elevation-card); padding:24px; display:flex; flex-direction:column; gap:14px;">
+        <div style="width:390px; max-width:100%; border-radius:10px; overflow:hidden;"><x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.OverrideToast" from="./ds/_ds_bundle.js" variant="jump" visible="{{ yes }}" lang="en" hint-size="100%,48px"></x-import></div>
+        <div style="width:390px; max-width:100%; border-radius:10px; overflow:hidden;"><x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.OverrideToast" from="./ds/_ds_bundle.js" variant="guard" visible="{{ yes }}" lang="en" hint-size="100%,48px"></x-import></div>
+        <div style="width:390px; max-width:100%; border-radius:10px; overflow:hidden;"><x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.OverrideToast" from="./ds/_ds_bundle.js" variant="jump" visible="{{ yes }}" lang="ar" dir="rtl" hint-size="100%,48px"></x-import></div>
+        <div style="width:390px; max-width:100%; border-radius:10px; overflow:hidden;"><x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.OverrideToast" from="./ds/_ds_bundle.js" variant="guard" visible="{{ yes }}" lang="ar" dir="rtl" hint-size="100%,48px"></x-import></div>
+      </div>
+    </section>
+
+    <section style="display:flex; flex-direction:column; gap:16px;">
+      <div style="display:flex; align-items:baseline; gap:10px;"><span style="font-size:13px; font-weight:var(--weight-bold); letter-spacing:0.08em; text-transform:uppercase; color:var(--neutral-600);">Feedback</span><span style="font-size:13px; color:var(--neutral-600);">Snackbar (tap-to-retry) · LoadingBar (3dp sweep)</span></div>
+      <div style="background:var(--neutral-000); border-radius:var(--radius-lg); box-shadow:var(--elevation-card); padding:24px; display:flex; flex-direction:column; gap:14px;">
+        <div style="width:390px; max-width:100%; border-radius:10px; overflow:hidden;"><x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.Snackbar" from="./ds/_ds_bundle.js" lang="en" hint-size="100%,56px"></x-import></div>
+        <div style="width:390px; max-width:100%; border-radius:10px; overflow:hidden;"><x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.Snackbar" from="./ds/_ds_bundle.js" lang="ar" dir="rtl" hint-size="100%,56px"></x-import></div>
+        <div style="width:390px; max-width:100%; height:3px; background:var(--neutral-100);"><x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.LoadingBar" from="./ds/_ds_bundle.js" hint-size="100%,3px"></x-import></div>
+      </div>
+    </section>
+
+    <section style="display:flex; flex-direction:column; gap:16px;">
+      <div style="display:flex; align-items:baseline; gap:10px;"><span style="font-size:13px; font-weight:var(--weight-bold); letter-spacing:0.08em; text-transform:uppercase; color:var(--neutral-600);">12 · LangToggle &amp; 14 · AppBar</span><span style="font-size:13px; color:var(--neutral-600);">segmented control · home + session bars</span></div>
+      <div style="background:var(--neutral-000); border-radius:var(--radius-lg); box-shadow:var(--elevation-card); padding:24px; display:flex; flex-direction:column; gap:18px;">
+        <div style="display:flex; gap:24px; align-items:center; flex-wrap:wrap;">
+          <div style="background:var(--primary-600); padding:10px 14px; border-radius:10px;"><x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.LangToggle" from="./ds/_ds_bundle.js" value="en" variant="onPrimary" hint-size="72px,32px"></x-import></div>
+          <div style="background:var(--primary-600); padding:10px 14px; border-radius:10px;"><x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.LangToggle" from="./ds/_ds_bundle.js" value="ar" variant="onPrimary" hint-size="72px,32px"></x-import></div>
+          <div style="border:1px solid var(--neutral-300); padding:10px 14px; border-radius:10px;"><x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.LangToggle" from="./ds/_ds_bundle.js" value="en" variant="standalone" hint-size="72px,32px"></x-import></div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div style="width:390px; max-width:100%; border-radius:10px; overflow:hidden; border:1px solid var(--neutral-300);"><x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.AppBar" from="./ds/_ds_bundle.js" variant="home" lang="en" hint-size="100%,56px"></x-import></div>
+          <div style="width:390px; max-width:100%; border-radius:10px; overflow:hidden; border:1px solid var(--neutral-300);"><x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.AppBar" from="./ds/_ds_bundle.js" variant="session" title="Cardio-Respiratory Arrest Adult" lang="en" hint-size="100%,56px"></x-import></div>
+          <div style="width:390px; max-width:100%; border-radius:10px; overflow:hidden; border:1px solid var(--neutral-300);"><x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.AppBar" from="./ds/_ds_bundle.js" variant="session" title="السكتة القلبية التنفسية (بالغ)" lang="ar" dir="rtl" hint-size="100%,56px"></x-import></div>
+        </div>
+      </div>
+    </section>
+
+    <section style="display:flex; flex-direction:column; gap:16px;">
+      <div style="display:flex; align-items:baseline; gap:10px;"><span style="font-size:13px; font-weight:var(--weight-bold); letter-spacing:0.08em; text-transform:uppercase; color:var(--neutral-600);">11 · ResetSheet</span><span style="font-size:13px; color:var(--neutral-600);">bottom sheet · EN / AR</span></div>
+      <div style="background:var(--neutral-000); border-radius:var(--radius-lg); box-shadow:var(--elevation-card); padding:24px; display:flex; gap:20px; flex-wrap:wrap;">
+        <div style="width:340px; max-width:100%; border:1px solid var(--neutral-300); border-radius:14px; overflow:hidden;"><x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.BottomSheet" from="./ds/_ds_bundle.js" lang="en" chart-name="Cardio-Respiratory Arrest Adult" hint-size="100%,260px"></x-import></div>
+        <div style="width:340px; max-width:100%; border:1px solid var(--neutral-300); border-radius:14px; overflow:hidden;"><x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.BottomSheet" from="./ds/_ds_bundle.js" lang="ar" dir="rtl" chart-name="السكتة القلبية التنفسية (بالغ)" hint-size="100%,260px"></x-import></div>
+      </div>
+    </section>
+
+    <section style="display:flex; flex-direction:column; gap:16px;">
+      <div style="display:flex; align-items:baseline; gap:10px;"><span style="font-size:13px; font-weight:var(--weight-bold); letter-spacing:0.08em; text-transform:uppercase; color:var(--neutral-600);">Actions</span><span style="font-size:13px; color:var(--neutral-600);">Button · OutlinedButton (4) · CfButton (4)</span></div>
+      <div style="background:var(--neutral-000); border-radius:var(--radius-lg); box-shadow:var(--elevation-card); padding:24px; display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:24px;">
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <span style="font-size:11px; color:var(--neutral-600);">Button — primary / disabled / loading</span>
+          <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.Button" from="./ds/_ds_bundle.js" hint-size="100%,56px">Continue</x-import>
+          <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.Button" from="./ds/_ds_bundle.js" disabled="{{ yes }}" hint-size="100%,56px">Continue</x-import>
+          <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.Button" from="./ds/_ds_bundle.js" loading="{{ yes }}" hint-size="100%,56px">Continue</x-import>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <span style="font-size:11px; color:var(--neutral-600);">OutlinedButton variants</span>
+          <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.OutlinedButton" from="./ds/_ds_bundle.js" variant="primary" hint-size="100%,56px">yes — still bleeding</x-import>
+          <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.OutlinedButton" from="./ds/_ds_bundle.js" variant="success" hint-size="100%,56px">no — bleeding controlled</x-import>
+          <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.OutlinedButton" from="./ds/_ds_bundle.js" variant="warning" hint-size="100%,56px">escalate — high urgency</x-import>
+          <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.OutlinedButton" from="./ds/_ds_bundle.js" variant="neutral" hint-size="100%,56px">Back to Home</x-import>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <span style="font-size:11px; color:var(--neutral-600);">CfButton levels</span>
+          <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.CfButton" from="./ds/_ds_bundle.js" level="certain" hint-size="100%,56px">Certain</x-import>
+          <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.CfButton" from="./ds/_ds_bundle.js" level="likely" hint-size="100%,56px">Likely</x-import>
+          <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.CfButton" from="./ds/_ds_bundle.js" level="unsure" hint-size="100%,56px">Unsure</x-import>
+          <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.CfButton" from="./ds/_ds_bundle.js" level="none" hint-size="100%,56px">None</x-import>
+        </div>
+      </div>
+    </section>
+
+    <section style="display:flex; flex-direction:column; gap:16px;">
+      <div style="display:flex; align-items:baseline; gap:10px;"><span style="font-size:13px; font-weight:var(--weight-bold); letter-spacing:0.08em; text-transform:uppercase; color:var(--neutral-600);">Content atoms</span><span style="font-size:13px; color:var(--neutral-600);">UrgencyBadge · PageCitation</span></div>
+      <div style="background:var(--neutral-000); border-radius:var(--radius-lg); box-shadow:var(--elevation-card); padding:24px; display:flex; gap:14px; flex-wrap:wrap; align-items:center;">
+        <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.UrgencyBadge" from="./ds/_ds_bundle.js" level="critical" hint-size="auto,24px"></x-import>
+        <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.UrgencyBadge" from="./ds/_ds_bundle.js" level="high" hint-size="auto,24px"></x-import>
+        <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.UrgencyBadge" from="./ds/_ds_bundle.js" level="standard" hint-size="auto,24px"></x-import>
+        <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.UrgencyBadge" from="./ds/_ds_bundle.js" level="critical" dir="rtl" hint-size="auto,24px">حرج</x-import>
+        <span style="width:1px; height:24px; background:var(--neutral-300);"></span>
+        <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.PageCitation" from="./ds/_ds_bundle.js" page="{{ page7 }}" hint-size="40px,16px"></x-import>
+      </div>
+    </section>
+
+    <section style="display:flex; flex-direction:column; gap:16px;">
+      <div style="display:flex; align-items:baseline; gap:10px;"><span style="font-size:13px; font-weight:var(--weight-bold); letter-spacing:0.08em; text-transform:uppercase; color:var(--neutral-600);">Explorations</span><span style="font-size:13px; color:var(--neutral-600);">live tweaks on ResQRules.dc.html</span></div>
+      <div style="background:var(--neutral-000); border-radius:var(--radius-lg); box-shadow:var(--elevation-card); padding:24px; display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px;">
+        <div style="border:1px solid var(--neutral-300); border-radius:10px; padding:16px;"><div style="font-size:15px; font-weight:var(--weight-semibold); color:var(--neutral-900);">Node transition</div><div style="font-size:13px; color:var(--neutral-600); line-height:1.5; margin-top:4px;">slide · fade · instant — the body animation between nodes.</div></div>
+        <div style="border:1px solid var(--neutral-300); border-radius:10px; padding:16px;"><div style="font-size:15px; font-weight:var(--weight-semibold); color:var(--neutral-900);">Home density</div><div style="font-size:13px; color:var(--neutral-600); line-height:1.5; margin-top:4px;">comfortable · compact — spacing between chart cards.</div></div>
+        <div style="border:1px solid var(--neutral-300); border-radius:10px; padding:16px;"><div style="font-size:15px; font-weight:var(--weight-semibold); color:var(--neutral-900);">Start screen &amp; error sim</div><div style="font-size:13px; color:var(--neutral-600); line-height:1.5; margin-top:4px;">skip the splash, and toggle simulateError to demo the retry snackbar.</div></div>
+      </div>
+    </section>
+
+    <div data-end="1"></div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      t0: 0, t1: 1, t2: 2, t3: 3, yes: true, no: false, page7: 7,
+      swatches: [
+        { name: 'Primary', hex: '#CC0000', css: 'var(--primary-600)' },
+        { name: 'Primary Dark', hex: '#990000', css: 'var(--primary-700)' },
+        { name: 'Primary Light', hex: '#FF3333', css: 'var(--primary-400)' },
+        { name: 'Success', hex: '#2D6A4F', css: 'var(--success-700)' },
+        { name: 'Warning', hex: '#E85D04', css: 'var(--warning-600)' },
+        { name: 'Text', hex: '#1A1A1A', css: 'var(--neutral-900)' },
+        { name: 'Secondary', hex: '#4A4A4A', css: 'var(--neutral-600)' },
+        { name: 'Border', hex: '#E0E0E0', css: 'var(--neutral-300)' },
+        { name: 'Surface', hex: '#F5F5F5', css: 'var(--neutral-100)' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

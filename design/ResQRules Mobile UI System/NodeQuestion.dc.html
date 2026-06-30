@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="ds/styles.css">
+<script src="ds/_ds_bundle.js"></script>
+</helmet>
+<div style="display:flex; flex-direction:column; height:100%; box-sizing:border-box;">
+  <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.PageCitation" from="./ds/_ds_bundle.js" page="{{ page }}" dir="{{ dir }}" hint-size="48px,16px"></x-import>
+  <div style="height:12px;"></div>
+  <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.Card" from="./ds/_ds_bundle.js" dir="{{ dir }}" hint-size="100%,96px">
+    <div style="font-family:var(--font-sans); font-size:16px; font-weight:var(--weight-semibold); line-height:1.5; color:var(--neutral-900); text-align:{{ textAlign }};">{{ text }}</div>
+  </x-import>
+  <div style="height:16px;"></div>
+  <div style="display:flex; flex-direction:column; gap:12px;">
+    <sc-for list="{{ options }}" as="opt" hint-placeholder-count="2">
+      <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.OutlinedButton" from="./ds/_ds_bundle.js" variant="{{ opt.variant }}" on-click="{{ opt.onClick }}" dir="{{ dir }}" hint-size="100%,56px">{{ opt.label }}</x-import>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:360,&quot;height&quot;:420},&quot;node&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;QuestionNode&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;'en' | 'ar'&quot;},&quot;onSelect&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(opt: Option) =&gt; void&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props;
+    const lang = p.lang || 'en';
+    const isAr = lang === 'ar';
+    const dir = isAr ? 'rtl' : 'ltr';
+    const node = p.node || {
+      page: 12,
+      text: { en: 'Is the bleeding catastrophic?', ar: 'هل النزيف كارثي؟' },
+      options: [
+        { id: 'yes', label: { en: 'yes', ar: 'نعم' }, variant: 'primary' },
+        { id: 'no', label: { en: 'no', ar: 'لا' }, variant: 'primary' },
+      ],
+    };
+    const options = (node.options || []).map((o) => ({
+      id: o.id,
+      label: (o.label && o.label[lang]) || o.id,
+      variant: o.variant || 'primary',
+      onClick: () => { if (p.onSelect) p.onSelect(o); },
+    }));
+    return {
+      page: node.page,
+      dir,
+      textAlign: isAr ? 'right' : 'left',
+      text: (node.text && node.text[lang]) || '',
+      options,
+    };
+  }
+}
+</script>
+</body>
+</html>

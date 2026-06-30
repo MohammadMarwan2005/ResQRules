@@ -1,0 +1,91 @@
+/* ResQRules — Typography tokens
+   Latin: Noto Sans · Arabic: Noto Sans Arabic.
+   Identical metrics so layouts never shift when toggling EN <-> AR.
+   Never a weight below 400. Clinical text (body, body-bold) >= 4.5:1 on white. */
+
+:root {
+  /* ---- Families ---- */
+  --font-latin: 'Noto Sans', system-ui, -apple-system, sans-serif;
+  --font-arabic: 'Noto Sans Arabic', 'Noto Sans', system-ui, sans-serif;
+  /* Default stack carries both so a single element renders EN + AR identically */
+  --font-sans: 'Noto Sans', 'Noto Sans Arabic', system-ui, -apple-system, sans-serif;
+
+  /* ---- Weights (never below 400) ---- */
+  --weight-regular: 400;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* ---- Type scale: size ---- */
+  --text-display: 22px;   /* chart titles on home screen */
+  --text-heading: 18px;   /* section titles, AppBar */
+  --text-body: 16px;      /* clinical instruction text (most common) */
+  --text-body-bold: 16px; /* question text, button-adjacent labels */
+  --text-label: 15px;     /* button labels */
+  --text-secondary: 14px; /* sub-labels, CF prompt, intervention text */
+  --text-caption: 12px;   /* page citation, node ID, metadata */
+  --text-micro: 10px;     /* danger-panel zone labels only */
+
+  /* ---- Type scale: line-height ---- */
+  --lh-display: 1.3;     /* @kind other */
+  --lh-heading: 1.4;     /* @kind other */
+  --lh-body: 1.6;        /* @kind other */
+  --lh-body-bold: 1.5;   /* @kind other */
+  --lh-label: 1.4;       /* @kind other */
+  --lh-secondary: 1.5;   /* @kind other */
+  --lh-caption: 1.4;     /* @kind other */
+}
+
+/* ---- Composite role classes (optional convenience for cards/screens) ---- */
+.rq-display {
+  font-family: var(--font-sans);
+  font-size: var(--text-display);
+  font-weight: var(--weight-bold);
+  line-height: var(--lh-display);
+  color: var(--color-text);
+}
+.rq-heading {
+  font-family: var(--font-sans);
+  font-size: var(--text-heading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--lh-heading);
+  color: var(--color-text);
+}
+.rq-body {
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  font-weight: var(--weight-regular);
+  line-height: var(--lh-body);
+  color: var(--color-text);
+}
+.rq-body-bold {
+  font-family: var(--font-sans);
+  font-size: var(--text-body-bold);
+  font-weight: var(--weight-semibold);
+  line-height: var(--lh-body-bold);
+  color: var(--color-text);
+}
+.rq-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
+  line-height: var(--lh-label);
+}
+.rq-secondary {
+  font-family: var(--font-sans);
+  font-size: var(--text-secondary);
+  font-weight: var(--weight-regular);
+  line-height: var(--lh-secondary);
+  color: var(--color-text-secondary);
+}
+.rq-caption {
+  font-family: var(--font-sans);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-regular);
+  line-height: var(--lh-caption);
+  color: var(--color-text-secondary);
+}
+
+/* RTL helper: flips alignment + direction for Arabic mode */
+[dir='rtl'] {
+  text-align: right;
+}

@@ -1,0 +1,8 @@
+/* ResQRules — Border radius tokens */
+
+:root {
+  --radius-sm: 6px;      /* badges, tier dots, small chips */
+  --radius-md: 8px;      /* buttons, input fields */
+  --radius-lg: 12px;     /* cards, bottom sheet top corners */
+  --radius-full: 9999px; /* pill badges, language toggle segments */
+}

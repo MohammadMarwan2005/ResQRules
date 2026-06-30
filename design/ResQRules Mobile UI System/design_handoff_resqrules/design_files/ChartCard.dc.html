@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="ds/styles.css">
+<script src="ds/_ds_bundle.js"></script>
+</helmet>
+<button type="button" onClick="{{ onOpen }}" onPointerDown="{{ press }}" onPointerUp="{{ release }}" onPointerLeave="{{ release }}" dir="{{ dir }}" style="{{ cardStyle }}">
+  <div style="display:flex; flex-direction:row; justify-content:flex-end; width:100%;">
+    <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.UrgencyBadge" from="./ds/_ds_bundle.js" level="{{ urgency }}" dir="{{ dir }}" hint-size="auto,24px">{{ badgeLabel }}</x-import>
+  </div>
+  <div dir="{{ primaryDir }}" style="margin-top:10px; font-family:var(--font-sans); font-size:17px; font-weight:var(--weight-semibold); line-height:1.35; color:var(--neutral-900); text-align:{{ primaryAlign }};">{{ primaryTitle }}</div>
+  <div dir="{{ secondaryDir }}" style="margin-top:4px; font-family:var(--font-sans); font-size:14px; font-weight:var(--weight-regular); line-height:1.45; color:var(--neutral-600); text-align:{{ secondaryAlign }};">{{ secondaryTitle }}</div>
+</button>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:360,&quot;height&quot;:120},&quot;urgency&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;critical&quot;,&quot;high&quot;,&quot;standard&quot;],&quot;default&quot;:&quot;critical&quot;,&quot;tsType&quot;:&quot;'critical' | 'high' | 'standard'&quot;},&quot;titleEn&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Catastrophic Hemorrhage&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;titleAr&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;النزيف الكارثي&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;'en' | 'ar'&quot;},&quot;onOpen&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;() =&gt; void&quot;}}">
+class Component extends DCLogic {
+  state = { pressed: false };
+
+  renderVals() {
+    const p = this.props;
+    const urgency = p.urgency || 'critical';
+    const lang = p.lang || 'en';
+    const isAr = lang === 'ar';
+    const dir = isAr ? 'rtl' : 'ltr';
+
+    const ACCENT = {
+      critical: 'var(--urgency-critical)',
+      high: 'var(--urgency-high)',
+      standard: 'var(--urgency-standard)',
+    };
+    const BADGE = {
+      en: { critical: 'CRITICAL', high: 'HIGH', standard: 'STANDARD' },
+      ar: { critical: 'حرج', high: 'عالي', standard: 'عادي' },
+    };
+
+    const titleEn = p.titleEn || 'Catastrophic Hemorrhage';
+    const titleAr = p.titleAr || 'النزيف الكارثي';
+
+    const cardStyle = {
+      appearance: 'none',
+      display: 'block',
+      width: '100%',
+      boxSizing: 'border-box',
+      textAlign: isAr ? 'right' : 'left',
+      background: this.state.pressed ? 'var(--neutral-100)' : 'var(--neutral-000)',
+      border: 'none',
+      borderInlineStart: `4px solid ${ACCENT[urgency]}`,
+      borderRadius: 'var(--radius-lg)',
+      boxShadow: 'var(--elevation-card)',
+      padding: '16px',
+      cursor: 'pointer',
+      transition: 'background 120ms ease',
+      WebkitTapHighlightColor: 'transparent',
+    };
+
+    return {
+      urgency,
+      dir,
+      cardStyle,
+      badgeLabel: BADGE[lang][urgency],
+      primaryTitle: isAr ? titleAr : titleEn,
+      secondaryTitle: isAr ? titleEn : titleAr,
+      primaryDir: isAr ? 'rtl' : 'ltr',
+      secondaryDir: isAr ? 'ltr' : 'rtl',
+      primaryAlign: isAr ? 'right' : 'left',
+      secondaryAlign: isAr ? 'left' : 'right',
+      onOpen: (e) => { if (p.onOpen) p.onOpen(e); },
+      press: () => this.setState({ pressed: true }),
+      release: () => this.setState({ pressed: false }),
+    };
+  }
+}
+</script>
+</body>
+</html>

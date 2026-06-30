@@ -1,0 +1,28 @@
+/* ResQRules — Spacing & layout tokens
+   Base unit: 8dp. One-handed, high-stress use: generous targets, calm rhythm. */
+
+:root {
+  /* ---- Spacing scale ---- */
+  --space-1: 4px;   /* tight: icon-to-label gap, badge inner padding */
+  --space-2: 8px;   /* small: between caption and card */
+  --space-3: 12px;  /* medium-tight: between options, between card sections */
+  --space-4: 16px;  /* medium: standard card padding, screen horizontal margin */
+  --space-5: 20px;  /* medium-large: card inner padding */
+  --space-6: 24px;  /* large: section separation */
+  --space-8: 32px;  /* xlarge: major section breaks */
+
+  /* ---- Semantic layout aliases ---- */
+  --screen-margin: 16px;     /* page left/right padding */
+  --screen-top-pad: 12px;    /* below AppBar */
+  --card-padding: 20px;      /* inside content cards */
+  --gap-sm: 8px;             /* between caption and card */
+  --gap-md: 12px;            /* between option buttons */
+  --gap-lg: 16px;            /* between card and buttons */
+  --gap-section: 24px;       /* between sections */
+
+  /* ---- Touch & sizing ---- */
+  --touch-min: 56px;         /* all interactive elements */
+  --appbar-height: 56px;     /* AppBar content height (excludes status bar) */
+  --danger-panel-height: 64px;
+  --loading-bar-height: 3px;
+}

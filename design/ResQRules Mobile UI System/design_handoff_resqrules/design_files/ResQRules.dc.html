@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="ds/styles.css">
+<style>
+  html, body { margin: 0; }
+  @keyframes rq-splash-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { .rq-splash-mark { animation: none !important; } }
+</style>
+<script src="ds/_ds_bundle.js"></script>
+</helmet>
+<div style="min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; background:#E9E9EC; font-family:var(--font-sans); box-sizing:border-box;">
+  <div style="{{ scaleStyle }}">
+  <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px">
+    <div style="position:relative; height:100%; box-sizing:border-box;">
+
+      <!-- ───────────── SPLASH ───────────── -->
+      <sc-if value="{{ isSplash }}" hint-placeholder-val="{{ true }}">
+        <div onClick="{{ skipSplash }}" style="height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; background:var(--neutral-000); cursor:pointer; position:relative;">
+          <div class="rq-splash-mark" style="display:flex; flex-direction:column; align-items:center; gap:10px; animation:rq-splash-in 360ms ease-out both;">
+            <div style="font-family:var(--font-sans); font-size:34px; font-weight:var(--weight-bold); color:var(--primary-600); letter-spacing:0.4px;">ResQRules</div>
+            <div style="font-family:var(--font-sans); font-size:13px; font-weight:var(--weight-regular); color:var(--neutral-600); letter-spacing:0.02em;">Field protocol decision support</div>
+          </div>
+          <div style="position:absolute; bottom:72px; width:128px;">
+            <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.LoadingBar" from="./ds/_ds_bundle.js" hint-size="128px,3px"></x-import>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ───────────── HOME ───────────── -->
+      <sc-if value="{{ isHome }}" hint-placeholder-val="{{ false }}">
+        <div style="height:100%; display:flex; flex-direction:column; background:var(--neutral-000);">
+          <div style="height:54px; background:var(--primary-600); flex-shrink:0;"></div>
+          <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.AppBar" from="./ds/_ds_bundle.js" variant="home" lang="{{ lang }}" on-lang-change="{{ onLang }}" hint-size="100%,56px"></x-import>
+          <div style="{{ homeListStyle }}">
+            <sc-for list="{{ charts }}" as="c" hint-placeholder-count="5">
+              <dc-import name="ChartCard" urgency="{{ c.urgency }}" title-en="{{ c.titleEn }}" title-ar="{{ c.titleAr }}" lang="{{ lang }}" on-open="{{ c.onOpen }}" hint-size="100%,116px"></dc-import>
+            </sc-for>
+            <div style="height:34px; flex-shrink:0;"></div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ───────────── SESSION ───────────── -->
+      <sc-if value="{{ isSession }}" hint-placeholder-val="{{ false }}">
+        <div style="height:100%; display:flex; flex-direction:column; background:var(--neutral-000); position:relative;">
+          <div style="height:54px; background:var(--primary-600); flex-shrink:0;"></div>
+          <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.AppBar" from="./ds/_ds_bundle.js" variant="session" title="{{ chartTitle }}" lang="{{ lang }}" on-lang-change="{{ onLang }}" on-back="{{ onBack }}" on-reset="{{ onReset }}" hint-size="100%,56px"></x-import>
+
+          <div style="height:3px; flex-shrink:0; position:relative; z-index:5;">
+            <sc-if value="{{ loading }}" hint-placeholder-val="{{ false }}">
+              <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.LoadingBar" from="./ds/_ds_bundle.js" hint-size="100%,3px"></x-import>
+            </sc-if>
+          </div>
+
+          <div style="flex:1; position:relative; overflow:hidden; display:flex; flex-direction:column;">
+            <div style="position:absolute; top:0; left:0; right:0; z-index:20; overflow:hidden; pointer-events:none;">
+              <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.OverrideToast" from="./ds/_ds_bundle.js" variant="{{ toastVariant }}" visible="{{ toastVisible }}" lang="{{ lang }}" dir="{{ dir }}" hint-size="100%,48px">{{ toastMsg }}</x-import>
+            </div>
+
+            <div style="flex:1; overflow:auto; padding:12px 16px 16px;">
+              <div style="{{ bodyStyle }}">
+
+                <sc-if value="{{ isInstruction }}" hint-placeholder-val="{{ true }}">
+                  <div style="display:flex; flex-direction:column; height:100%; gap:12px;">
+                    <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.PageCitation" from="./ds/_ds_bundle.js" page="{{ nPage }}" dir="{{ dir }}" hint-size="48px,16px"></x-import>
+                    <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.Card" from="./ds/_ds_bundle.js" dir="{{ dir }}" hint-size="100%,140px">{{ nText }}</x-import>
+                    <div style="flex:1; min-height:12px;"></div>
+                    <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.Button" from="./ds/_ds_bundle.js" on-click="{{ onContinue }}" dir="{{ dir }}" hint-size="100%,56px">{{ continueLabel }}</x-import>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ isQuestion }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; flex-direction:column; height:100%;">
+                    <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.PageCitation" from="./ds/_ds_bundle.js" page="{{ nPage }}" dir="{{ dir }}" hint-size="48px,16px"></x-import>
+                    <div style="height:12px;"></div>
+                    <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.Card" from="./ds/_ds_bundle.js" dir="{{ dir }}" hint-size="100%,96px">
+                      <div style="font-family:var(--font-sans); font-size:16px; font-weight:var(--weight-semibold); line-height:1.5; color:var(--neutral-900); text-align:{{ nTextAlign }};">{{ nText }}</div>
+                    </x-import>
+                    <div style="height:16px;"></div>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                      <sc-for list="{{ nOptions }}" as="opt" hint-placeholder-count="2">
+                        <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.OutlinedButton" from="./ds/_ds_bundle.js" variant="{{ opt.variant }}" on-click="{{ opt.onClick }}" dir="{{ dir }}" hint-size="100%,56px">{{ opt.label }}</x-import>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ isCf }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; flex-direction:column; height:100%;">
+                    <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.PageCitation" from="./ds/_ds_bundle.js" page="{{ nPage }}" dir="{{ dir }}" hint-size="48px,16px"></x-import>
+                    <div style="height:12px;"></div>
+                    <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.Card" from="./ds/_ds_bundle.js" dir="{{ dir }}" hint-size="100%,120px">
+                      <div style="font-family:var(--font-sans); font-size:16px; font-weight:var(--weight-semibold); line-height:1.5; color:var(--neutral-900); text-align:{{ nTextAlign }};">{{ nText }}</div>
+                      <div style="height:1px; background:var(--neutral-300); margin:12px 0;"></div>
+                      <div style="font-family:var(--font-sans); font-size:14px; font-weight:var(--weight-regular); line-height:1.5; color:var(--neutral-600); text-align:{{ nTextAlign }};">{{ nCfPrompt }}</div>
+                    </x-import>
+                    <div style="height:16px;"></div>
+                    <div style="display:flex; flex-direction:column; gap:10px;">
+                      <sc-for list="{{ nOptions }}" as="opt" hint-placeholder-count="4">
+                        <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.CfButton" from="./ds/_ds_bundle.js" level="{{ opt.level }}" on-click="{{ opt.onClick }}" dir="{{ dir }}" hint-size="100%,56px">{{ opt.label }}</x-import>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ isHem }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; flex-direction:column; height:100%; gap:16px;">
+                    <div style="display:flex; flex-direction:row; align-items:center; justify-content:space-between; gap:8px;">
+                      <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.PageCitation" from="./ds/_ds_bundle.js" page="{{ nPage }}" dir="{{ dir }}" hint-size="48px,16px"></x-import>
+                      <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.TierBadge" from="./ds/_ds_bundle.js" current="{{ nTier }}" lang="{{ lang }}" dir="{{ dir }}" hint-size="64px,40px"></x-import>
+                    </div>
+                    <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.Card" from="./ds/_ds_bundle.js" variant="callout" dir="{{ dir }}" hint-size="100%,96px">
+                      <div style="font-family:var(--font-sans); font-size:12px; font-weight:var(--weight-semibold); line-height:1.4; color:var(--neutral-600); text-transform:uppercase; letter-spacing:0.04em; text-align:{{ nTextAlign }};">{{ interventionLabel }}</div>
+                      <div style="margin-top:6px; font-family:var(--font-sans); font-size:14px; font-weight:var(--weight-regular); line-height:1.5; color:var(--neutral-900); text-align:{{ nTextAlign }};">{{ nIntervention }}</div>
+                    </x-import>
+                    <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.Card" from="./ds/_ds_bundle.js" dir="{{ dir }}" hint-size="100%,64px">
+                      <div style="font-family:var(--font-sans); font-size:16px; font-weight:var(--weight-semibold); line-height:1.5; color:var(--neutral-900); text-align:{{ nTextAlign }};">{{ nText }}</div>
+                    </x-import>
+                    <div style="flex:1; min-height:8px;"></div>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                      <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.OutlinedButton" from="./ds/_ds_bundle.js" variant="primary" on-click="{{ hemYesClick }}" dir="{{ dir }}" hint-size="100%,56px">{{ hemYesLabel }}</x-import>
+                      <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.OutlinedButton" from="./ds/_ds_bundle.js" variant="success" on-click="{{ hemNoClick }}" dir="{{ dir }}" hint-size="100%,56px">{{ hemNoLabel }}</x-import>
+                    </div>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ isAction }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; flex-direction:column; height:100%; gap:12px;">
+                    <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.PageCitation" from="./ds/_ds_bundle.js" page="{{ nPage }}" dir="{{ dir }}" hint-size="48px,16px"></x-import>
+                    <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.Card" from="./ds/_ds_bundle.js" variant="success" dir="{{ dir }}" hint-size="100%,96px">
+                      <div style="font-family:var(--font-sans); font-size:16px; font-weight:var(--weight-semibold); line-height:1.5; color:var(--neutral-900); text-align:{{ nTextAlign }};">{{ nText }}</div>
+                    </x-import>
+                    <div style="flex:1; min-height:12px;"></div>
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                      <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.OutlinedButton" from="./ds/_ds_bundle.js" variant="success" on-click="{{ onEnd }}" dir="{{ dir }}" hint-size="100%,56px">{{ endLabel }}</x-import>
+                      <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.Button" from="./ds/_ds_bundle.js" on-click="{{ onRestart }}" dir="{{ dir }}" hint-size="100%,56px">{{ restartLabel }}</x-import>
+                    </div>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ isJump }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; flex-direction:column; height:100%; gap:12px;">
+                    <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.PageCitation" from="./ds/_ds_bundle.js" page="{{ nPage }}" dir="{{ dir }}" hint-size="48px,16px"></x-import>
+                    <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.Card" from="./ds/_ds_bundle.js" variant="stub" dir="{{ dir }}" hint-size="100%,120px">
+                      <div style="font-family:var(--font-sans); font-size:16px; font-weight:var(--weight-regular); line-height:1.6; color:var(--neutral-900); text-align:{{ nTextAlign }};">{{ nText }}</div>
+                      <div style="height:1px; background:var(--neutral-300); margin:14px 0;"></div>
+                      <div style="font-family:var(--font-sans); font-size:14px; font-weight:var(--weight-regular); line-height:1.5; color:var(--neutral-600); text-align:{{ nTextAlign }};">{{ unavailableLabel }}</div>
+                    </x-import>
+                    <div style="flex:1; min-height:12px;"></div>
+                    <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.OutlinedButton" from="./ds/_ds_bundle.js" variant="neutral" on-click="{{ onHome }}" dir="{{ dir }}" hint-size="100%,56px">{{ homeLabel }}</x-import>
+                  </div>
+                </sc-if>
+
+              </div>
+            </div>
+          </div>
+
+          <sc-if value="{{ errorVisible }}" hint-placeholder-val="{{ false }}">
+            <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.Snackbar" from="./ds/_ds_bundle.js" lang="{{ lang }}" dir="{{ dir }}" on-retry="{{ onRetry }}" hint-size="100%,56px"></x-import>
+          </sc-if>
+
+          <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.DangerPanel" from="./ds/_ds_bundle.js" lang="{{ lang }}" dir="{{ dir }}" locked="{{ loading }}" on-zone="{{ onZone }}" hint-size="100%,64px"></x-import>
+          <div style="height:34px; background:var(--primary-600); flex-shrink:0;"></div>
+
+          <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.BottomSheet" from="./ds/_ds_bundle.js" overlay="{{ true }}" visible="{{ resetOpen }}" lang="{{ lang }}" dir="{{ dir }}" chart-name="{{ resetChartName }}" on-reset-chart="{{ onResetChart }}" on-choose-chart="{{ onChooseChart }}" on-cancel="{{ onCancelReset }}" hint-size="100%,100%"></x-import>
+        </div>
+      </sc-if>
+
+    </div>
+  </x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:450,&quot;height&quot;:920},&quot;nodeTransition&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;slide&quot;,&quot;fade&quot;,&quot;instant&quot;],&quot;default&quot;:&quot;slide&quot;,&quot;tsType&quot;:&quot;'slide' | 'fade' | 'instant'&quot;,&quot;section&quot;:&quot;Explorations&quot;},&quot;homeDensity&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;comfortable&quot;,&quot;compact&quot;],&quot;default&quot;:&quot;comfortable&quot;,&quot;tsType&quot;:&quot;'comfortable' | 'compact'&quot;,&quot;section&quot;:&quot;Explorations&quot;},&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;splash&quot;,&quot;home&quot;],&quot;default&quot;:&quot;splash&quot;,&quot;tsType&quot;:&quot;'splash' | 'home'&quot;,&quot;section&quot;:&quot;Explorations&quot;},&quot;simulateError&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;States&quot;}}">
+const SALIENCE = { hem: 100, cpr: 95, heimlich: 90, airway: 80, general: 50 };
+const ZONE_TO_CHART = { bleeding: 'hem', breathing: 'airway', pulse: 'cpr', unconscious: 'cpr' };
+
+const CHARTS = {
+  hem: {
+    id: 'hem', urgency: 'critical', titleEn: 'Catastrophic Hemorrhage', titleAr: 'النزيف الكارثي', entry: 'h1',
+    nodes: {
+      h1: { type: 'instruction', page: 6, text: { en: 'Apply firm, direct pressure to the wound. Do not release until relief arrives.', ar: 'اضغط بقوة ومباشرة على الجرح ولا تترك الضغط حتى وصول المساعدة.' }, next: 'h2' },
+      h2: { type: 'hem', page: 7, tier: 1, intervention: { en: 'Direct manual pressure applied to the wound.', ar: 'تم تطبيق ضغط يدوي مباشر على الجرح.' }, text: { en: 'Active bleeding?', ar: 'هل النزيف نشط؟' }, options: [{ id: 'yes', label: { en: 'yes — still bleeding', ar: 'نعم — لا يزال ينزف' }, next: 'h3' }, { id: 'no', label: { en: 'no — bleeding controlled', ar: 'لا — تم إيقاف النزيف' }, next: 'hDone' }] },
+      h3: { type: 'hem', page: 8, tier: 2, intervention: { en: 'Wound packed and a tourniquet applied 5 cm above.', ar: 'تم حشو الجرح ووضع عاصبة على بعد 5 سم فوقه.' }, text: { en: 'Active bleeding?', ar: 'هل النزيف نشط؟' }, options: [{ id: 'yes', label: { en: 'yes — still bleeding', ar: 'نعم — لا يزال ينزف' }, next: 'h4' }, { id: 'no', label: { en: 'no — bleeding controlled', ar: 'لا — تم إيقاف النزيف' }, next: 'hDone' }] },
+      h4: { type: 'hem', page: 9, tier: 3, intervention: { en: 'Tourniquet tightened until distal bleeding stops.', ar: 'تم شد العاصبة حتى توقف النزيف البعيد.' }, text: { en: 'Active bleeding?', ar: 'هل النزيف نشط؟' }, options: [{ id: 'yes', label: { en: 'yes — still bleeding', ar: 'نعم — لا يزال ينزف' }, next: 'hEsc' }, { id: 'no', label: { en: 'no — bleeding controlled', ar: 'لا — تم إيقاف النزيف' }, next: 'hDone' }] },
+      hEsc: { type: 'action', page: 9, text: { en: 'Maximal hemorrhage control applied. Maintain pressure and prepare for rapid transport.', ar: 'تم تطبيق أقصى تحكم في النزيف. حافظ على الضغط واستعد للنقل السريع.' } },
+      hDone: { type: 'action', page: 10, text: { en: 'Bleeding controlled. Continue to monitor and keep the patient warm.', ar: 'تم إيقاف النزيف. استمر في المراقبة وحافظ على دفء المريض.' } },
+    },
+  },
+  cpr: {
+    id: 'cpr', urgency: 'critical', titleEn: 'Cardio-Respiratory Arrest Adult', titleAr: 'السكتة القلبية التنفسية (بالغ)', entry: 'c1',
+    nodes: {
+      c1: { type: 'instruction', page: 3, text: { en: 'Check responsiveness and open the airway with a head-tilt chin-lift.', ar: 'تحقق من الاستجابة وافتح المجرى الهوائي بإمالة الرأس ورفع الذقن.' }, next: 'c2' },
+      c2: { type: 'cf', page: 4, text: { en: 'Sign of life present?', ar: 'هل توجد علامة حياة؟' }, cfPrompt: { en: 'Confirm breathing or a pulse within 10 seconds. If uncertain, the conservative path begins CPR.', ar: 'تأكد من التنفس أو النبض خلال 10 ثوانٍ. عند عدم اليقين، يبدأ المسار التحفظي بإجراء CPR.' }, options: [{ id: 'certain', label: { en: 'Certain', ar: 'متأكد' }, level: 'certain', next: 'cMon' }, { id: 'likely', label: { en: 'Likely', ar: 'مرجّح' }, level: 'likely', next: 'cMon' }, { id: 'unsure', label: { en: 'Unsure', ar: 'غير متأكد' }, level: 'unsure', next: 'c3' }, { id: 'none', label: { en: 'None', ar: 'لا شيء' }, level: 'none', next: 'c3' }] },
+      cMon: { type: 'action', page: 4, text: { en: 'Signs of life present. Monitor closely, give oxygen, and reassess continuously.', ar: 'توجد علامات حياة. راقب عن كثب، أعطِ الأكسجين، وأعد التقييم باستمرار.' } },
+      c3: { type: 'instruction', page: 5, text: { en: 'Begin CPR. 30 chest compressions, then 2 rescue breaths. Attach an AED as soon as it arrives.', ar: 'ابدأ CPR. 30 ضغطة صدرية ثم نفسان إنقاذيان. وصّل جهاز AED فور وصوله.' }, next: 'c4' },
+      c4: { type: 'question', page: 5, text: { en: 'AED available?', ar: 'هل جهاز AED متوفر؟' }, options: [{ id: 'yes', label: { en: 'yes', ar: 'نعم' }, next: 'cAed' }, { id: 'no', label: { en: 'no', ar: 'لا' }, next: 'cCont' }] },
+      cAed: { type: 'action', page: 6, text: { en: 'Follow the AED voice prompts. Resume CPR immediately after each shock.', ar: 'اتبع التعليمات الصوتية لجهاز AED. استأنف CPR فوراً بعد كل صدمة.' } },
+      cCont: { type: 'action', page: 6, text: { en: 'Continue CPR cycles without interruption until help or signs of life return.', ar: 'واصل دورات CPR دون انقطاع حتى وصول المساعدة أو عودة علامات الحياة.' } },
+    },
+  },
+  heimlich: {
+    id: 'heimlich', urgency: 'critical', titleEn: 'Heimlich Maneuver', titleAr: 'مناورة هايمليك', entry: 'k1',
+    nodes: {
+      k1: { type: 'question', page: 2, text: { en: 'Can the patient cough or speak?', ar: 'هل يستطيع المريض السعال أو الكلام؟' }, options: [{ id: 'yes', label: { en: 'yes — partial obstruction', ar: 'نعم — انسداد جزئي' }, next: 'kEnc' }, { id: 'no', label: { en: 'no — complete obstruction', ar: 'لا — انسداد كامل' }, next: 'k2' }] },
+      kEnc: { type: 'instruction', page: 2, text: { en: 'Encourage forceful coughing. Stay with the patient and monitor closely.', ar: 'شجّع على السعال القوي. ابقَ مع المريض وراقبه عن كثب.' }, next: 'kClear' },
+      k2: { type: 'instruction', page: 3, text: { en: 'Deliver 5 back blows between the shoulder blades, then 5 abdominal thrusts. Repeat.', ar: 'وجّه 5 ضربات على الظهر بين لوحي الكتف، ثم 5 دفعات بطنية. كرّر.' }, next: 'k3' },
+      k3: { type: 'question', page: 3, text: { en: 'Obstruction cleared?', ar: 'هل زال الانسداد؟' }, options: [{ id: 'yes', label: { en: 'yes', ar: 'نعم' }, next: 'kClear' }, { id: 'no', label: { en: 'no — continue cycles', ar: 'لا — واصل الدورات' }, next: 'k2' }] },
+      kClear: { type: 'action', page: 4, text: { en: 'Airway clear. Monitor breathing and reassess for residual obstruction.', ar: 'المجرى الهوائي سالك. راقب التنفس وأعد تقييم أي انسداد متبقٍ.' } },
+    },
+  },
+  airway: {
+    id: 'airway', urgency: 'high', titleEn: 'Upper Airway Management', titleAr: 'إدارة المجرى الهوائي العلوي', entry: 'a1',
+    nodes: {
+      a1: { type: 'instruction', page: 12, text: { en: 'Open the airway with a head-tilt chin-lift. Suction visible secretions if present.', ar: 'افتح المجرى الهوائي بإمالة الرأس ورفع الذقن. اشفط الإفرازات الظاهرة إن وُجدت.' }, next: 'a2' },
+      a2: { type: 'question', page: 12, text: { en: 'Airway patent?', ar: 'هل المجرى الهوائي سالك؟' }, options: [{ id: 'yes', label: { en: 'yes', ar: 'نعم' }, next: 'aMon' }, { id: 'no', label: { en: 'no', ar: 'لا' }, next: 'aStub' }] },
+      aMon: { type: 'action', page: 13, text: { en: 'Airway patent. Monitor SpO2 and reassess after every intervention.', ar: 'المجرى الهوائي سالك. راقب SpO2 وأعد التقييم بعد كل تدخل.' } },
+      aStub: { type: 'jumpstub', page: 13, stubNote: { en: 'Oxygen algorithm.', ar: 'خوارزمية الأكسجين.' } },
+    },
+  },
+  general: {
+    id: 'general', urgency: 'standard', titleEn: 'General Intervention Process & Patient Assessment', titleAr: 'عملية التدخل العام وتقييم المريض', entry: 'g1',
+    nodes: {
+      g1: { type: 'instruction', page: 1, text: { en: 'Ensure scene safety and don personal protective equipment before approaching.', ar: 'تأكد من سلامة المكان وارتدِ معدات الحماية الشخصية قبل الاقتراب.' }, next: 'g2' },
+      g2: { type: 'question', page: 1, text: { en: 'Primary survey — what is the first priority?', ar: 'الفحص الأولي — ما هي الأولوية الأولى؟' }, options: [{ id: 'A', label: { en: 'Airway', ar: 'المجرى الهوائي' }, jump: 'airway' }, { id: 'B', label: { en: 'Breathing', ar: 'التنفس' }, next: 'gBreath' }, { id: 'C', label: { en: 'Circulation', ar: 'الدورة الدموية' }, jump: 'hem' }, { id: 'D', label: { en: 'Disability', ar: 'الإعاقة العصبية' }, next: 'gDis' }] },
+      gBreath: { type: 'action', page: 2, text: { en: 'Assess breathing rate and effort. Give oxygen if SpO2 is low and reassess.', ar: 'قيّم معدل التنفس والجهد. أعطِ الأكسجين إذا كان SpO2 منخفضاً وأعد التقييم.' } },
+      gDis: { type: 'action', page: 2, text: { en: 'Assess responsiveness with AVPU and check the pupils. Reassess continuously.', ar: 'قيّم الاستجابة باستخدام AVPU وافحص الحدقتين. أعد التقييم باستمرار.' } },
+    },
+  },
+};
+const CHART_ORDER = ['hem', 'cpr', 'heimlich', 'airway', 'general'];
+
+class Component extends DCLogic {
+  state = { screen: 'splash', chartId: null, nodeId: null, lang: 'en', loading: false, settling: true, toastVisible: false, toastVariant: 'jump', toastMsg: '', errorVisible: false, resetOpen: false, scale: 1 };
+
+  fit = () => { const s = Math.min(1, (window.innerHeight - 36) / 874); this.setState({ scale: Math.max(0.45, s) }); };
+  componentDidMount() {
+    this.fit();
+    window.addEventListener('resize', this.fit);
+    const start = this.props.startScreen || 'splash';
+    if (start === 'home') { this.setState({ screen: 'home' }); return; }
+    this._splash = setTimeout(() => { if (this.state.screen === 'splash') this.setState({ screen: 'home' }); }, 1300);
+  }
+  componentDidUpdate(prev) {
+    if (this.props.startScreen === 'home' && this.state.screen === 'splash') this.setState({ screen: 'home' });
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this.fit); clearTimeout(this._splash); clearTimeout(this._t); clearTimeout(this._s); clearTimeout(this._toast); }
+
+  curNode() {
+    const ch = CHARTS[this.state.chartId];
+    return ch ? ch.nodes[this.state.nodeId] : null;
+  }
+
+  // transition visibility is driven by the reliable `loading` flag (see bodyStyle),
+  // so the body can never get stuck invisible. settle() is a no-op kept for call sites.
+  settle() {}
+
+  // every in-session transition routes through here (loading-lock + error sim)
+  transition(applyFn) {
+    if (this.props.simulateError && !this._bypass) {
+      this.setState({ loading: true });
+      clearTimeout(this._t);
+      this._t = setTimeout(() => { this._pending = applyFn; this.setState({ loading: false, errorVisible: true }); }, 300);
+      return;
+    }
+    this._bypass = false;
+    this.setState({ loading: true, errorVisible: false });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => { applyFn(); this.setState({ loading: false }); this.settle(); }, 300);
+  }
+  onRetry() { this._bypass = true; this.setState({ errorVisible: false }); const a = this._pending; this._pending = null; if (a) this.transition(a); }
+
+  openChart(id) {
+    this.setState({ screen: 'session', chartId: id, nodeId: CHARTS[id].entry, toastVisible: false, errorVisible: false, resetOpen: false });
+    this.settle();
+  }
+
+  goToNode(id) { this.setState({ nodeId: id }); }
+
+  onSelect(opt) {
+    if (opt.jump) this.transition(() => this.setState({ chartId: opt.jump, nodeId: CHARTS[opt.jump].entry }));
+    else this.transition(() => this.setState({ nodeId: opt.next }));
+  }
+  onContinue() { const n = this.curNode(); this.transition(() => this.setState({ nodeId: n.next })); }
+
+  showToast(variant, chartId) {
+    const lang = this.state.lang;
+    const ch = CHARTS[chartId];
+    const name = lang === 'ar' ? ch.titleAr : ch.titleEn;
+    let msg;
+    if (variant === 'jump') msg = lang === 'ar' ? `تحويل إلى: ${name}  (الأولوية ${SALIENCE[chartId]})` : `Switched to: ${name}  (Salience ${SALIENCE[chartId]})`;
+    else msg = lang === 'ar' ? `أنت في ${name} بالفعل — استمرار` : `Already in ${name} — continuing`;
+    this.setState({ toastVariant: variant, toastMsg: msg, toastVisible: true });
+    clearTimeout(this._toast);
+    this._toast = setTimeout(() => this.setState({ toastVisible: false }), 2500);
+  }
+
+  onZone(key) {
+    const target = ZONE_TO_CHART[key];
+    this.setState({ loading: true, errorVisible: false });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => {
+      const guard = this.state.chartId === target;
+      if (guard) { this.setState({ loading: false }); this.showToast('guard', target); }
+      else { this.setState({ chartId: target, nodeId: CHARTS[target].entry, loading: false }); this.settle(); this.showToast('jump', target); }
+    }, 300);
+  }
+
+  renderVals() {
+    const s = this.state;
+    const lang = s.lang;
+    const isAr = lang === 'ar';
+    const dir = isAr ? 'rtl' : 'ltr';
+    const node = this.curNode();
+    const ch = CHARTS[s.chartId];
+
+    const L = { continue: { en: 'Continue', ar: 'استمرار' }, end: { en: 'End Session', ar: 'إنهاء الجلسة' }, restart: { en: 'Start Again', ar: 'ابدأ من جديد' }, home: { en: 'Back to Home', ar: 'العودة إلى الرئيسية' }, unavailable: { en: 'Protocol not yet available', ar: 'البروتوكول غير متوفر بعد' }, intervention: { en: 'Intervention applied', ar: 'تم تطبيق التدخل' } };
+    let nPage = '', nText = '', nCfPrompt = '', nIntervention = '', nTier = 1, nOptions = [], hemYes = {}, hemNo = {};
+    if (node) {
+      nPage = node.page;
+      nText = node.text ? node.text[lang] : (node.stubNote ? node.stubNote[lang] : '');
+      if (node.cfPrompt) nCfPrompt = node.cfPrompt[lang];
+      if (node.type === 'hem') { nIntervention = node.intervention ? node.intervention[lang] : ''; nTier = node.tier; }
+      if (node.options) nOptions = node.options.map((o) => ({ key: o.id, label: o.label[lang], variant: o.variant || 'primary', level: o.level, onClick: () => this.onSelect(o) }));
+      if (node.type === 'hem' && node.options) { const y = node.options[0], nn = node.options[1]; hemYes = { label: y.label[lang], onClick: () => this.onSelect(y) }; hemNo = { label: nn.label[lang], onClick: () => this.onSelect(nn) }; }
+    }
+
+    const transition = this.props.nodeTransition || 'slide';
+    let bodyStyle = { height: '100%' };
+    if (s.screen === 'session') {
+      if (transition === 'fade') bodyStyle = { height: '100%', opacity: s.loading ? 0 : 1, transition: 'opacity 200ms ease-out' };
+      else if (transition === 'slide') bodyStyle = { height: '100%', opacity: s.loading ? 0 : 1, transform: s.loading ? (isAr ? 'translateX(-14px)' : 'translateX(14px)') : 'translateX(0)', transition: 'opacity 200ms ease-out, transform 200ms ease-out' };
+    }
+
+    const dense = (this.props.homeDensity || 'comfortable') === 'compact';
+    const homeListStyle = { flex: 1, overflow: 'auto', padding: '16px', display: 'flex', flexDirection: 'column', gap: dense ? '8px' : '14px', background: 'var(--neutral-000)', boxSizing: 'border-box' };
+
+    const charts = CHART_ORDER.map((id) => ({ id, urgency: CHARTS[id].urgency, titleEn: CHARTS[id].titleEn, titleAr: CHARTS[id].titleAr, onOpen: () => this.openChart(id) }));
+
+    return {
+      scaleStyle: { zoom: s.scale },
+      isSplash: s.screen === 'splash',
+      isHome: s.screen === 'home',
+      isSession: s.screen === 'session',
+      lang, dir,
+      skipSplash: () => { clearTimeout(this._splash); this.setState({ screen: 'home' }); },
+      onLang: (v) => this.setState({ lang: v }),
+      charts,
+      homeListStyle,
+      chartTitle: ch ? (isAr ? ch.titleAr : ch.titleEn) : '',
+      loading: s.loading,
+      toastVariant: s.toastVariant,
+      toastVisible: s.toastVisible,
+      toastMsg: s.toastMsg,
+      bodyStyle,
+      node,
+      isInstruction: !!node && node.type === 'instruction',
+      isQuestion: !!node && node.type === 'question',
+      isCf: !!node && node.type === 'cf',
+      isHem: !!node && node.type === 'hem',
+      isAction: !!node && node.type === 'action',
+      isJump: !!node && node.type === 'jumpstub',
+      nPage, nText, nTextAlign: isAr ? 'right' : 'left', nCfPrompt, nIntervention, nTier,
+      nOptions, hemYesLabel: hemYes.label, hemYesClick: hemYes.onClick, hemNoLabel: hemNo.label, hemNoClick: hemNo.onClick,
+      continueLabel: L.continue[lang], endLabel: L.end[lang], restartLabel: L.restart[lang], homeLabel: L.home[lang], unavailableLabel: L.unavailable[lang], interventionLabel: L.intervention[lang],
+      onContinue: () => this.onContinue(),
+      onSelect: (opt) => this.onSelect(opt),
+      onEnd: () => this.setState({ screen: 'home', resetOpen: false, toastVisible: false }),
+      onRestart: () => { if (ch) { this.setState({ nodeId: ch.entry }); this.settle(); } },
+      onHome: () => this.setState({ screen: 'home', resetOpen: false, toastVisible: false }),
+      errorVisible: s.errorVisible,
+      onRetry: () => this.onRetry(),
+      onZone: (k) => this.onZone(k),
+      resetOpen: s.resetOpen,
+      resetChartName: ch ? (isAr ? ch.titleAr : ch.titleEn) : '',
+      onBack: () => this.setState({ resetOpen: true }),
+      onReset: () => this.setState({ resetOpen: true }),
+      onResetChart: () => { if (ch) { this.setState({ nodeId: ch.entry, resetOpen: false }); this.settle(); } },
+      onChooseChart: () => this.setState({ screen: 'home', resetOpen: false, toastVisible: false }),
+      onCancelReset: () => this.setState({ resetOpen: false }),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+/* ResQRules — Elevation & shadow tokens
+   Three levels only. No decorative shadows. Panels/sheets cast UPWARD. */
+
+:root {
+  /* level-1 — content cards */
+  --elevation-card: 0 2px 8px rgba(0, 0, 0, 0.10);
+  /* level-2 — bottom panels (upward shadow) */
+  --elevation-panel: 0 -2px 12px rgba(0, 0, 0, 0.20);
+  /* level-3 — bottom sheets (upward shadow) */
+  --elevation-sheet: 0 -4px 24px rgba(0, 0, 0, 0.25);
+
+  /* Focus ring — used on keyboard focus only, not a shadow level */
+  --focus-ring: 0 0 0 3px rgba(153, 0, 0, 0.45);
+}

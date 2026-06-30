@@ -1,0 +1,429 @@
+{
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "react/forbid-elements": [
+      "warn",
+      {
+        "forbid": []
+      }
+    ],
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": [
+              "components/actions/**",
+              "components/content/**",
+              "components/core/**",
+              "components/feedback/**",
+              "components/surfaces/**"
+            ],
+            "message": "Import design-system components from 'index.js', not component internals."
+          }
+        ]
+      }
+    ],
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "Literal[value=/#[0-9a-fA-F]{3,8}\\b/]",
+        "message": "Raw hex color — use a design-system color token via var()."
+      },
+      {
+        "selector": "Literal[value=/\\b\\d+px\\b/]",
+        "message": "Raw px value — use a design-system spacing token via var()."
+      },
+      {
+        "selector": "Literal[value=/font-family\\s*:\\s*(?!['\\\"]?(?:Noto Sans|Noto Sans Arabic))/i]",
+        "message": "Font not provided by the design system. Available: Noto Sans, Noto Sans Arabic."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='AppBar'] > JSXAttribute > JSXIdentifier[name!=/^(?:variant|title|lang|onLangChange|onBack|onReset|dir|statusBar|key|ref|className|style|children)$/]",
+        "message": "<AppBar> doesn't accept that prop. Declared props: variant, title, lang, onLangChange, onBack, onReset, dir, statusBar."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='AppBar'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:home|session)$/]",
+        "message": "<AppBar> variant must be one of 'home' | 'session'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='AppBar'] > JSXAttribute[name.name='lang'] > Literal[value!=/^(?:en|ar)$/]",
+        "message": "<AppBar> lang must be one of 'en' | 'ar'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='AppBar'] > JSXAttribute[name.name='dir'] > Literal[value!=/^(?:ltr|rtl)$/]",
+        "message": "<AppBar> dir must be one of 'ltr' | 'rtl'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='BottomSheet'] > JSXAttribute > JSXIdentifier[name!=/^(?:lang|dir|chartName|onResetChart|onChooseChart|onCancel|overlay|visible|key|ref|className|style|children)$/]",
+        "message": "<BottomSheet> doesn't accept that prop. Declared props: lang, dir, chartName, onResetChart, onChooseChart, onCancel, overlay, visible."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='BottomSheet'] > JSXAttribute[name.name='lang'] > Literal[value!=/^(?:en|ar)$/]",
+        "message": "<BottomSheet> lang must be one of 'en' | 'ar'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='BottomSheet'] > JSXAttribute[name.name='dir'] > Literal[value!=/^(?:ltr|rtl)$/]",
+        "message": "<BottomSheet> dir must be one of 'ltr' | 'rtl'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|onClick|disabled|loading|fullWidth|dir|key|ref|className|style|children)$/]",
+        "message": "<Button> doesn't accept that prop. Declared props: children, onClick, disabled, loading, fullWidth, dir."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='dir'] > Literal[value!=/^(?:ltr|rtl)$/]",
+        "message": "<Button> dir must be one of 'ltr' | 'rtl'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Card'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|variant|dir|key|ref|className|style|children)$/]",
+        "message": "<Card> doesn't accept that prop. Declared props: children, variant, dir."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Card'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:default|success|stub|callout)$/]",
+        "message": "<Card> variant must be one of 'default' | 'success' | 'stub' | 'callout'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Card'] > JSXAttribute[name.name='dir'] > Literal[value!=/^(?:ltr|rtl)$/]",
+        "message": "<Card> dir must be one of 'ltr' | 'rtl'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='CfButton'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|level|cf|onClick|disabled|fullWidth|dir|key|ref|className|style|children)$/]",
+        "message": "<CfButton> doesn't accept that prop. Declared props: children, level, cf, onClick, disabled, fullWidth, dir."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='CfButton'] > JSXAttribute[name.name='level'] > Literal[value!=/^(?:certain|likely|unsure|none)$/]",
+        "message": "<CfButton> level must be one of 'certain' | 'likely' | 'unsure' | 'none'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='CfButton'] > JSXAttribute[name.name='dir'] > Literal[value!=/^(?:ltr|rtl)$/]",
+        "message": "<CfButton> dir must be one of 'ltr' | 'rtl'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='DangerPanel'] > JSXAttribute > JSXIdentifier[name!=/^(?:lang|dir|locked|onZone|key|ref|className|style|children)$/]",
+        "message": "<DangerPanel> doesn't accept that prop. Declared props: lang, dir, locked, onZone."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='DangerPanel'] > JSXAttribute[name.name='lang'] > Literal[value!=/^(?:en|ar)$/]",
+        "message": "<DangerPanel> lang must be one of 'en' | 'ar'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='DangerPanel'] > JSXAttribute[name.name='dir'] > Literal[value!=/^(?:ltr|rtl)$/]",
+        "message": "<DangerPanel> dir must be one of 'ltr' | 'rtl'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Icon'] > JSXAttribute > JSXIdentifier[name!=/^(?:name|size|color|strokeWidth|title|key|ref|className|style|children)$/]",
+        "message": "<Icon> doesn't accept that prop. Declared props: name, size, color, strokeWidth, title."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='LangToggle'] > JSXAttribute > JSXIdentifier[name!=/^(?:value|onChange|variant|key|ref|className|style|children)$/]",
+        "message": "<LangToggle> doesn't accept that prop. Declared props: value, onChange, variant."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='LangToggle'] > JSXAttribute[name.name='value'] > Literal[value!=/^(?:en|ar)$/]",
+        "message": "<LangToggle> value must be one of 'en' | 'ar'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='LangToggle'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:onPrimary|standalone)$/]",
+        "message": "<LangToggle> variant must be one of 'onPrimary' | 'standalone'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='LoadingBar'] > JSXAttribute > JSXIdentifier[name!=/^(?:frozen|trackColor|key|ref|className|style|children)$/]",
+        "message": "<LoadingBar> doesn't accept that prop. Declared props: frozen, trackColor."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='OutlinedButton'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|variant|onClick|disabled|fullWidth|dir|key|ref|className|style|children)$/]",
+        "message": "<OutlinedButton> doesn't accept that prop. Declared props: children, variant, onClick, disabled, fullWidth, dir."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='OutlinedButton'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:primary|success|warning|neutral)$/]",
+        "message": "<OutlinedButton> variant must be one of 'primary' | 'success' | 'warning' | 'neutral'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='OutlinedButton'] > JSXAttribute[name.name='dir'] > Literal[value!=/^(?:ltr|rtl)$/]",
+        "message": "<OutlinedButton> dir must be one of 'ltr' | 'rtl'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='OverrideToast'] > JSXAttribute > JSXIdentifier[name!=/^(?:variant|visible|children|lang|dir|key|ref|className|style|children)$/]",
+        "message": "<OverrideToast> doesn't accept that prop. Declared props: variant, visible, children, lang, dir."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='OverrideToast'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:jump|guard)$/]",
+        "message": "<OverrideToast> variant must be one of 'jump' | 'guard'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='OverrideToast'] > JSXAttribute[name.name='lang'] > Literal[value!=/^(?:en|ar)$/]",
+        "message": "<OverrideToast> lang must be one of 'en' | 'ar'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='OverrideToast'] > JSXAttribute[name.name='dir'] > Literal[value!=/^(?:ltr|rtl)$/]",
+        "message": "<OverrideToast> dir must be one of 'ltr' | 'rtl'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='PageCitation'] > JSXAttribute > JSXIdentifier[name!=/^(?:page|children|dir|absolute|key|ref|className|style|children)$/]",
+        "message": "<PageCitation> doesn't accept that prop. Declared props: page, children, dir, absolute."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='PageCitation'] > JSXAttribute[name.name='dir'] > Literal[value!=/^(?:ltr|rtl)$/]",
+        "message": "<PageCitation> dir must be one of 'ltr' | 'rtl'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Snackbar'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|onRetry|lang|dir|key|ref|className|style|children)$/]",
+        "message": "<Snackbar> doesn't accept that prop. Declared props: children, onRetry, lang, dir."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Snackbar'] > JSXAttribute[name.name='lang'] > Literal[value!=/^(?:en|ar)$/]",
+        "message": "<Snackbar> lang must be one of 'en' | 'ar'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Snackbar'] > JSXAttribute[name.name='dir'] > Literal[value!=/^(?:ltr|rtl)$/]",
+        "message": "<Snackbar> dir must be one of 'ltr' | 'rtl'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='TierBadge'] > JSXAttribute > JSXIdentifier[name!=/^(?:current|complete|lang|label|dir|key|ref|className|style|children)$/]",
+        "message": "<TierBadge> doesn't accept that prop. Declared props: current, complete, lang, label, dir."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='TierBadge'] > JSXAttribute[name.name='lang'] > Literal[value!=/^(?:en|ar)$/]",
+        "message": "<TierBadge> lang must be one of 'en' | 'ar'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='TierBadge'] > JSXAttribute[name.name='dir'] > Literal[value!=/^(?:ltr|rtl)$/]",
+        "message": "<TierBadge> dir must be one of 'ltr' | 'rtl'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='UrgencyBadge'] > JSXAttribute > JSXIdentifier[name!=/^(?:level|children|dir|key|ref|className|style|children)$/]",
+        "message": "<UrgencyBadge> doesn't accept that prop. Declared props: level, children, dir."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='UrgencyBadge'] > JSXAttribute[name.name='level'] > Literal[value!=/^(?:critical|high|standard)$/]",
+        "message": "<UrgencyBadge> level must be one of 'critical' | 'high' | 'standard'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='UrgencyBadge'] > JSXAttribute[name.name='dir'] > Literal[value!=/^(?:ltr|rtl)$/]",
+        "message": "<UrgencyBadge> dir must be one of 'ltr' | 'rtl'."
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/index.js"
+      ],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ],
+  "x-omelette": {
+    "components": {
+      "AppBar": {
+        "replaces": []
+      },
+      "BottomSheet": {
+        "replaces": []
+      },
+      "Button": {
+        "replaces": []
+      },
+      "Card": {
+        "replaces": []
+      },
+      "CfButton": {
+        "replaces": []
+      },
+      "DangerPanel": {
+        "replaces": []
+      },
+      "Icon": {
+        "replaces": []
+      },
+      "LangToggle": {
+        "replaces": []
+      },
+      "LoadingBar": {
+        "replaces": []
+      },
+      "OutlinedButton": {
+        "replaces": []
+      },
+      "OverrideToast": {
+        "replaces": []
+      },
+      "PageCitation": {
+        "replaces": []
+      },
+      "Snackbar": {
+        "replaces": []
+      },
+      "TierBadge": {
+        "replaces": []
+      },
+      "UrgencyBadge": {
+        "replaces": []
+      }
+    },
+    "tokens": [
+      "--appbar-height",
+      "--card-padding",
+      "--color-border",
+      "--color-card",
+      "--color-danger-bg",
+      "--color-divider",
+      "--color-focus-ring",
+      "--color-page",
+      "--color-scrim",
+      "--color-surface",
+      "--color-text",
+      "--color-text-secondary",
+      "--danger-panel-height",
+      "--elevation-card",
+      "--elevation-panel",
+      "--elevation-sheet",
+      "--focus-ring",
+      "--font-arabic",
+      "--font-latin",
+      "--font-sans",
+      "--gap-lg",
+      "--gap-md",
+      "--gap-section",
+      "--gap-sm",
+      "--lh-body",
+      "--lh-body-bold",
+      "--lh-caption",
+      "--lh-display",
+      "--lh-heading",
+      "--lh-label",
+      "--lh-secondary",
+      "--loading-bar-height",
+      "--neutral-000",
+      "--neutral-100",
+      "--neutral-300",
+      "--neutral-600",
+      "--neutral-900",
+      "--on-primary",
+      "--on-success",
+      "--on-warning",
+      "--primary-100",
+      "--primary-400",
+      "--primary-600",
+      "--primary-700",
+      "--radius-full",
+      "--radius-lg",
+      "--radius-md",
+      "--radius-sm",
+      "--screen-margin",
+      "--screen-top-pad",
+      "--space-1",
+      "--space-2",
+      "--space-3",
+      "--space-4",
+      "--space-5",
+      "--space-6",
+      "--space-8",
+      "--success-100",
+      "--success-700",
+      "--text-body",
+      "--text-body-bold",
+      "--text-caption",
+      "--text-display",
+      "--text-heading",
+      "--text-label",
+      "--text-micro",
+      "--text-secondary",
+      "--touch-min",
+      "--urgency-critical",
+      "--urgency-high",
+      "--urgency-standard",
+      "--warning-100",
+      "--warning-600",
+      "--weight-bold",
+      "--weight-regular",
+      "--weight-semibold"
+    ],
+    "tokenKinds": {
+      "--primary-600": "color",
+      "--primary-700": "color",
+      "--primary-400": "color",
+      "--primary-100": "color",
+      "--success-700": "color",
+      "--success-100": "color",
+      "--warning-600": "color",
+      "--warning-100": "color",
+      "--neutral-900": "color",
+      "--neutral-600": "color",
+      "--neutral-300": "color",
+      "--neutral-100": "color",
+      "--neutral-000": "color",
+      "--on-primary": "color",
+      "--on-success": "color",
+      "--on-warning": "color",
+      "--urgency-critical": "color",
+      "--urgency-high": "color",
+      "--urgency-standard": "color",
+      "--color-text": "font",
+      "--color-text-secondary": "font",
+      "--color-border": "color",
+      "--color-divider": "color",
+      "--color-surface": "color",
+      "--color-card": "color",
+      "--color-page": "color",
+      "--color-focus-ring": "color",
+      "--color-danger-bg": "color",
+      "--color-scrim": "color",
+      "--font-latin": "font",
+      "--font-arabic": "font",
+      "--font-sans": "font",
+      "--weight-regular": "font",
+      "--weight-semibold": "font",
+      "--weight-bold": "font",
+      "--text-display": "font",
+      "--text-heading": "font",
+      "--text-body": "font",
+      "--text-body-bold": "font",
+      "--text-label": "font",
+      "--text-secondary": "font",
+      "--text-caption": "font",
+      "--text-micro": "font",
+      "--lh-display": "other",
+      "--lh-heading": "other",
+      "--lh-body": "other",
+      "--lh-body-bold": "other",
+      "--lh-label": "other",
+      "--lh-secondary": "other",
+      "--lh-caption": "other",
+      "--space-1": "spacing",
+      "--space-2": "spacing",
+      "--space-3": "spacing",
+      "--space-4": "spacing",
+      "--space-5": "spacing",
+      "--space-6": "spacing",
+      "--space-8": "spacing",
+      "--screen-margin": "spacing",
+      "--screen-top-pad": "spacing",
+      "--card-padding": "spacing",
+      "--gap-sm": "spacing",
+      "--gap-md": "spacing",
+      "--gap-lg": "spacing",
+      "--gap-section": "spacing",
+      "--touch-min": "spacing",
+      "--appbar-height": "spacing",
+      "--danger-panel-height": "spacing",
+      "--loading-bar-height": "spacing",
+      "--elevation-card": "shadow",
+      "--elevation-panel": "shadow",
+      "--elevation-sheet": "shadow",
+      "--focus-ring": "shadow",
+      "--radius-sm": "radius",
+      "--radius-md": "radius",
+      "--radius-lg": "radius",
+      "--radius-full": "radius"
+    },
+    "fontFamilies": [
+      "Noto Sans",
+      "Noto Sans Arabic"
+    ]
+  }
+}

@@ -1,0 +1,48 @@
+/* ResQRules — Color tokens
+   Red Cross / Red Crescent field first-aid app.
+   Every color earns its place: action, status, or surface. No decoration. */
+
+:root {
+  /* ---- Primary (Red Cross red) ---- */
+  --primary-600: #CC0000; /* primary action, AppBar, danger panel background */
+  --primary-700: #990000; /* pressed state, focus ring */
+  --primary-400: #FF3333; /* hover state (tablet/web) */
+  --primary-100: #FFEAEA; /* light tint for non-critical highlights */
+
+  /* ---- Semantic: success ---- */
+  --success-700: #2D6A4F; /* bleeding controlled, terminal action, positive outcomes */
+  --success-100: #F0FAF5; /* terminal action card background tint */
+
+  /* ---- Semantic: warning ---- */
+  --warning-600: #E85D04; /* high-urgency, CF ambiguous states */
+  --warning-100: #FFF3EB; /* warning tint background */
+
+  /* ---- Neutral ---- */
+  --neutral-900: #1A1A1A; /* text primary */
+  --neutral-600: #4A4A4A; /* text secondary, captions */
+  --neutral-300: #E0E0E0; /* border, divider, empty tier dot */
+  --neutral-100: #F5F5F5; /* surface, input background */
+  --neutral-000: #FFFFFF; /* card background, page background */
+
+  /* ---- On-color (text/icons on a colored fill) ---- */
+  --on-primary: #FFFFFF;
+  --on-success: #FFFFFF;
+  --on-warning: #FFFFFF;
+
+  /* ---- Urgency mapping (chart cards, badges) ---- */
+  --urgency-critical: var(--primary-600);
+  --urgency-high: var(--warning-600);
+  --urgency-standard: var(--neutral-600);
+
+  /* ---- Semantic aliases ---- */
+  --color-text: var(--neutral-900);
+  --color-text-secondary: var(--neutral-600);
+  --color-border: var(--neutral-300);
+  --color-divider: var(--neutral-300);
+  --color-surface: var(--neutral-100);
+  --color-card: var(--neutral-000);
+  --color-page: var(--neutral-000);
+  --color-focus-ring: var(--primary-700);
+  --color-danger-bg: var(--primary-600);
+  --color-scrim: rgba(0, 0, 0, 0.45); /* bottom-sheet / dialog backdrop */
+}

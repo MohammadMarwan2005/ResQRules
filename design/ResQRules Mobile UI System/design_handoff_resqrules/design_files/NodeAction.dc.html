@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="ds/styles.css">
+<script src="ds/_ds_bundle.js"></script>
+</helmet>
+<div style="display:flex; flex-direction:column; height:100%; gap:12px; box-sizing:border-box;">
+  <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.PageCitation" from="./ds/_ds_bundle.js" page="{{ page }}" dir="{{ dir }}" hint-size="48px,16px"></x-import>
+  <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.Card" from="./ds/_ds_bundle.js" variant="success" dir="{{ dir }}" hint-size="100%,96px">
+    <div style="font-family:var(--font-sans); font-size:16px; font-weight:var(--weight-semibold); line-height:1.5; color:var(--neutral-900); text-align:{{ textAlign }};">{{ text }}</div>
+  </x-import>
+  <div style="flex:1; min-height:12px;"></div>
+  <div style="display:flex; flex-direction:column; gap:8px;">
+    <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.OutlinedButton" from="./ds/_ds_bundle.js" variant="success" on-click="{{ onEnd }}" dir="{{ dir }}" hint-size="100%,56px">{{ endLabel }}</x-import>
+    <x-import component-from-global-scope="ResQRulesDesignSystem_3e3070.Button" from="./ds/_ds_bundle.js" on-click="{{ onRestart }}" dir="{{ dir }}" hint-size="100%,56px">{{ restartLabel }}</x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:360,&quot;height&quot;:480},&quot;node&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;ActionNode&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;ar&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;'en' | 'ar'&quot;},&quot;onEnd&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;() =&gt; void&quot;},&quot;onRestart&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;() =&gt; void&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props;
+    const lang = p.lang || 'en';
+    const isAr = lang === 'ar';
+    const dir = isAr ? 'rtl' : 'ltr';
+    const node = p.node || { page: 11, text: { en: 'Bleeding controlled. Continue to monitor and keep the patient warm.', ar: 'تم إيقاف النزيف. استمر في المراقبة وحافظ على دفء المريض.' } };
+    const LBL = { end: { en: 'End Session', ar: 'إنهاء الجلسة' }, restart: { en: 'Start Again', ar: 'ابدأ من جديد' } };
+    return {
+      page: node.page,
+      dir,
+      textAlign: isAr ? 'right' : 'left',
+      text: (node.text && node.text[lang]) || '',
+      endLabel: LBL.end[lang],
+      restartLabel: LBL.restart[lang],
+      onEnd: (e) => { if (p.onEnd) p.onEnd(e); },
+      onRestart: (e) => { if (p.onRestart) p.onRestart(e); },
+    };
+  }
+}
+</script>
+</body>
+</html>

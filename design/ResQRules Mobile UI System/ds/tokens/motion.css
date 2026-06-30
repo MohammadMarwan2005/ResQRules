@@ -1,0 +1,21 @@
+/* ResQRules — Motion keyframes
+   Only the two continuous, non-interruptible animations live here. Everything
+   else (toast slide, toggle pill, press states) is a CSS transition driven by
+   component state. No decorative loops. */
+
+@keyframes rq-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Indeterminate loading bar: a segment sweeps left -> right under the AppBar. */
+@keyframes rq-bar-sweep {
+  0%   { left: -40%; width: 40%; }
+  50%  { left: 25%;  width: 55%; }
+  100% { left: 100%; width: 40%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Pause continuous motion; functional state changes still apply instantly. */
+  .rq-anim-spin { animation: none !important; }
+  .rq-anim-sweep { animation: none !important; left: 0 !important; width: 100% !important; opacity: 0.6; }
+}

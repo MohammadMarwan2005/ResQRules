@@ -1,0 +1,10 @@
+/* ResQRules — Webfonts
+   Noto Sans (Latin) + Noto Sans Arabic share identical metrics, so an EN<->AR
+   toggle never reflows the layout. Weights: 400 / 600 / 700 only.
+
+   NOTE: served from the Google Fonts CDN rather than bundled binaries. The
+   sandbox cannot fetch & embed the woff2 files directly. If you need a fully
+   offline/self-hosted system, drop the .woff2 files into assets/fonts/ and
+   replace this @import with explicit @font-face rules. */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Noto+Sans+Arabic:wght@400;600;700&display=swap');
