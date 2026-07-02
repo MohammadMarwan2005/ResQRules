@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ResQRules — KBS Course Presentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Noto+Sans+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#CC0000; --primary-dark:#990000; --primary-tint:#FFEAEA;
+    --success:#2D6A4F; --success-tint:#F0FAF5;
+    --warning:#E85D04; --warning-text:#B54A00; --warning-tint:#FFF3EB;
+    --ink:#1A1A1A; --ink-2:#4A4A4A; --ink-3:#6B6B6B;
+    --border:#E0E0E0; --surface:#F5F5F5; --card:#FFFFFF;
+    --r-sm:6px; --r-md:8px; --r-lg:12px;
+    --shadow-1:0 2px 8px rgba(0,0,0,.10);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{background:#1c1c1c; font-family:'Noto Sans',system-ui,sans-serif; color:var(--ink); overflow:hidden;}
+  .mono{font-family:'Noto Sans Mono',ui-monospace,monospace;}
+
+  #stage{position:absolute; left:50%; top:50%; width:1280px; height:720px;
+         transform-origin:center center;}
+  .slide{position:absolute; inset:0; width:1280px; height:720px; background:#fff;
+         padding:34px 44px 24px; display:none; flex-direction:column;}
+  .slide.active{display:flex;}
+  .slide.brand{background:var(--primary); color:#fff;}
+
+  /* shared */
+  .kicker{font-size:14px; font-weight:600; letter-spacing:.13em; color:var(--primary); text-transform:uppercase;}
+  .brand .kicker{color:#FFD6D6;}
+  h1.t{font-size:34px; font-weight:700; line-height:1.22; margin:4px 0 18px;}
+  .wordmark{background:var(--primary); color:#fff; font-weight:700; font-size:17px;
+            padding:7px 14px; border-radius:var(--r-md); white-space:nowrap;}
+  .headrow{display:flex; justify-content:space-between; align-items:flex-start;}
+  .grow{flex:1; min-height:0;}
+  .foot{display:flex; align-items:center; justify-content:space-between; margin-top:auto; padding-top:12px;}
+  .cite{font-size:14px; color:var(--ink-2); background:var(--surface); border:1.5px solid var(--border);
+        border-radius:999px; padding:4px 13px;}
+  #pageno{position:fixed; right:18px; bottom:12px; color:#777; font-size:13px; z-index:9;}
+  .cols{display:flex; gap:30px; min-height:0;}
+  .card{background:var(--card); border:1.5px solid var(--border); border-radius:var(--r-lg);
+        box-shadow:var(--shadow-1); padding:20px 22px;}
+  .bullets{list-style:none; display:flex; flex-direction:column; gap:14px;}
+  .bullets li{font-size:24px; line-height:1.45; padding-left:26px; position:relative;}
+  .bullets li::before{content:""; position:absolute; left:0; top:12px; width:11px; height:11px;
+                      border-radius:3px; background:var(--primary);}
+  .bullets li b{font-weight:700;}
+  .statement{font-size:28px; font-weight:700; color:var(--primary-dark);
+             border-left:6px solid var(--primary); padding:10px 0 10px 20px; margin-top:18px;}
+  .codebox{background:var(--surface); border:1.5px solid var(--border); border-radius:var(--r-md);
+           padding:16px 18px; font-size:17px; line-height:1.55; white-space:pre; overflow:hidden;}
+  .codebox .kw{color:var(--primary-dark); font-weight:600;}
+  .codebox .cm{color:var(--ink-3);}
+  .codebox .hl{background:var(--primary-tint); border-radius:3px; padding:0 3px; font-weight:600;}
+  .chip{display:inline-block; font-size:15px; font-weight:600; border-radius:999px; padding:4px 14px;
+        border:1.5px solid var(--border); background:var(--card); color:var(--ink-2);}
+  .chip.red{border-color:var(--primary); color:var(--primary-dark); background:var(--primary-tint);}
+  .chip.green{border-color:var(--success); color:var(--success); background:var(--success-tint);}
+  .chip.warn{border-color:var(--warning-text); color:var(--warning-text); background:var(--warning-tint);}
+
+  /* title + brand slides */
+  .brandcenter{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:22px;}
+  .brandcenter .logo{font-size:96px; font-weight:700; letter-spacing:-.01em;}
+  .brandcenter .sub{font-size:27px; max-width:900px; line-height:1.5; color:#FFE2E2;}
+  .brandcenter .meta{font-size:18px; color:#FFB9B9;}
+
+  /* slide 2 paper chart */
+  .paper{background:#FBF8F1; border:1.5px solid #E4DCC8; border-radius:4px; padding:18px;
+         box-shadow:0 3px 14px rgba(0,0,0,.12); position:relative; width:430px;}
+  .paper h5{font-size:12px; letter-spacing:.1em; color:#8A7F63; text-transform:uppercase; margin-bottom:10px;}
+  .pbox{border:1.5px solid #B9AE8F; border-radius:3px; background:#fff; color:#5C5340;
+        font-size:12.5px; padding:5px 8px; margin:0 auto 6px; width:86%; text-align:center;}
+  .pbox.d{width:60%; border-style:dashed;}
+  .parr{text-align:center; color:#B9AE8F; font-size:13px; line-height:1; margin-bottom:4px;}
+  .youarehere{position:absolute; right:-14px; top:150px; background:var(--primary); color:#fff;
+              font-size:14px; font-weight:600; padding:6px 12px; border-radius:var(--r-md);
+              box-shadow:var(--shadow-1); transform:rotate(3deg);}
+
+  /* pipeline */
+  .pipe{display:flex; align-items:center; gap:14px; justify-content:center;}
+  .pipe .step{border:2px solid var(--ink-2); border-radius:var(--r-lg); padding:16px 20px; text-align:center; background:#fff; min-width:170px;}
+  .pipe .step b{display:block; font-size:20px;}
+  .pipe .step span{font-size:14.5px; color:var(--ink-3);}
+  .pipe .a{font-size:26px; color:var(--ink-3); font-weight:700;}
+
+  /* phases lanes */
+  .lanes{display:flex; gap:18px;}
+  .lane{flex:1; border:2px solid var(--border); border-radius:var(--r-lg); padding:16px; background:#fff;}
+  .lane .n{width:30px; height:30px; border-radius:50%; background:var(--ink-2); color:#fff; font-weight:700;
+           display:flex; align-items:center; justify-content:center; font-size:16px; margin-bottom:10px;}
+  .lane h4{font-size:20px; margin-bottom:6px;}
+  .lane p{font-size:16.5px; color:var(--ink-2); line-height:1.45;}
+  .exception{margin-top:20px; display:flex; align-items:center; gap:14px; background:var(--primary-tint);
+             border:2px solid var(--primary); border-radius:var(--r-lg); padding:14px 18px;}
+  .exception .q{font-size:20px; font-weight:700; color:var(--primary-dark);}
+  .exception p{font-size:17px; color:var(--ink); line-height:1.4;}
+
+  /* rejected wall */
+  .rulewall{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; position:relative;}
+  .rulewall .r{font-size:12.5px; background:var(--surface); border:1px solid var(--border);
+               border-radius:4px; padding:5px 7px; color:var(--ink-3); white-space:nowrap; overflow:hidden;}
+  .bigx{position:absolute; inset:-8px; display:flex; align-items:center; justify-content:center; pointer-events:none;}
+  .bigx svg{width:100%; height:100%;}
+
+  /* architecture diagram */
+  .arch{display:flex; flex-direction:column; gap:14px; align-items:center;}
+  .archrow{display:flex; gap:16px; align-items:stretch; justify-content:center;}
+  .archbox{border:2px solid var(--ink-2); border-radius:var(--r-lg); padding:14px 18px; background:#fff; text-align:center;}
+  .archbox h4{font-size:19px;} .archbox p{font-size:14.5px; color:var(--ink-3);}
+  .archbox.k{border-color:var(--primary); background:var(--primary-tint);}
+  .archbox.k h4{color:var(--primary-dark);}
+  .jchip{font-size:13.5px; background:#fff; border:1.5px solid var(--primary); color:var(--primary-dark);
+         border-radius:var(--r-sm); padding:3px 8px; margin:3px 2px; display:inline-block;}
+  .statband{display:flex; gap:26px; justify-content:center; margin-top:8px;}
+  .stat{text-align:center;}
+  .stat b{font-size:44px; color:var(--primary); display:block; line-height:1.1;}
+  .stat span{font-size:16px; color:var(--ink-2);}
+
+  /* salience ladder */
+  .ladder{display:flex; flex-direction:column; gap:10px;}
+  .rung{display:flex; align-items:center; gap:14px; border:2px solid var(--border); border-radius:var(--r-md);
+        padding:10px 16px; background:#fff;}
+  .rung .sal{font-size:26px; font-weight:700; width:64px; text-align:right; color:var(--primary);}
+  .rung .nm{font-size:19px; font-weight:600;} .rung .ds{font-size:15px; color:var(--ink-3);}
+  .rung.base .sal{color:var(--ink-3);}
+  .rung.r100{border-color:var(--primary);} .rung.r90{border-color:#E05555;} .rung.r80{border-color:#EFA1A1;}
+
+  /* CF bar */
+  .cfbar{position:relative; height:118px; margin:28px 10px 6px;}
+  .cfline{position:absolute; left:0; right:0; top:56px; height:10px; border-radius:5px;
+          background:linear-gradient(to right, var(--primary-tint) 0 74.5%, var(--success-tint) 74.5% 100%);
+          border:1.5px solid var(--border);}
+  .cfmark{position:absolute; top:0; transform:translateX(-50%); text-align:center; width:120px;}
+  .cfmark span{font-size:16px; font-weight:600; display:block;}
+  .cfmark em{font-style:normal; font-size:13.5px; color:var(--ink-3); display:block; margin-top:2px;}
+  .cfmark i{display:block; width:16px; height:16px; border-radius:50%; margin:13px auto 0; border:3px solid #fff; box-shadow:0 0 0 1.5px var(--border);}
+  .cfthresh{position:absolute; top:36px; height:44px; width:3px; background:var(--ink); left:74.5%;}
+  .cfthresh span{position:absolute; top:-30px; left:-128px; width:120px; font-size:14.5px; font-weight:700; text-align:right;}
+
+  /* ══ walkthrough tree (geometry = approved theme test slide) ══ */
+  .tree{position:relative; width:856px; flex:none;}
+  .tree svg.edges{position:absolute; inset:0; width:100%; height:100%; overflow:visible;}
+  .chartlab{position:absolute; font-size:12px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3);}
+  .node{position:absolute; border-radius:var(--r-md); padding:8px 12px; font-size:17px; line-height:1.25;
+        background:var(--card); display:flex; align-items:center; gap:8px;}
+  .node .nid{display:block; font-size:11.5px; color:var(--ink-3); letter-spacing:.04em;}
+  .node.visited{border:2px solid var(--ink-2); color:var(--ink); font-weight:600;}
+  .node.current{border:2.5px solid var(--primary); background:var(--primary-tint); font-weight:700;
+                box-shadow:0 0 0 5px rgba(204,0,0,.12), var(--shadow-1);}
+  .node.current-good{border:2.5px solid var(--success); background:var(--success-tint); font-weight:700;
+                box-shadow:0 0 0 5px rgba(45,106,79,.15), var(--shadow-1);}
+  .node.future{border:1.5px solid var(--border); color:var(--ink-3); font-weight:400;}
+  .node.q{justify-content:center; text-align:center;}
+  .node.q::before{content:""; width:10px; height:10px; border:2.5px solid currentColor;
+                  transform:rotate(45deg); border-radius:2px; flex:none; opacity:.8;}
+  .node.stack{flex-direction:column; align-items:flex-start; gap:1px;}
+  .node.leaf{border-radius:999px; justify-content:center; text-align:center;}
+  .node.jump{border-style:dashed;}
+  .tierbadge{position:absolute; width:28px; height:28px; border-radius:50%; background:var(--surface);
+             border:1.5px solid var(--border); color:var(--ink-2); font-size:15px; font-weight:700;
+             display:flex; align-items:center; justify-content:center;}
+  .tierbadge.on{background:var(--primary); border-color:var(--primary); color:#fff;}
+  .elabel{position:absolute; font-size:14px; font-weight:600; padding:3px 9px; border-radius:var(--r-sm);
+          background:var(--card); display:flex; align-items:center; gap:5px; white-space:nowrap;}
+  .elabel.yes{color:var(--primary); border:1.5px solid var(--primary);}
+  .elabel.no{color:var(--success); border:1.5px solid var(--success); opacity:.85;}
+  .elabel.dim{opacity:.42;}
+  .elabel.hold{color:var(--warning-text); border:1.5px solid var(--warning-text); background:var(--warning-tint); font-size:13px;}
+  .elabel.jumped{color:var(--ink-2); border:1.5px solid var(--ink-2); font-size:13px;}
+  .glyph{width:13px; height:13px; flex:none;}
+
+  .side{flex:1; background:var(--card); border:1.5px solid var(--border); border-radius:var(--r-lg);
+        box-shadow:var(--shadow-1); padding:18px 18px 14px; display:flex; flex-direction:column; gap:13px; min-width:0;}
+  .side h3{font-size:13px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+           border-bottom:1.5px solid var(--border); padding-bottom:8px;}
+  .sec .lab{font-size:12px; font-weight:600; letter-spacing:.12em; color:var(--ink-3); text-transform:uppercase; margin-bottom:6px;}
+  .fact{display:inline-block; font-size:16px; background:var(--surface); border:1.5px solid var(--border);
+        border-radius:var(--r-sm); padding:4px 9px; margin:0 6px 6px 0; color:var(--ink-2);
+        font-family:'Noto Sans Mono',monospace;}
+  .fact.hot{background:var(--primary-tint); border-color:var(--primary); color:var(--primary-dark); font-weight:600;}
+  .rule{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  .rule .name{font-size:18px; font-weight:600; font-family:'Noto Sans Mono',monospace;}
+  .sal{font-size:13px; font-weight:700; background:var(--surface); border:1.5px solid var(--border);
+       border-radius:999px; padding:2px 10px; color:var(--ink-2);}
+  .delta{font-size:16px; padding:3px 0; display:flex; gap:8px; align-items:baseline; font-family:'Noto Sans Mono',monospace;}
+  .delta .op{width:16px; font-weight:700; text-align:center;}
+  .delta.out{color:var(--ink-3); text-decoration:line-through;}
+  .delta.out .op{text-decoration:none;}
+  .delta.in{color:var(--primary-dark); font-weight:600;}
+  .delta.in .op{color:var(--primary);}
+  .delta .nt{font-family:'Noto Sans'; font-size:13px; color:var(--ink-3); text-decoration:none;}
+  .trace{background:var(--surface); border:1.5px solid var(--border); border-radius:var(--r-md);
+         padding:10px 12px; font-size:14px; line-height:1.5; color:var(--ink-2); white-space:pre-wrap;
+         font-family:'Noto Sans Mono',monospace;}
+  .trace b{color:var(--ink);}
+  .src{font-size:12px; color:var(--ink-3); margin-top:5px;}
+  .dots{display:flex; gap:7px; align-items:center;}
+  .dots i{width:9px; height:9px; border-radius:50%; background:var(--border);}
+  .dots i.done{background:var(--ink-2);}
+  .dots i.now{background:var(--primary); width:11px; height:11px;}
+
+  /* walkthrough slide sizing: tree is 856×545; pin everything so the foot never collides */
+  .walk .cols{height:552px; flex:none;}
+  .walk .tree{height:545px;}
+  .walk .side{gap:10px; padding:15px 16px 12px; overflow:hidden;}
+  .walk .side h3{font-size:12.5px; padding-bottom:6px;}
+  .walk .sec .lab{font-size:11px; margin-bottom:4px;}
+  .walk .fact{font-size:14.5px; padding:3px 8px;}
+  .walk .rule .name{font-size:17px;}
+  .walk .delta{font-size:15px;}
+  .walk .trace{font-size:12.5px; padding:8px 10px;}
+  .walk .src{font-size:11px;}
+  .walk .foot{padding-top:8px;}
+  .walk .votebtn{font-size:26px; padding:15px 10px; margin-bottom:10px;}
+
+  /* C4 vote buttons */
+  .votebtn{display:block; text-decoration:none; text-align:center; font-weight:700; font-size:30px;
+           border-radius:var(--r-lg); padding:22px 10px; margin-bottom:14px; transition:transform .1s;}
+  .votebtn:hover{transform:scale(1.03);}
+  .votebtn.yes{background:var(--primary); color:#fff;}
+  .votebtn.no{background:#fff; color:var(--success); border:2.5px solid var(--success);}
+  .votebtn small{display:block; font-size:15px; font-weight:600; margin-top:4px; opacity:.85;}
+
+  /* no-branch strip */
+  .strip{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .strip .node{position:static;}
+  .strip .sa{color:var(--ink-3); font-size:20px; font-weight:700;}
+
+  /* phones */
+  .phones{display:flex; gap:34px; justify-content:center;}
+  .phone{width:212px; height:420px; border:3px solid var(--ink); border-radius:26px; background:#fff;
+         overflow:hidden; display:flex; flex-direction:column; box-shadow:var(--shadow-1);}
+  .phone .pbar{background:var(--primary); color:#fff; font-size:12.5px; font-weight:700; padding:9px 10px;}
+  .phone .pbody{flex:1; padding:10px; font-size:12px; display:flex; flex-direction:column; gap:7px;}
+  .phone .q{font-weight:600; font-size:12.5px; line-height:1.35;}
+  .phone .opt{border:1.5px solid var(--border); border-radius:8px; padding:7px 8px; text-align:center; font-weight:600;}
+  .phone .opt.sel{border-color:var(--primary); background:var(--primary-tint);}
+  .phone .dpanel{background:var(--primary); display:flex; height:44px;}
+  .phone .dpanel div{flex:1; color:#fff; font-size:8.5px; font-weight:700; display:flex; flex-direction:column;
+                     align-items:center; justify-content:center; gap:2px; border-right:1px solid rgba(255,255,255,.25);}
+  .phone .toast{background:var(--primary); color:#fff; border-radius:8px; padding:8px; font-size:11px; font-weight:600;}
+  .phone .leafcard{background:var(--success-tint); border:1.5px solid var(--success); border-radius:8px;
+                   padding:10px; color:var(--success); font-weight:700; font-size:12.5px;}
+  .phcap{text-align:center; font-size:15px; color:var(--ink-2); margin-top:10px;}
+
+  /* team */
+  .teamrow{display:flex; gap:16px;}
+  .tcard{flex:1; border:2px solid var(--border); border-radius:var(--r-lg); padding:16px 14px; text-align:center; background:#fff;}
+  .tcard .av{width:56px; height:56px; border-radius:50%; background:var(--primary-tint); color:var(--primary-dark);
+             font-weight:700; font-size:17px; display:flex; align-items:center; justify-content:center; margin:0 auto 10px;
+             border:2px solid var(--primary);}
+  .tcard b{font-size:18px; display:block; margin-bottom:5px;}
+  .tcard p{font-size:14px; color:var(--ink-2); line-height:1.4;}
+  .tcard .tag{font-size:12px; color:var(--primary-dark); font-weight:700; letter-spacing:.08em; text-transform:uppercase; display:block; margin-bottom:6px;}
+
+  .hint{position:fixed; left:18px; bottom:12px; color:#777; font-size:13px; z-index:9;}
+
+  @media print{
+    body{background:#fff; overflow:visible;}
+    #stage{position:static; transform:none !important; width:auto; height:auto;}
+    .slide{display:flex !important; position:relative; page-break-after:always; margin:0;}
+    .slide:last-of-type{page-break-after:auto;}
+    #pageno,.hint{display:none;}
+    @page{size:1280px 720px; margin:0;}
+  }
+</style>
+</head>
+<body>
+<div id="stage"></div>
+<div id="pageno"></div>
+<div class="hint" id="hint">→ / ← navigate · F11 full screen · P print/PDF</div>
+
+<!-- ═══════════════ STATIC SLIDES (templates cloned into #stage) ═══════════════ -->
+<template id="slides">
+
+<!-- s01 TITLE -->
+<section class="slide brand" id="s01">
+  <div class="brandcenter">
+    <div class="logo">ResQRules</div>
+    <div class="sub">A knowledge-based system that walks a first responder through
+      Red&nbsp;Crescent emergency protocols — and reacts when the patient doesn't follow the flowchart.</div>
+    <div class="meta">Knowledge-Based Systems · course project · built on the Experta forward-chaining engine</div>
+    <div class="meta" style="margin-top:26px;">M.GH · M.SH · M.JA · M.Y.D · M.Marwan &nbsp;—&nbsp; supervised by Miss Omama</div>
+  </div>
+</section>
+
+<!-- s02 PROBLEM -->
+<section class="slide" id="s02">
+  <div class="headrow"><div><div class="kicker">The problem</div>
+    <h1 class="t">The patient doesn't follow the flowchart</h1></div>
+    <div class="wordmark">ResQRules</div></div>
+  <div class="cols grow">
+    <div style="flex:none; display:flex; align-items:center;">
+      <div class="paper">
+        <h5>SARC SOP · Catastrophic Hemorrhage · chart #10</h5>
+        <div class="pbox">Control of external bleeding: direct compression…</div>
+        <div class="parr">↓</div>
+        <div class="pbox d">Active bleeding?</div>
+        <div class="parr">↓ yes</div>
+        <div class="pbox">Second compression bandage on top of the first</div>
+        <div class="parr">↓</div>
+        <div class="pbox d">Active bleeding?</div>
+        <div class="parr">↓ yes</div>
+        <div class="pbox">Installation of tourniquet…</div>
+        <div class="parr">↓</div>
+        <div class="pbox">Urgent and safe transport…</div>
+        <div class="youarehere">you are here…<br>but he just stopped breathing</div>
+      </div>
+    </div>
+    <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+      <ul class="bullets">
+        <li>The Red Crescent SOP is <b>12 paper flowcharts</b> — expert, validated, and static.</li>
+        <li>Under adrenaline, the responder must find the right chart, the right box, and follow the arrows correctly.</li>
+        <li>Meanwhile the patient <b>deteriorates mid-protocol</b> — a new life threat appears while you're inside another box.</li>
+      </ul>
+      <div class="statement">Paper can't re-route. That gap is what we built.</div>
+    </div>
+  </div>
+</section>
+
+<!-- s03 WHAT IT IS -->
+<section class="slide" id="s03">
+  <div class="headrow"><div><div class="kicker">ResQRules</div>
+    <h1 class="t">Protocols as software that reacts</h1></div>
+    <div class="wordmark">ResQRules</div></div>
+  <div class="grow" style="display:flex; flex-direction:column; justify-content:center; gap:44px;">
+    <div class="pipe">
+      <div class="step"><b>Experta engine</b><span>terminal Q&amp;A · the reasoning</span></div><div class="a">→</div>
+      <div class="step"><b>FastAPI</b><span>stable REST contract</span></div><div class="a">→</div>
+      <div class="step"><b>Flutter app</b><span>bilingual EN/AR · in the field</span></div>
+    </div>
+    <div style="display:flex; gap:18px; justify-content:center;">
+      <span class="chip">Field responders — guided, interruptible protocols</span>
+      <span class="chip">Trainees — safe protocol practice</span>
+      <span class="chip red">This room — a working KBS case study</span>
+    </div>
+  </div>
+  <div class="foot"><span class="cite">5 protocols in scope: #1 assessment · #3 CPR adult · #7 choking · #8 airway · #10 hemorrhage</span></div>
+</section>
+
+<!-- s04 PHASES A -->
+<section class="slide" id="s04">
+  <div class="headrow"><div><div class="kicker">Domain — how a paramedic thinks</div>
+    <h1 class="t">Four assessment phases, as drawn on chart #1</h1></div>
+    <div class="wordmark">ResQRules</div></div>
+  <div class="grow" style="display:flex; flex-direction:column; justify-content:center;">
+    <div class="lanes">
+      <div class="lane"><div class="n">1</div><h4>Preliminary — SSS</h4>
+        <p><b>S</b>afety (staff · patient · bystanders)<br><b>S</b>cene evaluation<br><b>S</b>ituation evaluation</p></div>
+      <div class="lane"><div class="n">2</div><h4>Primary</h4>
+        <p>AVPU consciousness<br><b>ABCDE</b>: Airway · Breathing · Circulation · Disability · Expose</p></div>
+      <div class="lane"><div class="n">3</div><h4>Secondary</h4>
+        <p>History &amp; vitals:<br>SAMPLER · OPQRST · GCS · PERRLA</p></div>
+      <div class="lane"><div class="n">4</div><h4>Continuous</h4>
+        <p>Reassess the patient; orient to the most appropriate care center</p></div>
+    </div>
+  </div>
+  <div class="foot"><span class="cite">SARC chart #1 · p.1 · data/general_assessment.json</span></div>
+</section>
+
+<!-- s05 PHASES B: the exception -->
+<section class="slide" id="s05">
+  <div class="headrow"><div><div class="kicker">Domain — how a paramedic thinks</div>
+    <h1 class="t">…and one exception, hard-coded as <em>structure</em></h1></div>
+    <div class="wordmark">ResQRules</div></div>
+  <div class="grow" style="display:flex; flex-direction:column; justify-content:center;">
+    <div class="lanes" style="opacity:.55;">
+      <div class="lane"><div class="n">1</div><h4>Preliminary — SSS</h4><p>Safety · Scene · Situation</p></div>
+      <div class="lane"><div class="n">2</div><h4>Primary</h4><p>AVPU + ABCDE</p></div>
+      <div class="lane"><div class="n">3</div><h4>Secondary</h4><p>SAMPLER · OPQRST · vitals</p></div>
+      <div class="lane"><div class="n">4</div><h4>Continuous</h4><p>Reassess &amp; orient</p></div>
+    </div>
+    <div class="exception">
+      <div class="q">Life-threatening bleeding?&nbsp; (gen_04)</div>
+      <p>Asked <b>between phases 1 and 2 — before ABCDE ever runs</b> — jumping straight to the
+         Catastrophic Hemorrhage protocol. The chart encodes clinical precedence <b>positionally</b>.<br>
+         <b>Our engine encodes the same precedence as salience</b> — coming up in Inference I.</p>
+    </div>
+  </div>
+  <div class="foot"><span class="cite">SARC chart #1 · p.1 · gen_04 → jump to hemorrhage (drawn on the chart)</span></div>
+</section>
+
+<!-- s06 SOURCES -->
+<section class="slide" id="s06">
+  <div class="headrow"><div><div class="kicker">Knowledge sources</div>
+    <h1 class="t">Expert-validated knowledge — never our invention</h1></div>
+    <div class="wordmark">ResQRules</div></div>
+  <div class="cols grow" style="align-items:center;">
+    <div class="card" style="flex:1;">
+      <h4 style="font-size:22px; margin-bottom:10px;">SARC official SOP flowcharts</h4>
+      <p style="font-size:17px; color:var(--ink-2); margin-bottom:12px;">The 12-chart first-responder deck; 5 in scope for v1:</p>
+      <span class="jchip">#1 General Assessment</span><span class="jchip">#3 CPR Adult</span>
+      <span class="jchip">#7 Heimlich / Choking</span><span class="jchip">#8 Upper Airway</span>
+      <span class="jchip">#10 Catastrophic Hemorrhage</span>
+    </div>
+    <div class="card" style="flex:1;">
+      <h4 style="font-size:22px; margin-bottom:10px;">An expert in the loop</h4>
+      <p style="font-size:17px; color:var(--ink-2); line-height:1.5;"><b>M.GH — paramedic on the team.</b>
+      Collected the source charts, resolved ambiguities during extraction, and validated the transcribed knowledge.
+      Knowledge acquisition with the expert at the table, not by email.</p>
+    </div>
+  </div>
+  <div class="statement">Rule zero: transcribe the chart — never "improve" medical content.</div>
+</section>
+
+<!-- s07 REJECTED -->
+<section class="slide" id="s07">
+  <div class="headrow"><div><div class="kicker">Design — what we rejected</div>
+    <h1 class="t">One <span class="mono">@Rule</span> per box is not a knowledge base</h1></div>
+    <div class="wordmark">ResQRules</div></div>
+  <div class="cols grow" style="align-items:center;">
+    <div style="flex:1.1; position:relative;">
+      <div class="rulewall">
+        <div class="r">@Rule(F(nid='gen_01'))…</div><div class="r">@Rule(F(nid='gen_02'))…</div>
+        <div class="r">@Rule(F(nid='gen_03'))…</div><div class="r">@Rule(F(nid='gen_04'))…</div>
+        <div class="r">@Rule(F(nid='chk_01'))…</div><div class="r">@Rule(F(nid='chk_02'))…</div>
+        <div class="r">@Rule(F(nid='chk_03'))…</div><div class="r">@Rule(F(nid='chk_04'))…</div>
+        <div class="r">@Rule(F(nid='cpr_01'))…</div><div class="r">@Rule(F(nid='cpr_02'))…</div>
+        <div class="r">@Rule(F(nid='cpr_03'))…</div><div class="r">@Rule(F(nid='cpr_04'))…</div>
+        <div class="r">@Rule(F(nid='hem_01'))…</div><div class="r">@Rule(F(nid='hem_02'))…</div>
+        <div class="r">@Rule(F(nid='air_01'))…</div><div class="r">@Rule(F(nid='air_02'))…</div>
+      </div>
+      <div style="text-align:center; font-size:24px; font-weight:700; color:var(--ink-3); margin-top:10px;">× 59 rules</div>
+      <div class="bigx"><svg viewBox="0 0 100 60" preserveAspectRatio="none">
+        <line x1="4" y1="4" x2="96" y2="56" stroke="#CC0000" stroke-width="5" stroke-linecap="round" opacity=".85"/>
+        <line x1="96" y1="4" x2="4" y2="56" stroke="#CC0000" stroke-width="5" stroke-linecap="round" opacity=".85"/></svg></div>
+    </div>
+    <div style="flex:1;">
+      <ul class="bullets">
+        <li>Knowledge <b>trapped inside code</b> — every medical revision is a code change.</li>
+        <li>The rule engine adds nothing: <b>no inference is demonstrated</b>.</li>
+        <li>Experta reduced to a <b>flowchart costume</b>.</li>
+      </ul>
+      <div class="statement">"Exactly like a web app with static hardcoded pages — and no database."</div>
+    </div>
+  </div>
+</section>
+
+<!-- s08 BUILT A -->
+<section class="slide" id="s08">
+  <div class="headrow"><div><div class="kicker">Design — what we built</div>
+    <h1 class="t">Knowledge is data; inference is generic</h1></div>
+    <div class="wordmark">ResQRules</div></div>
+  <div class="grow" style="display:flex; align-items:center; justify-content:center;">
+    <div class="arch">
+      <div class="archrow">
+        <div class="archbox k" style="width:420px;">
+          <h4>KNOWLEDGE — data/*.json</h4>
+          <p style="margin:6px 0 8px;">one tree per chart · 59 nodes · full provenance</p>
+          <span class="jchip">general_assessment</span><span class="jchip">cpr_adult</span><span class="jchip">choking</span>
+          <span class="jchip">airway</span><span class="jchip">hemorrhage</span>
+        </div>
+        <div style="display:flex; flex-direction:column; justify-content:center; gap:4px; text-align:center;">
+          <span style="font-size:26px; font-weight:700; color:var(--ink-2);">⇄</span>
+          <span style="font-size:13.5px; color:var(--ink-3); max-width:130px;">loads <b>any</b> conforming tree</span>
+        </div>
+        <div class="archbox" style="width:340px;">
+          <h4>INFERENCE — engine.py</h4>
+          <p style="margin-top:6px;">one <span class="mono">KnowledgeEngine</span><br>
+             <b style="font-size:22px; color:var(--primary);">8 generic rules</b><br>zero chart-specific code</p>
+        </div>
+      </div>
+      <div class="archrow">
+        <div class="archbox" style="border-style:dashed; border-color:var(--border);">
+          <p><b>SCHEMA.md</b> — the contract between them &nbsp;·&nbsp; <b>validate.py</b> — fails loudly on any broken edge, orphan node, or bad leaf</p>
+        </div>
+      </div>
+      <div style="font-size:22px; font-weight:700; color:var(--primary-dark); margin-top:6px;">This separation is the textbook definition of a knowledge-based system.</div>
+    </div>
+  </div>
+</section>
+
+<!-- s09 BUILT B -->
+<section class="slide" id="s09">
+  <div class="headrow"><div><div class="kicker">Design — what we built</div>
+    <h1 class="t">…and the whole product stands on that separation</h1></div>
+    <div class="wordmark">ResQRules</div></div>
+  <div class="grow" style="display:flex; align-items:center; justify-content:center;">
+    <div class="arch">
+      <div class="archrow">
+        <div class="archbox"><h4>Flutter app</h4><p>renders whatever node<br>the engine serves</p></div>
+        <div class="archbox"><h4>FastAPI</h4><p>contract driven by node <b>type</b><br>— not by rules</p></div>
+      </div>
+      <div style="font-size:22px; color:var(--ink-3);">▲ sits on top of ▲</div>
+      <div class="archrow">
+        <div class="archbox k" style="width:360px;"><h4>KNOWLEDGE (JSON)</h4><p>5 charts · 59 nodes</p></div>
+        <div class="archbox" style="width:360px;"><h4>INFERENCE (Experta)</h4><p>8 generic rules + 3 inference layers</p></div>
+      </div>
+      <div class="statband">
+        <div class="stat"><b>8</b><span>generic rules</span></div>
+        <div class="stat"><b>59</b><span>knowledge nodes</span></div>
+        <div class="stat"><b>5</b><span>protocols</span></div>
+      </div>
+      <span class="chip red" style="font-size:17px;">Falsifiable claim: chart #6 = drop one JSON file in data/ — zero code change. Test us in Q&amp;A.</span>
+    </div>
+  </div>
+</section>
+
+<!-- s10 PDF→JSON -->
+<section class="slide" id="s10">
+  <div class="headrow"><div><div class="kicker">Knowledge acquisition</div>
+    <h1 class="t">Faithfulness is engineered, not promised</h1></div>
+    <div class="wordmark">ResQRules</div></div>
+  <div class="cols grow" style="align-items:center;">
+    <div style="flex:none; display:flex; align-items:center; gap:16px;">
+      <div class="paper" style="width:250px;">
+        <h5>drawn on the chart · p.10</h5>
+        <div class="pbox" style="width:96%;">Installation of tourniquet. (Position: one palm's width above the wound…)</div>
+      </div>
+      <div style="font-size:28px; font-weight:700; color:var(--ink-2);">→</div>
+      <div class="codebox" style="font-size:14.5px; width:330px;">"hem_05": {
+  "type": "instruction",
+  "text_en": "Installation of
+              tourniquet. …",
+  "text_ar": "تركيب الرباط الضاغط…",
+  "page": 10,
+  <span class="hl">"provenance": "source"</span>,
+  "next": "hem_06"
+}</div>
+    </div>
+    <div style="flex:1;">
+      <ul class="bullets" style="gap:12px;">
+        <li><b>Visual-only extraction</b> — pages rasterized @180 DPI and read as images. Text extraction drops the arrows, and <b>the arrows ARE the logic</b>.</li>
+        <li>Every node cites its <b>source page</b>.</li>
+        <li>Provenance audit trail: <b>58 of 59 nodes are <span class="mono">source</span></b>; exactly 1 is <span class="mono">added</span> (navigation-only).</li>
+        <li><span class="mono">validate.py</span> <b>fails loudly</b>: broken edge, orphan node, bad leaf → non-zero exit.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- s11 ENGINE -->
+<section class="slide" id="s11">
+  <div class="headrow"><div><div class="kicker">The engine, in Experta terms</div>
+    <h1 class="t">Forward chaining = declare → match → fire</h1></div>
+    <div class="wordmark">ResQRules</div></div>
+  <div class="cols grow" style="align-items:center;">
+    <div style="flex:1.15;">
+      <div class="codebox" style="font-size:16px;"><span class="cm"># the baseline walker — engine.py (real code, elided)</span>
+<span class="kw">@Rule</span>(AS.p &lt;&lt; <span class="hl">Position(nid=MATCH.nid)</span>,
+      AS.a &lt;&lt; <span class="hl">Active(chart=MATCH.c)</span>,
+      NOT(Bleeding()), <span class="kw">salience=0</span>)
+<span class="kw">def</span> walk(self, p, a, nid, c):
+    node = self.nodes[nid]      <span class="cm"># ← read from the JSON</span>
+    …                           <span class="cm"># render node, ask the paramedic</span>
+    self._move(p, a, next_id)   <span class="cm"># retract old Position,</span>
+                                <span class="cm"># declare the new one → RETE re-matches</span></div>
+      <div style="margin-top:14px;">
+        <span class="fact">Position</span><span class="fact">Active</span><span class="fact">Danger</span>
+        <span class="fact">Bleeding</span><span class="fact">StillBleeding</span><span class="fact">SignOfLife</span>
+        <span style="font-size:14.5px; color:var(--ink-3);">— the six Fact types = the whole working memory</span>
+      </div>
+    </div>
+    <div style="flex:.85;">
+      <ul class="bullets" style="gap:12px;">
+        <li>One <span class="mono">KnowledgeEngine</span> subclass; charts are <b>facts about position</b>, not rules.</li>
+        <li>Each answer <b>retracts / declares</b> a fact → the RETE network re-matches → the next rule fires. <b>That chain is the inference.</b></li>
+        <li><b>8 rules total</b> walk all 59 nodes.</li>
+      </ul>
+      <div style="margin-top:16px;"><span class="chip green">11 automated tests — every inference behavior is proven, not claimed</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- s12 INFERENCE I -->
+<section class="slide" id="s12">
+  <div class="headrow"><div><div class="kicker">Inference I — salience &amp; conflict resolution</div>
+    <h1 class="t">Salience encodes clinical precedence</h1></div>
+    <div class="wordmark">ResQRules</div></div>
+  <div class="cols grow" style="align-items:center;">
+    <div style="flex:1;">
+      <div class="ladder">
+        <div class="rung r100"><div class="sal">100</div><div><div class="nm mono">ov_bleeding</div><div class="ds">catastrophic bleeding — key <b>b</b> · bleed-out kills fastest</div></div></div>
+        <div class="rung r90"><div class="sal">90</div><div><div class="nm mono">ov_arrest</div><div class="ds">not breathing / no pulse — keys <b>n · p</b></div></div></div>
+        <div class="rung r80"><div class="sal">80</div><div><div class="nm mono">ov_unconscious</div><div class="ds">unconscious — key <b>u</b></div></div></div>
+        <div class="rung base"><div class="sal">0</div><div><div class="nm mono">walk</div><div class="ds">the baseline chart walker</div></div></div>
+      </div>
+    </div>
+    <div style="flex:1.1;">
+      <ul class="bullets" style="gap:11px;">
+        <li>At <b>every</b> prompt, the paramedic can assert a <span class="mono">Danger</span> fact <b>instead of answering</b>.</li>
+        <li>Two dangers at once? <b>Conflict resolution</b>: the highest salience fires first — proven in TEST&nbsp;1, not hand-sequenced.</li>
+        <li>Guards: each override <span class="mono">retract</span>s its Danger (fires once) and never re-enters the protocol it's already in.</li>
+      </ul>
+      <div class="trace" style="margin-top:14px; font-size:13.5px;">   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   !! DANGER [catastrophic_bleeding] <b>(sal 100): OVERRIDE</b> -&gt; preempt, jump to 'hemorrhage' entry</div>
+      <div class="src">verbatim engine output · presentation/traces/override_bleeding_en.txt</div>
+      <div class="statement" style="font-size:24px; margin-top:12px;">A paper chart cannot accept an asynchronous fact.</div>
+    </div>
+  </div>
+</section>
+
+<!-- s13 INFERENCE II -->
+<section class="slide" id="s13">
+  <div class="headrow"><div><div class="kicker">Inference II — certainty factor</div>
+    <h1 class="t">Uncertainty is data too</h1></div>
+    <div class="wordmark">ResQRules</div></div>
+  <div class="grow" style="display:flex; flex-direction:column; justify-content:center;">
+    <div style="display:flex; gap:26px; align-items:center; margin-bottom:6px;">
+      <span class="chip">cpr_11 — "[1] Sign of life?"</span>
+      <span class="chip warn">"Gasping is not considered efficient breathing" — chart #3, p.3</span>
+    </div>
+    <div class="cfbar">
+      <div class="cfline"></div>
+      <div class="cfthresh"><span>threshold 0.5</span></div>
+      <div class="cfmark" style="left:2%;"><span>none</span><em>CF −1.0</em><i style="background:var(--primary);"></i></div>
+      <div class="cfmark" style="left:59%;"><span>unsure</span><em>CF +0.2</em><i style="background:var(--primary);"></i></div>
+      <div class="cfmark" style="left:79.5%;"><span>likely</span><em>CF +0.6</em><i style="background:var(--success);"></i></div>
+      <div class="cfmark" style="left:98%;"><span>certain</span><em>CF +1.0</em><i style="background:var(--success);"></i></div>
+    </div>
+    <div style="display:flex; justify-content:space-between; font-size:17px; font-weight:700; padding:0 12px; margin-bottom:16px;">
+      <span style="color:var(--primary-dark);">← below 0.5 → CPR branch (cpr_14) — "if in doubt, compress"</span>
+      <span style="color:var(--success);">≥ 0.5 → ventilation branch (cpr_12) →</span>
+    </div>
+    <div class="cols">
+      <ul class="bullets" style="flex:1; gap:10px; font-size:21px;">
+        <li>Experta has <b>no native CF</b> → we model it as data: a <span class="mono">SignOfLife(cf)</span> fact + <b>one thresholding rule</b> (salience 20).</li>
+        <li>The conservative bias lives <b>in the scale</b>: genuine doubt scores 0.2, far below the cut. Endpoints match a plain yes/no — only the ambiguous middle re-routes.</li>
+      </ul>
+      <div style="flex:1;">
+        <div class="trace">   ?? Confidence the patient has a SIGN OF LIFE (breathing/pulse)?
+   3) unsure  (CF +0.20)
+   ~ CF +0.20 &lt;  +0.50: <b>doubt -&gt; CPR branch (if in doubt, compress)</b></div>
+        <div class="src">verbatim engine output · presentation/traces/cf_unsure_en.txt</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- s14..s23 walkthrough slides are generated by JS (see WALK config) -->
+
+<!-- s24 FASTAPI -->
+<section class="slide" id="s24">
+  <div class="headrow"><div><div class="kicker">Integration — the API</div>
+    <h1 class="t">The API contract is a consequence of the architecture</h1></div>
+    <div class="wordmark">ResQRules</div></div>
+  <div class="cols grow" style="align-items:center;">
+    <div style="flex:1;">
+      <div class="codebox" style="font-size:14.5px;">POST /sessions/{id}/step        <span class="cm">← real response (abridged)</span>
+{
+  "screen": {
+    <span class="hl">"type": "question"</span>,          <span class="cm">← the whole contract</span>
+    "node_id": "chk_01",
+    "chart_id": "choking",
+    "text": { "en": "Suspect foreign body obstruction?…",
+              "ar": "هل يُشتبه في انسداد جسم غريب؟…" },
+    "options": [ {"id":1,"label":{"en":"yes","ar":"نعم"}},
+                 {"id":2,"label":{"en":"no","ar":"لا"}} ]
+  },
+  "danger_panel": [ …b · n · p · u… ]
+}</div>
+    </div>
+    <div style="flex:.9;">
+      <ul class="bullets" style="gap:13px;">
+        <li>Response shapes are driven by <b>node <span class="mono">type</span> from the JSON knowledge</b> — never by internal rules or salience.</li>
+        <li>New rules → <b>zero API change</b>. New chart → <b>auto-discovered</b> by <span class="mono">GET /charts</span>.</li>
+        <li>Every text field ships <b>both languages</b> → switching EN↔AR needs no server round-trip.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- s25 FLUTTER -->
+<section class="slide" id="s25">
+  <div class="headrow"><div><div class="kicker">Integration — the app</div>
+    <h1 class="t">The same knowledge, in a responder's pocket</h1></div>
+    <div class="wordmark">ResQRules</div></div>
+  <div class="cols grow" style="align-items:center;">
+    <div class="phones" style="flex:1.2;">
+      <div>
+        <div class="phone">
+          <div class="pbar">ResQRules · Heimlich Maneuver</div>
+          <div class="pbody">
+            <div class="q">Suspect foreign body obstruction? (Universal sign: hands to throat…)</div>
+            <div class="opt">yes</div><div class="opt">no</div>
+            <div style="flex:1;"></div>
+            <div style="font-size:9.5px; color:var(--ink-3);">chk_01 · p.7</div>
+          </div>
+          <div class="dpanel"><div>🩸<span>BLEEDING</span></div><div>🫁<span>NO BREATH</span></div><div>💓<span>NO PULSE</span></div><div>😵<span>UNCONSC.</span></div></div>
+        </div><div class="phcap">question screen</div>
+      </div>
+      <div>
+        <div class="phone">
+          <div class="pbar">ResQRules · Catastrophic Hemorrhage</div>
+          <div class="pbody">
+            <div class="toast">⚡ OVERRIDE → Catastrophic Hemorrhage · salience 100</div>
+            <div class="q">Control of external bleeding: direct compression on the wound…</div>
+            <div class="opt sel">continue</div>
+            <div style="flex:1;"></div>
+            <div style="font-size:9.5px; color:var(--ink-3);">hem_01 · p.10 · tier 1/3</div>
+          </div>
+          <div class="dpanel"><div>🩸<span>BLEEDING</span></div><div>🫁<span>NO BREATH</span></div><div>💓<span>NO PULSE</span></div><div>😵<span>UNCONSC.</span></div></div>
+        </div><div class="phcap">danger-panel override (Inference I, as UI)</div>
+      </div>
+      <div>
+        <div class="phone">
+          <div class="pbar">ResQRules · Catastrophic Hemorrhage</div>
+          <div class="pbody">
+            <div class="leafcard">✓ Urgent and safe transport to a health center.</div>
+            <div style="flex:1;"></div>
+            <div class="opt">↺ new session</div>
+          </div>
+          <div class="dpanel" style="opacity:.35;"><div>🩸<span>BLEEDING</span></div><div>🫁<span>NO BREATH</span></div><div>💓<span>NO PULSE</span></div><div>😵<span>UNCONSC.</span></div></div>
+        </div><div class="phcap">terminal action leaf</div>
+      </div>
+    </div>
+    <div style="flex:.8;">
+      <ul class="bullets" style="gap:12px; font-size:21px;">
+        <li>One widget per server node <span class="mono">type</span> — <b>the KBS drives the UI</b>; the shell never changes.</li>
+        <li>The persistent <b>danger panel</b> = the salience overrides, as UI.</li>
+        <li>Instant EN↔AR — both languages arrive in every response; RTL flips locally.</li>
+        <li style="font-size:17px; color:var(--ink-2);">Stack, in one breath: Clean Architecture · Cubit · Retrofit.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- s26 DEMO -->
+<section class="slide brand" id="s26">
+  <div class="brandcenter">
+    <div class="logo" style="font-size:76px;">Live demo</div>
+    <div class="sub">The engine narrates its own inference — watch the salience fire.</div>
+    <div style="display:flex; gap:14px;">
+      <span class="chip" style="background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.4); color:#fff;">danger key <b>b</b> mid-assessment → sal-100 preempt</span>
+      <span class="chip" style="background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.4); color:#fff;">"unsure" at Sign of life? → CF routes to compressions</span>
+      <span class="chip" style="background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.4); color:#fff;">the app, in the field</span>
+    </div>
+    <div class="meta" style="margin-top:30px;">(presenter: switch to the video / live terminal now)</div>
+  </div>
+</section>
+
+<!-- s27 RECAP -->
+<section class="slide" id="s27">
+  <div class="headrow"><div><div class="kicker">The journey</div>
+    <h1 class="t">From paper to a reasoning system</h1></div>
+    <div class="wordmark">ResQRules</div></div>
+  <div class="grow" style="display:flex; flex-direction:column; justify-content:center; gap:40px;">
+    <div class="pipe">
+      <div class="step"><b>SARC PDFs</b><span>visual-only extraction</span></div><div class="a">→</div>
+      <div class="step"><b>JSON knowledge</b><span>59 nodes · provenance</span></div><div class="a">→</div>
+      <div class="step"><b>Experta engine</b><span>8 rules · 3 inference layers</span></div><div class="a">→</div>
+      <div class="step"><b>FastAPI</b><span>type-driven contract</span></div><div class="a">→</div>
+      <div class="step"><b>Flutter app</b><span>bilingual · danger panel</span></div>
+    </div>
+    <div class="statement" style="font-size:32px; text-align:center; border:none; padding:0;">
+      Paper can't react.<br>Knowledge as data + a small inference engine can.</div>
+    <div style="text-align:center;">
+      <span class="chip">honest limits: jumps are one-way (no return-stack yet) · Phase-2 charts are JSON-only additions</span>
+    </div>
+  </div>
+</section>
+
+<!-- s28 TEAM -->
+<section class="slide" id="s28">
+  <div class="headrow"><div><div class="kicker">The team — in journey order</div>
+    <h1 class="t">Knowledge → engine → API → app</h1></div>
+    <div class="wordmark">ResQRules</div></div>
+  <div class="grow" style="display:flex; flex-direction:column; justify-content:center;">
+    <div class="teamrow">
+      <div class="tcard"><div class="av">M.GH</div><span class="tag">Knowledge</span><b>M.GH</b>
+        <p>Software engineer with paramedic experience · knowledge source &amp; reference collector · Flutter dev</p></div>
+      <div class="tcard"><div class="av">M.SH</div><span class="tag">Engine</span><b>M.SH</b>
+        <p>Python expert · AI engineer — the Experta inference engine</p></div>
+      <div class="tcard"><div class="av">M.JA</div><span class="tag">API</span><b>M.JA</b>
+        <p>Backend engineer — wrapped the engine in FastAPI</p></div>
+      <div class="tcard"><div class="av">M.Y.D</div><span class="tag">App</span><b>M.Y.D</b>
+        <p>Flutter developer &amp; designer</p></div>
+      <div class="tcard"><div class="av">M.M</div><span class="tag">App · Ops</span><b>M.Marwan</b>
+        <p>Flutter expert · UI designer · DevOps on the server · Linux lover</p></div>
+    </div>
+  </div>
+  <div class="foot"><span class="cite">Supervised by Miss Omama</span></div>
+</section>
+
+<!-- s29 THANKS -->
+<section class="slide brand" id="s29">
+  <div class="brandcenter">
+    <div style="font-size:44px; font-weight:700;">Thank you, Miss Omama.</div>
+    <div class="sub" style="margin-top:4px;">For the guidance that kept the knowledge honest and the inference real.</div>
+    <div class="logo" style="font-size:64px; margin-top:36px;">Questions?</div>
+    <div class="meta">ResQRules · 8 rules · 59 nodes · 5 protocols</div>
+  </div>
+</section>
+
+</template>
+
+<script>
+/* ═══════════ walkthrough slide generator (geometry = approved test slide) ═══════════ */
+const DROP='<svg class="glyph" viewBox="0 0 12 14"><path d="M6 0.8C6 0.8 2.2 5.6 2.2 8.4a3.8 3.8 0 0 0 7.6 0C9.8 5.6 6 0.8 6 0.8Z" fill="#CC0000"/></svg>';
+const CHECK='<svg class="glyph" viewBox="0 0 12 12"><path d="M1.5 6.5 4.5 9.5 10.5 2.5" fill="none" stroke="#2D6A4F" stroke-width="2.2" stroke-linecap="round"/></svg>';
+
+// edge definitions: id → svg path/line + default stroke by state
+const EDGES=[
+ {id:'g12', d:'M128,47 L146,47'}, {id:'g23', d:'M278,47 L296,47'}, {id:'g34', d:'M428,47 L442,47'},
+ {id:'g45', d:'M646,47 L657,47'}, {id:'jmp', d:'M736,78 V88 H185 V124'},
+ {id:'h12', d:'M332,162 L366,162'},
+ {id:'y1',  d:'M466,196 V225 H185 V244'},
+ {id:'n1',  d:'M566,162 H596 V206 H616'},
+ {id:'h34', d:'M332,282 L366,282'},
+ {id:'y2',  d:'M466,316 V345 H185 V364'},
+ {id:'n2',  d:'M566,282 H596 V236 H616'},
+ {id:'h56', d:'M332,402 L366,402'},
+ {id:'n3',  d:'M566,402 L614,402'},
+ {id:'hold',d:'M466,436 V465 H700 V428'}
+];
+const NODES=[
+ {id:'gen01', cls:'',      st:'left:0;top:26px;width:128px;font-size:15px;', html:'Safety<span class="nid">gen_01</span>'},
+ {id:'gen02', cls:'',      st:'left:146px;top:26px;width:132px;font-size:15px;', html:'Scene<span class="nid">gen_02</span>'},
+ {id:'gen03', cls:'',      st:'left:296px;top:26px;width:132px;font-size:15px;', html:'Situation<span class="nid">gen_03</span>'},
+ {id:'gen04', cls:'q',     st:'left:446px;top:20px;width:196px;height:56px;font-size:14px;line-height:1.2;', html:'Life-threatening bleeding?<span class="nid" style="display:inline">&nbsp;gen_04</span>'},
+ {id:'gen05', cls:'jump stack', st:'left:662px;top:24px;width:148px;font-size:14.5px;padding:6px 12px;', html:'⇢ Hemorrhage<span class="nid">gen_05 · jump</span>'},
+ {id:'hem01', cls:'',      st:'left:40px;top:130px;width:292px;height:64px;', html:'Direct pressure · compression dressing<span class="nid">hem_01</span>'},
+ {id:'hem02', cls:'q',     st:'left:370px;top:132px;width:196px;height:60px;', html:'Active bleeding?<span class="nid" style="display:inline"> hem_02</span>'},
+ {id:'hem03', cls:'',      st:'left:40px;top:250px;width:292px;height:64px;', html:'Second compression bandage<span class="nid">hem_03 · TIER 2</span>'},
+ {id:'hem04', cls:'q',     st:'left:370px;top:252px;width:196px;height:60px;', html:'Active bleeding?<span class="nid" style="display:inline"> hem_04</span>'},
+ {id:'hem05', cls:'',      st:'left:40px;top:370px;width:292px;height:64px;', html:'Tourniquet — one palm above wound<span class="nid">hem_05&nbsp;·&nbsp;terminal</span>'},
+ {id:'hem06', cls:'q',     st:'left:370px;top:372px;width:196px;height:60px;', html:'Active bleeding?<span class="nid" style="display:inline"> hem_06</span>'},
+ {id:'hem08', cls:'leaf',  st:'left:616px;top:186px;width:224px;height:50px;font-size:15px;', html:'Transport to health center<span class="nid" style="display:inline">&nbsp;hem_08</span>'},
+ {id:'hem07', cls:'leaf',  st:'left:616px;top:378px;width:224px;height:50px;font-size:15px;', html:'URGENT transport<span class="nid" style="display:inline">&nbsp;hem_07</span>'}
+];
+const LABELS=[
+ {id:'ljmp', cls:'jumped', st:'left:310px;top:76px;', html:"yes → &nbsp;&gt;&gt; JUMP to chart 'hemorrhage' &lt;&lt;"},
+ {id:'ly1',  cls:'yes',    st:'left:222px;top:212px;', html:DROP+' yes — still bleeding'},
+ {id:'ly2',  cls:'yes',    st:'left:222px;top:332px;', html:DROP+' yes — still bleeding'},
+ {id:'ln1',  cls:'no',     st:'left:588px;top:120px;', html:CHECK+' no — controlled'},
+ {id:'ln2',  cls:'no',     st:'left:588px;top:300px;', html:CHECK+' no — controlled'},
+ {id:'ln3',  cls:'no',     st:'left:570px;top:428px;font-size:13px;', html:CHECK+' no'},
+ {id:'lhold',cls:'hold',   st:'left:196px;top:452px;', html:'⚠ yes at terminal tier → HOLD, no tier 4 (flagged divergence)'}
+];
+const STROKE={future:['#C7C7C7',2,'ah-f'], visited:['#4A4A4A',2.5,'ah-v'], delta:['#CC0000',3,'ah-r'], good:['#2D6A4F',3,'ah-g']};
+
+// per-slide state.  n: nodeId→state, e: edgeId→state, lab: labelId→'on'|'dim'|'off',
+// tiers:[bool×3], facts:[{t,hot}], rule:{n,s}, deltas:[{op:'-'|'+', t, nt}], out, dot(1..10),
+// kicker/title, sideExtra (raw html replaces facts/rule/delta secs for C4)
+const WALK=[
+ {id:'s14',dot:1,title:'Two facts. One generic rule.',
+  n:{gen01:'current'}, e:{}, lab:{lhold:'dim'}, tiers:[0,0,0],
+  facts:[{t:'Position(nid=gen_01)',hot:1},{t:'Active(chart=general_assessment)',hot:1}],
+  rule:{n:'walk',s:'salience 0'},
+  deltas:[{op:'+',t:'Position(nid=gen_01)',nt:'declare'},{op:'+',t:'Active(chart=…)',nt:'declare'}],
+  out:'[gen_01] Safety: ensure safety &amp; security for staff,\npatient(s) and bystanders. …  (p.1)', src:'walkthrough_yes_branch_en.txt'},
+ {id:'s15',dot:2,title:'Answer = retract, declare. RETE re-matches.',
+  n:{gen01:'visited',gen02:'current'}, e:{g12:'delta'}, lab:{lhold:'dim'}, tiers:[0,0,0],
+  facts:[{t:'Position(nid=gen_02)',hot:1},{t:'Active(chart=general_assessment)'}],
+  rule:{n:'walk',s:'salience 0'},
+  deltas:[{op:'-',t:'Position(nid=gen_01)',nt:'retract'},{op:'+',t:'Position(nid=gen_02)',nt:'declare'}],
+  out:'[gen_02] Scene Evaluation: mechanism of injury;\nenvironmental factors. …  (p.1)', src:'walkthrough_yes_branch_en.txt'},
+ {id:'s16',dot:3,title:'That was the Preliminary phase — SSS.',
+  n:{gen01:'visited',gen02:'visited',gen03:'visited',gen04:'current'}, e:{g12:'visited',g23:'visited',g34:'delta'}, lab:{lhold:'dim'}, tiers:[0,0,0],
+  facts:[{t:'Position(nid=gen_04)',hot:1},{t:'Active(chart=general_assessment)'}],
+  rule:{n:'walk',s:'salience 0 · fired twice'},
+  deltas:[{op:'-',t:'Position(nid=gen_03)',nt:'retract'},{op:'+',t:'Position(nid=gen_04)',nt:'declare'}],
+  out:'[gen_03] Situation Evaluation: first general impression…\n[gen_04] Life threatening bleeding?\n   1) yes   2) no', src:'walkthrough_yes_branch_en.txt'},
+ {id:'s17',dot:4,title:'The chart’s most important question. You decide.',
+  n:{gen01:'visited',gen02:'visited',gen03:'visited',gen04:'current'}, e:{g12:'visited',g23:'visited',g34:'visited'}, lab:{lhold:'dim'}, tiers:[0,0,0],
+  vote:1,
+  out:'[gen_04] Life threatening bleeding?\n   1) yes   2) no\n   &gt; _', src:'walkthrough_yes_branch_en.txt'},
+ {id:'s18',dot:5,title:'A jump: the knowledge is five separate trees.',
+  n:{gen01:'visited',gen02:'visited',gen03:'visited',gen04:'visited',gen05:'visited',hem01:'current'},
+  e:{g12:'visited',g23:'visited',g34:'visited',g45:'visited',jmp:'delta'}, lab:{ljmp:'on',lhold:'dim'}, tiers:[0,0,0],
+  facts:[{t:'Position(nid=hem_01)',hot:1},{t:'Active(chart=hemorrhage)',hot:1}],
+  rule:{n:'walk',s:'salience 0 · resolves the jump'},
+  deltas:[{op:'-',t:'Active(chart=general_assessment)',nt:'retract'},{op:'+',t:'Active(chart=hemorrhage)',nt:'declare'}],
+  out:'[gen_05] Catastrophic Hemorrhage.\n&gt;&gt; JUMP to chart \'hemorrhage\' (node \'hem_01\') &lt;&lt;',
+  src:'walkthrough_yes_branch_en.txt',
+  note:'ABCDE never ran — circulation-first, as structure.'},
+ {id:'s19',dot:6,title:'A NEW kind of fact: state, not position.',
+  n:{gen01:'visited',gen02:'visited',gen03:'visited',gen04:'visited',gen05:'visited',hem01:'current'},
+  e:{g12:'visited',g23:'visited',g34:'visited',g45:'visited',jmp:'visited'}, lab:{ljmp:'on',lhold:'dim'}, tiers:[1,0,0],
+  facts:[{t:'Position(nid=hem_01)'},{t:'Active(chart=hemorrhage)'},{t:'Bleeding(tier=1)',hot:1}],
+  rule:{n:'hem_enter',s:'salience 50'},
+  deltas:[{op:'+',t:'Bleeding(tier=1)',nt:'declare'}],
+  out:'&gt;&gt; entering hemorrhage escalation (semantic tier loop) &lt;&lt;\n&gt;&gt; ESCALATION TIER 1: Control of external bleeding…',
+  src:'walkthrough_yes_branch_en.txt',
+  note:'The escalation tier now lives in working memory.'},
+ {id:'s20',dot:7,title:'Escalation: the fact remembers.',
+  n:{gen01:'visited',gen02:'visited',gen03:'visited',gen04:'visited',gen05:'visited',hem01:'visited',hem02:'visited',hem03:'current'},
+  e:{g12:'visited',g23:'visited',g34:'visited',g45:'visited',jmp:'visited',h12:'visited',y1:'delta'},
+  lab:{ljmp:'on',ly1:'on',lhold:'dim'}, tiers:[1,1,0],
+  facts:[{t:'Position(nid=hem_03)'},{t:'Active(chart=hemorrhage)'},{t:'Bleeding(tier=2)',hot:1}],
+  rule:{n:'hem_decide',s:'salience 10'},
+  deltas:[{op:'-',t:'Bleeding(tier=1)',nt:'retract'},{op:'+',t:'Bleeding(tier=2)',nt:'declare'}],
+  out:'&gt;&gt; still bleeding -&gt; <b>ADVANCE tier 1 -&gt; 2</b>\n&gt;&gt; ESCALATION TIER 2: Second compression bandage…',
+  src:'walkthrough_yes_branch_en.txt',
+  note:'It never re-asks tier 1 — the fact remembers.'},
+ {id:'s21',dot:8,title:'Tier 3 is terminal: the engine refuses to spin.',
+  n:{gen01:'visited',gen02:'visited',gen03:'visited',gen04:'visited',gen05:'visited',hem01:'visited',hem02:'visited',hem03:'visited',hem04:'visited',hem05:'current'},
+  e:{g12:'visited',g23:'visited',g34:'visited',g45:'visited',jmp:'visited',h12:'visited',y1:'visited',h34:'visited',y2:'delta'},
+  lab:{ljmp:'on',ly1:'on',ly2:'on',lhold:'on'}, tiers:[1,1,1],
+  facts:[{t:'Position(nid=hem_05)'},{t:'Active(chart=hemorrhage)'},{t:'Bleeding(tier=3)',hot:1}],
+  rule:{n:'hem_decide',s:'salience 10'},
+  deltas:[{op:'-',t:'Bleeding(tier=2)',nt:'retract'},{op:'+',t:'Bleeding(tier=3)',nt:'declare'}],
+  out:'&gt;&gt; still bleeding -&gt; <b>ADVANCE tier 2 -&gt; 3</b>\n&gt;&gt; ESCALATION TIER 3: Installation of tourniquet…',
+  src:'walkthrough_yes_branch_en.txt',
+  note:'Chart draws an endless re-apply loop; we cap at terminal — a flagged divergence.'},
+ {id:'s22',dot:9,title:'Controlled → leaf. Zero chart-specific code.',
+  n:{gen01:'visited',gen02:'visited',gen03:'visited',gen04:'visited',gen05:'visited',hem01:'visited',hem02:'visited',hem03:'visited',hem04:'visited',hem05:'visited',hem06:'visited',hem07:'current-good'},
+  e:{g12:'visited',g23:'visited',g34:'visited',g45:'visited',jmp:'visited',h12:'visited',y1:'visited',h34:'visited',y2:'visited',h56:'visited',n3:'good'},
+  lab:{ljmp:'on',ly1:'on',ly2:'on',ln3:'on',lhold:'dim'}, tiers:[1,1,1],
+  facts:[{t:'Position(nid=hem_07)',hot:1},{t:'Active(chart=hemorrhage)'}],
+  rule:{n:'hem_decide → walk',s:'exit, then leaf'},
+  deltas:[{op:'-',t:'Bleeding(tier=3)',nt:'retract'},{op:'-',t:'StillBleeding(no)',nt:'retract'}],
+  out:'&gt;&gt; bleeding controlled at tier 3 -&gt; exit to hem_07\n[hem_07] Urgent and safe transport…  (p.10)\n<b>=== END (action / leaf) ===</b>', src:'walkthrough_yes_branch_en.txt'}
+];
+
+function edgeSvg(states){
+  let s='<svg class="edges" viewBox="0 0 856 545"><defs>'
+   +'<marker id="ah-v" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#4A4A4A"/></marker>'
+   +'<marker id="ah-f" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#C7C7C7"/></marker>'
+   +'<marker id="ah-r" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#CC0000"/></marker>'
+   +'<marker id="ah-g" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#2D6A4F"/></marker>'
+   +'</defs>';
+  for(const e of EDGES){
+    const st=STROKE[states[e.id]||'future'];
+    s+=`<path d="${e.d}" fill="none" stroke="${st[0]}" stroke-width="${st[1]}" marker-end="url(#${st[2]})"/>`;
+  }
+  return s+'</svg>';
+}
+function treeHtml(w){
+  let h='<div class="tree">'+edgeSvg(w.e||{});
+  h+='<div class="chartlab" style="left:0;top:0;">General Assessment — chart #1</div>';
+  h+='<div class="chartlab" style="left:0;top:104px;">Catastrophic Hemorrhage — chart #10</div>';
+  for(const nd of NODES){
+    const state=(w.n&&w.n[nd.id])||'future';
+    h+=`<div class="node ${state} ${nd.cls}" style="${nd.st}">${nd.html}</div>`;
+  }
+  const t=w.tiers||[0,0,0];
+  h+=`<div class="tierbadge ${t[0]?'on':''}" style="left:0;top:148px;">1</div>`;
+  h+=`<div class="tierbadge ${t[1]?'on':''}" style="left:0;top:268px;">2</div>`;
+  h+=`<div class="tierbadge ${t[2]?'on':''}" style="left:0;top:388px;">3</div>`;
+  for(const lb of LABELS){
+    const m=(w.lab&&w.lab[lb.id])||'dim';
+    if(m==='off') continue;
+    h+=`<div class="elabel ${lb.cls} ${m==='dim'?'dim':''}" style="${lb.st}">${lb.html}</div>`;
+  }
+  return h+'</div>';
+}
+function sideHtml(w){
+  let h='<div class="side"><h3>Engine state</h3>';
+  if(w.vote){
+    h+='<div class="sec"><div class="lab">Working memory</div>'
+      +'<span class="fact">Position(nid=gen_04)</span><span class="fact">Active(chart=general_assessment)</span></div>'
+      +'<div class="sec" style="margin-top:8px;"><div class="lab">Your answer becomes a fact</div>'
+      +'<a class="votebtn yes" href="#s18">YES<small>blood is spreading fast</small></a>'
+      +'<a class="votebtn no" href="#s23">NO<small>no life-threatening bleed</small></a></div>';
+  }else{
+    h+='<div class="sec"><div class="lab">Working memory</div>';
+    for(const f of w.facts) h+=`<span class="fact ${f.hot?'hot':''}">${f.t}</span>`;
+    h+='</div><div class="sec"><div class="lab">Rule fired</div>'
+      +`<div class="rule"><span class="name">${w.rule.n}</span><span class="sal">${w.rule.s}</span></div></div>`;
+    h+='<div class="sec"><div class="lab">Δ this step</div>';
+    for(const d of w.deltas)
+      h+=`<div class="delta ${d.op==='-'?'out':'in'}"><span class="op">${d.op==='-'?'−':'+'}</span>${d.t} <span class="nt">${d.nt}</span></div>`;
+    h+='</div>';
+    if(w.note) h+=`<div class="sec"><div style="font-size:15.5px; line-height:1.45; color:var(--ink); border-left:4px solid var(--primary); padding-left:10px;">${w.note}</div></div>`;
+  }
+  h+=`<div class="sec" style="margin-top:auto;"><div class="lab">Engine output (verbatim)</div>`
+    +`<div class="trace">${w.out}</div><div class="src">real session · presentation/traces/${w.src}</div></div></div>`;
+  return h;
+}
+function walkSlide(w,idx){
+  const dots=Array.from({length:10},(_,i)=>`<i class="${i+1<w.dot?'done':(i+1===w.dot?'now':'')}"></i>`).join('');
+  return `<section class="slide walk" id="${w.id}">
+    <div class="headrow"><div><div class="kicker">Flow walkthrough · step ${w.dot} of 10</div>
+      <h1 class="t" style="font-size:29px; margin-bottom:10px;">${w.title}</h1></div>
+      <div class="wordmark">ResQRules</div></div>
+    <div class="cols" style="gap:22px;">${treeHtml(w)}${sideHtml(w)}</div>
+    <div class="foot"><span class="cite">SARC charts #1 + #10 · data/general_assessment.json · data/hemorrhage.json</span>
+      <div class="dots">${dots}</div></div>
+  </section>`;
+}
+// the NO branch strip (s23)
+function noBranchSlide(){
+  const dots=Array.from({length:10},(_,i)=>`<i class="${i<9?'done':'now'}"></i>`).join('');
+  return `<section class="slide" id="s23">
+    <div class="headrow"><div><div class="kicker">Flow walkthrough · step 10 of 10</div>
+      <h1 class="t" style="font-size:29px; margin-bottom:10px;">The road not taken — the NO branch</h1></div>
+      <div class="wordmark">ResQRules</div></div>
+    <div class="grow" style="display:flex; flex-direction:column; justify-content:center; gap:26px;">
+      <div class="strip">
+        <div class="node visited q" style="width:190px;height:56px;font-size:14px;">Life-threatening bleeding?<span class="nid" style="display:inline">&nbsp;gen_04</span></div>
+        <span class="sa">→</span><span class="elabel no" style="position:static;">${CHECK} no</span><span class="sa">→</span>
+        <div class="node visited" style="width:230px;">Primary Assessment — AVPU + ABCDE<span class="nid">gen_06</span></div><span class="sa">→</span>
+        <div class="node visited q" style="width:170px;height:52px;font-size:14px;">Stable or unstable?<span class="nid" style="display:inline">&nbsp;gen_07</span></div><span class="sa">→</span>
+        <div class="node visited" style="width:200px;">Unstable: immediate action, BLS<span class="nid">gen_09</span></div><span class="sa">→</span>
+        <div class="node visited" style="width:220px;">Secondary Assessment — SAMPLER · OPQRST<span class="nid">gen_10</span></div><span class="sa">→</span>
+        <div class="node current-good leaf" style="width:230px;">Continuous Assessment &amp; Orientation<span class="nid" style="display:inline">&nbsp;gen_11</span></div>
+      </div>
+      <div class="cols" style="gap:22px;">
+        <div style="flex:1;"><div class="trace">[gen_06] Primary Assessment — Look-Listen-Feel-Do. AVPU… ABCDE…
+[gen_07] Intervention Strategy — is the patient stable or unstable?
+[gen_10] Secondary Assessment — SAMPLER… OPQRST… GCS… PERRLA…
+[gen_11] Continuous Assessment &amp; Orientation…
+<b>=== END (action / leaf) ===</b></div>
+        <div class="src">real session · presentation/traces/walkthrough_no_branch_en.txt</div></div>
+        <div style="flex:.8; display:flex; flex-direction:column; gap:12px; justify-content:center;">
+          <span class="chip">No new fact types here — this is the plain <span class="mono">walk</span> at salience 0.</span>
+          <a class="chip red" style="text-decoration:none; font-size:16px;" href="#s18">▶ …and the YES branch is where the inference lives — watch it</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span class="cite">SARC chart #1 · p.1 · data/general_assessment.json</span><div class="dots">${dots}</div></div>
+  </section>`;
+}
+
+/* ═══════════ deck assembly + navigation ═══════════ */
+const stage=document.getElementById('stage');
+stage.innerHTML=document.getElementById('slides').innerHTML;
+// insert walkthrough slides between s13 and s24
+const s24=stage.querySelector('#s24');
+const frag=WALK.map(walkSlide).join('')+noBranchSlide();
+s24.insertAdjacentHTML('beforebegin',frag);
+
+const slides=[...stage.querySelectorAll('.slide')];
+const order=slides.map(s=>s.id);
+let cur=0;
+function show(i){
+  cur=Math.max(0,Math.min(slides.length-1,i));
+  slides.forEach((s,j)=>s.classList.toggle('active',j===cur));
+  document.getElementById('pageno').textContent=(cur+1)+' / '+slides.length;
+  if(location.hash!=='#'+order[cur]) history.replaceState(null,'','#'+order[cur]);
+  document.getElementById('hint').style.display=cur===0?'block':'none';
+}
+function byHash(){
+  const id=location.hash.slice(1);
+  const i=order.indexOf(id);
+  show(i>=0?i:0);
+}
+addEventListener('hashchange',byHash);
+addEventListener('keydown',e=>{
+  if(['ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();show(cur+1);}
+  else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(cur-1);}
+  else if(e.key==='Home')show(0);
+  else if(e.key==='End')show(slides.length-1);
+  else if(e.key==='p'||e.key==='P')print();
+});
+addEventListener('click',e=>{
+  const a=e.target.closest('a[href^="#"]');
+  if(a) return;                       // anchor links drive hashchange
+});
+function fit(){
+  const k=Math.min(innerWidth/1280,innerHeight/720)*0.985;
+  stage.style.transform=`translate(-50%,-50%) scale(${k})`;
+}
+addEventListener('resize',fit);
+fit(); byHash();
+</script>
+</body>
+</html>

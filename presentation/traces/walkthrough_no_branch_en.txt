@@ -1,0 +1,39 @@
+=== General Intervention Process & Patient Assessment  (general_assessment) ===
+(loaded charts: airway, choking, cpr_adult, general_assessment, hemorrhage)
+
+[gen_01] Safety: ensure safety & security for staff, patient(s) and bystanders. [SETUP: Stop (take a few seconds), Environment, Traffic, Unpredictable, PPE (Personal Protective Equipment).]  (p.1)
+   1) (continue)
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   > 
+[gen_02] Scene Evaluation: mechanism of injury; environmental factors. Determine the number of patients. Need reinforcement?  (p.1)
+   1) (continue)
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   > 
+[gen_03] Situation Evaluation: first general impression; main complaint.  (p.1)
+   1) (continue)
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   > 
+[gen_04] Life threatening bleeding?  (p.1)
+   1) yes
+   2) no
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   > 
+[gen_06] Primary Assessment — Look-Listen-Feel-Do. AVPU: Alert & Awake / Verbal response / Pain stimuli response / Unconscious. ABCDE: Airway (open mouth) & Axis; Breathing (look, listen, feel); Circulation (skin colour, capillary refill, pulse quality); Disability (neurologic); Expose & Protect - Evacuate (priority).  (p.1)
+   1) (continue)
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   > 
+[gen_07] Intervention Strategy — is the patient stable or unstable?  (p.1)
+   1) Stable
+   2) Unstable
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   > 
+[gen_09] Unstable: immediate action: BLS. Limit time on site.  (p.1)
+   1) (continue)
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   > 
+[gen_10] Secondary Assessment — Measure (equipment) - Look-Listen-Feel-Do: medical history; vital signs; pain scale. [SAMPLER: Signs & Symptoms, Allergies, Medication, Past history, Last oral intake, Events, Risk factors. OPQRST: Onset, Provoked by, Quality, Radiation, Severity, Time. Vital signs: B respiration rate + SpO2; C heart rate + blood pressure; D Glasgow Coma Scale + pupils + blood sugar; E temperature. GCS: eye-opening (1-4), verbal (1-5), motor (1-6). PERRLA: Pupils Equal Round Reactive to Light Accommodation.]  (p.1)
+   1) (continue)
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   > 
+[gen_11] Continuous Assessment & Orientation: reassessment of patient; strategy & treatment; determine the most appropriate care center.  (p.1)
+=== END (action / leaf) ===

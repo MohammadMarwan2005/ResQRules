@@ -1,0 +1,18 @@
+=== General Intervention Process & Patient Assessment  (general_assessment) ===
+(loaded charts: airway, choking, cpr_adult, general_assessment, hemorrhage)
+
+[gen_01] Safety: ensure safety & security for staff, patient(s) and bystanders. [SETUP: Stop (take a few seconds), Environment, Traffic, Unpredictable, PPE (Personal Protective Equipment).]  (p.1)
+   1) (continue)
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   >    !! DANGER [catastrophic_bleeding] (sal 100): OVERRIDE -> preempt, jump to 'hemorrhage' entry
+   >> entering hemorrhage escalation (semantic tier loop) <<
+
+   >> ESCALATION TIER 1: Control of external bleeding: direct compression on the wound; compression dressing; if available, hemostatic compression dressing.  (p.10)
+   [hem_02] Active bleeding?  (recheck after tier 1)
+   1) yes — still bleeding
+   2) no  — bleeding controlled
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   >    >> bleeding controlled at tier 1 -> exit to hem_08
+
+[hem_08] Transport to a health center.  (p.10)
+=== END (action / leaf) ===

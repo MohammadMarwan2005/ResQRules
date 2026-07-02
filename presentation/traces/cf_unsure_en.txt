@@ -1,0 +1,54 @@
+=== Cardio-Respiratory Arrest Adult (signs of puberty are visible)  (cpr_adult) ===
+(loaded charts: airway, choking, cpr_adult, general_assessment, hemorrhage)
+
+[cpr_01] Patient evaluation: no sign of life. (Unresponsive; open the airway chin lift / jaw thrust; check-listen-feel max 10 sec; gasping is not considered efficient breathing; don't waste time checking pulse; evidence of trauma: consider maintaining the head-neck-trunk axis until final immobilisation.)  (p.3)
+   1) (continue)
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   > 
+[cpr_02] CPR 30:2 until AED is ready. (30 compressions: push hard and fast in the middle of the chest 5-6 cm but not more than 6 cm, 2 hands, rate 100-120/min, full chest recoil, minimise interruptions; 2 ventilations with BVM + oxygen in max 10 sec; if possible use an oropharyngeal cannula; manual suction device ready.)  (p.3)
+   1) (continue)
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   > 
+[cpr_03] Rhythm analysis (round 1). Do not touch the patient during analysis.  (p.3)
+   1) Shock indicated
+   2) Shock not indicated
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   > 
+[cpr_05] Shock not indicated: CPR 30:2 for 2 min / 5-6 cycles. (After resuming CPR, check for signs of life [1].)  (p.3)
+   1) (continue)
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   > 
+[cpr_06] Rhythm analysis (round 2). Switch roles for compressions / ventilations. Do not touch the patient during analysis.  (p.3)
+   1) Shock indicated
+   2) Shock not indicated
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   > 
+[cpr_08] Shock not indicated: CPR 30:2 for 2 min / 5-6 cycles. (After resuming CPR, check for signs of life [1].)  (p.3)
+   1) (continue)
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   > 
+[cpr_09] Rhythm analysis (round 3). Switch roles for compressions / ventilations. Do not touch the patient during shock.  (p.3)
+   1) Shock indicated
+   2) Shock not indicated
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   > 
+[cpr_11] [1] Sign of life?  (p.3)
+   ?? Confidence the patient has a SIGN OF LIFE (breathing/pulse)? — gasping is NOT efficient breathing; do not rely on a doubtful pulse.
+   1) certain  (CF +1.00)
+   2) likely  (CF +0.60)
+   3) unsure  (CF +0.20)
+   4) none  (CF -1.00)
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   >    ~ CF +0.20 <  +0.50: doubt -> CPR branch (if in doubt, compress)
+
+[cpr_14] CPR 30:2. Prepare for evacuation.  (p.3)
+   1) (continue)
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   > 
+[cpr_13] Evacuation from the place of intervention to the ambulance: find the best balance between minimal interruption of chest compressions and moving to the ambulance in order to quickly reach the appropriate care center for advanced care.  (p.3)
+   1) (continue)
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   > 
+[cpr_17] CPR during transport.  (p.3)
+   >> would transfer to chart 'cpr_during_transport' (node 'entry') — not loaded <<
+=== END (jump stub) ===

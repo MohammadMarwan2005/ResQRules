@@ -1,0 +1,47 @@
+=== General Intervention Process & Patient Assessment  (general_assessment) ===
+(loaded charts: airway, choking, cpr_adult, general_assessment, hemorrhage)
+
+[gen_01] Safety: ensure safety & security for staff, patient(s) and bystanders. [SETUP: Stop (take a few seconds), Environment, Traffic, Unpredictable, PPE (Personal Protective Equipment).]  (p.1)
+   1) (continue)
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   > 
+[gen_02] Scene Evaluation: mechanism of injury; environmental factors. Determine the number of patients. Need reinforcement?  (p.1)
+   1) (continue)
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   > 
+[gen_03] Situation Evaluation: first general impression; main complaint.  (p.1)
+   1) (continue)
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   > 
+[gen_04] Life threatening bleeding?  (p.1)
+   1) yes
+   2) no
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   > 
+[gen_05] Catastrophic Hemorrhage.  (p.1)
+   >> JUMP to chart 'hemorrhage' (node 'hem_01') <<
+   >> entering hemorrhage escalation (semantic tier loop) <<
+
+   >> ESCALATION TIER 1: Control of external bleeding: direct compression on the wound; compression dressing; if available, hemostatic compression dressing.  (p.10)
+   [hem_02] Active bleeding?  (recheck after tier 1)
+   1) yes — still bleeding
+   2) no  — bleeding controlled
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   >    >> still bleeding -> ADVANCE tier 1 -> 2
+
+   >> ESCALATION TIER 2: Second compression bandage on top of the first.  (p.10)
+   [hem_04] Active bleeding?  (recheck after tier 2)
+   1) yes — still bleeding
+   2) no  — bleeding controlled
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   >    >> still bleeding -> ADVANCE tier 2 -> 3
+
+   >> ESCALATION TIER 3: Installation of tourniquet. (Position: one palm's width above the wound, between the heart and the wound; not on the joints. Effectiveness: stop of bleeding. This is a very painful procedure; ensure the patient does not remove the tourniquet.)  (p.10)
+   [hem_06] Active bleeding?  (recheck after tier 3)
+   1) yes — still bleeding
+   2) no  — bleeding controlled
+   -- DANGER (type letter): [b]leeding  [n]ot-breathing  no-[p]ulse  [u]nconscious
+   >    >> bleeding controlled at tier 3 -> exit to hem_07
+
+[hem_07] Urgent and safe transport to a health center.  (p.10)
+=== END (action / leaf) ===

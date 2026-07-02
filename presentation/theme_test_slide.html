@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ResQRules — Theme Test Slide (C7y)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Noto+Sans+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#CC0000; --primary-dark:#990000; --primary-tint:#FFEAEA;
+    --success:#2D6A4F; --success-tint:#F0FAF5;
+    --warning:#E85D04; --warning-text:#B54A00; --warning-tint:#FFF3EB;
+    --ink:#1A1A1A; --ink-2:#4A4A4A; --ink-3:#6B6B6B;
+    --border:#E0E0E0; --surface:#F5F5F5; --card:#FFFFFF;
+    --r-sm:6px; --r-md:8px; --r-lg:12px;
+    --shadow-1:0 2px 8px rgba(0,0,0,.10);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:#3a3a3a; font-family:'Noto Sans',system-ui,sans-serif; color:var(--ink);
+       display:flex; flex-direction:column; align-items:center; gap:28px; padding:40px 0;}
+  .mono{font-family:'Noto Sans Mono',ui-monospace,monospace;}
+
+  /* ── the 16:9 slide canvas ─────────────────────────────────────────── */
+  .slide{width:1280px; height:720px; background:#FFFFFF; border-radius:4px; overflow:hidden;
+         display:flex; flex-direction:column; padding:28px 36px 20px; position:relative;
+         box-shadow:0 8px 40px rgba(0,0,0,.45);}
+
+  /* header */
+  .head{display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:10px;}
+  .kicker{font-size:13px; font-weight:600; letter-spacing:.12em; color:var(--primary); text-transform:uppercase;}
+  .title{font-size:30px; font-weight:700; line-height:1.25; margin-top:2px;}
+  .wordmark{background:var(--primary); color:#fff; font-weight:700; font-size:17px;
+            padding:7px 14px; border-radius:var(--r-md); letter-spacing:.01em; white-space:nowrap;}
+
+  .main{flex:1; display:flex; gap:22px; min-height:0;}
+
+  /* ── tree panel ────────────────────────────────────────────────────── */
+  .tree{position:relative; width:856px; flex:none;}
+  .tree svg.edges{position:absolute; inset:0; width:100%; height:100%; overflow:visible;}
+  .chartlab{position:absolute; font-size:12px; font-weight:600; letter-spacing:.14em;
+            text-transform:uppercase; color:var(--ink-3);}
+  .node{position:absolute; border-radius:var(--r-md); padding:8px 12px; font-size:17px; line-height:1.25;
+        background:var(--card); display:flex; align-items:center; gap:8px;}
+  .node .nid{display:block; font-size:11.5px; color:var(--ink-3); letter-spacing:.04em;}
+  .node.visited{border:2px solid var(--ink-2); color:var(--ink); font-weight:600;}
+  .node.current{border:2.5px solid var(--primary); background:var(--primary-tint); font-weight:700;
+                box-shadow:0 0 0 5px rgba(204,0,0,.12), var(--shadow-1);}
+  .node.future{border:1.5px solid var(--border); color:var(--ink-3); font-weight:400;}
+  .node.q{justify-content:center; text-align:center;}
+  .node.q::before{content:""; width:10px; height:10px; border:2.5px solid currentColor;
+                  transform:rotate(45deg); border-radius:2px; flex:none; opacity:.8;}
+  .node.stack{flex-direction:column; align-items:flex-start; gap:1px;}
+  .node.leaf{border-radius:999px; justify-content:center; text-align:center;}
+  .node.jump{border-style:dashed;}
+  .tierbadge{position:absolute; width:28px; height:28px; border-radius:50%; background:var(--surface);
+             border:1.5px solid var(--border); color:var(--ink-2); font-size:15px; font-weight:700;
+             display:flex; align-items:center; justify-content:center;}
+  .tierbadge.on{background:var(--primary); border-color:var(--primary); color:#fff;}
+  .elabel{position:absolute; font-size:14px; font-weight:600; padding:3px 9px; border-radius:var(--r-sm);
+          background:var(--card); display:flex; align-items:center; gap:5px; white-space:nowrap;}
+  .elabel.yes{color:var(--primary); border:1.5px solid var(--primary);}
+  .elabel.yes.dim{opacity:.5;}
+  .elabel.no{color:var(--success); border:1.5px solid var(--success); opacity:.85;}
+  .elabel.hold{color:var(--warning-text); border:1.5px solid var(--warning-text); background:var(--warning-tint); font-size:13px;}
+  .elabel.jumped{color:var(--ink-2); border:1.5px solid var(--ink-2); font-size:13px;}
+  .glyph{width:13px; height:13px; flex:none;}
+
+  /* ── sidebar ───────────────────────────────────────────────────────── */
+  .side{flex:1; background:var(--card); border:1.5px solid var(--border); border-radius:var(--r-lg);
+        box-shadow:var(--shadow-1); padding:18px 18px 14px; display:flex; flex-direction:column; gap:13px;}
+  .side h3{font-size:13px; font-weight:700; letter-spacing:.14em; color:var(--ink); text-transform:uppercase;
+           border-bottom:1.5px solid var(--border); padding-bottom:8px;}
+  .sec .lab{font-size:12px; font-weight:600; letter-spacing:.12em; color:var(--ink-3); text-transform:uppercase; margin-bottom:6px;}
+  .fact{display:inline-block; font-size:16.5px; background:var(--surface); border:1.5px solid var(--border);
+        border-radius:var(--r-sm); padding:4px 9px; margin:0 6px 6px 0; color:var(--ink-2);}
+  .fact.hot{background:var(--primary-tint); border-color:var(--primary); color:var(--primary-dark); font-weight:600;}
+  .rule{display:flex; align-items:center; gap:8px;}
+  .rule .name{font-size:18px; font-weight:600;}
+  .sal{font-size:13px; font-weight:700; background:var(--surface); border:1.5px solid var(--border);
+       border-radius:999px; padding:2px 10px; color:var(--ink-2);}
+  .delta{font-size:16.5px; padding:3px 0; display:flex; gap:8px; align-items:baseline;}
+  .delta .op{width:16px; font-weight:700; text-align:center;}
+  .delta.out{color:var(--ink-3); text-decoration:line-through;}
+  .delta.out .op{color:var(--ink-3); text-decoration:none;}
+  .delta.in{color:var(--primary-dark); font-weight:600;}
+  .delta.in .op{color:var(--primary);}
+  .trace{background:var(--surface); border:1.5px solid var(--border); border-radius:var(--r-md);
+         padding:10px 12px; font-size:14.5px; line-height:1.5; color:var(--ink-2); white-space:pre-wrap;}
+  .trace b{color:var(--ink); font-weight:600;}
+  .src{font-size:12px; color:var(--ink-3); margin-top:5px;}
+
+  /* footer */
+  .foot{display:flex; align-items:center; justify-content:space-between; margin-top:12px;}
+  .cite{font-size:14px; color:var(--ink-2); background:var(--surface); border:1.5px solid var(--border);
+        border-radius:999px; padding:4px 13px;}
+  .dots{display:flex; gap:7px; align-items:center;}
+  .dots i{width:9px; height:9px; border-radius:50%; background:var(--border);}
+  .dots i.done{background:var(--ink-2);}
+  .dots i.now{background:var(--primary); width:11px; height:11px;}
+
+  /* ── annotations (NOT part of the slide) ───────────────────────────── */
+  .notes{width:1280px; background:#fff; border-radius:var(--r-lg); padding:26px 32px; font-size:15px; line-height:1.6;}
+  .notes h2{font-size:18px; margin-bottom:10px;}
+  .notes h4{font-size:14px; text-transform:uppercase; letter-spacing:.1em; color:var(--ink-3); margin:16px 0 6px;}
+  .notes ul{padding-left:22px;} .notes li{margin-bottom:5px;}
+  .sw{display:inline-block; width:13px; height:13px; border-radius:3px; border:1px solid rgba(0,0,0,.15);
+      vertical-align:-2px; margin-right:4px;}
+</style>
+</head>
+<body data-palette="#CC0000,#2D6A4F,#E85D04">
+
+<div class="slide">
+  <div class="head">
+    <div>
+      <div class="kicker">Flow walkthrough &nbsp;·&nbsp; step 7 of 10</div>
+      <div class="title">Escalation: the fact remembers</div>
+    </div>
+    <div class="wordmark">ResQRules</div>
+  </div>
+
+  <div class="main">
+    <!-- ════ TREE PANEL ════ -->
+    <div class="tree">
+      <svg class="edges" viewBox="0 0 856 545">
+        <defs>
+          <marker id="ah-v" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L8,4.5 L0,9 Z" fill="#4A4A4A"/></marker>
+          <marker id="ah-f" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L8,4.5 L0,9 Z" fill="#C7C7C7"/></marker>
+          <marker id="ah-r" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L8,4.5 L0,9 Z" fill="#CC0000"/></marker>
+        </defs>
+        <!-- gen strip horizontal edges (visited) -->
+        <line x1="128" y1="47" x2="146" y2="47" stroke="#4A4A4A" stroke-width="2.5" marker-end="url(#ah-v)"/>
+        <line x1="278" y1="47" x2="296" y2="47" stroke="#4A4A4A" stroke-width="2.5" marker-end="url(#ah-v)"/>
+        <line x1="428" y1="47" x2="442" y2="47" stroke="#4A4A4A" stroke-width="2.5" marker-end="url(#ah-v)"/>
+        <line x1="646" y1="47" x2="657" y2="47" stroke="#4A4A4A" stroke-width="2.5" marker-end="url(#ah-v)"/>
+        <!-- jump elbow: gen_05 ↓ → hem_01 (visited) -->
+        <path d="M736,78 V88 H185 V124" fill="none" stroke="#4A4A4A" stroke-width="2.5" marker-end="url(#ah-v)"/>
+        <!-- row1: hem_01 → hem_02 (visited) -->
+        <line x1="332" y1="162" x2="366" y2="162" stroke="#4A4A4A" stroke-width="2.5" marker-end="url(#ah-v)"/>
+        <!-- row1 yes-edge  hem_02 ↓ hem_03  — THE Δ EDGE, red -->
+        <path d="M466,196 V225 H185 V244" fill="none" stroke="#CC0000" stroke-width="3" marker-end="url(#ah-r)"/>
+        <!-- row1 no-edge hem_02 → hem_08 (not taken) -->
+        <path d="M566,162 H596 V206 H616" fill="none" stroke="#C7C7C7" stroke-width="2" marker-end="url(#ah-f)"/>
+        <!-- row2: hem_03 → hem_04 (upcoming) -->
+        <line x1="332" y1="282" x2="366" y2="282" stroke="#C7C7C7" stroke-width="2" marker-end="url(#ah-f)"/>
+        <!-- row2 yes-edge hem_04 ↓ hem_05 (future) -->
+        <path d="M466,316 V345 H185 V364" fill="none" stroke="#C7C7C7" stroke-width="2" marker-end="url(#ah-f)"/>
+        <!-- row2 no-edge hem_04 → hem_08 (future) -->
+        <path d="M566,282 H596 V236 H616" fill="none" stroke="#C7C7C7" stroke-width="2" marker-end="url(#ah-f)"/>
+        <!-- row3: hem_05 → hem_06 (future) -->
+        <line x1="332" y1="402" x2="366" y2="402" stroke="#C7C7C7" stroke-width="2" marker-end="url(#ah-f)"/>
+        <!-- row3 no-edge hem_06 → hem_07 (future) -->
+        <line x1="566" y1="402" x2="614" y2="402" stroke="#C7C7C7" stroke-width="2" marker-end="url(#ah-f)"/>
+        <!-- row3 yes-edge: terminal hold elbow to hem_07 (future) -->
+        <path d="M466,436 V465 H700 V428" fill="none" stroke="#C7C7C7" stroke-width="2" marker-end="url(#ah-f)"/>
+      </svg>
+
+      <!-- chart labels -->
+      <div class="chartlab" style="left:0; top:0;">General Assessment — chart #1</div>
+      <div class="chartlab" style="left:0; top:104px;">Catastrophic Hemorrhage — chart #10</div>
+
+      <!-- gen strip (visited) -->
+      <div class="node visited" style="left:0;   top:26px; width:128px; font-size:15px;">Safety<span class="nid">gen_01</span></div>
+      <div class="node visited" style="left:146px; top:26px; width:132px; font-size:15px;">Scene<span class="nid">gen_02</span></div>
+      <div class="node visited" style="left:296px; top:26px; width:132px; font-size:15px;">Situation<span class="nid">gen_03</span></div>
+      <div class="node visited q" style="left:446px; top:20px; width:196px; height:56px; font-size:14px; line-height:1.2;">Life-threatening bleeding?<span class="nid" style="display:inline">&nbsp;gen_04</span></div>
+      <div class="node visited jump stack" style="left:662px; top:24px; width:148px; font-size:14.5px; padding:6px 12px;">⇢ Hemorrhage<span class="nid">gen_05 · jump</span></div>
+      <div class="elabel jumped" style="left:310px; top:76px;">yes → &nbsp;&gt;&gt; JUMP to chart 'hemorrhage' &lt;&lt;</div>
+
+      <!-- tier badges -->
+      <div class="tierbadge on" style="left:0; top:148px;">1</div>
+      <div class="tierbadge on" style="left:0; top:268px;">2</div>
+      <div class="tierbadge"    style="left:0; top:388px;">3</div>
+
+      <!-- row 1 (visited) -->
+      <div class="node visited" style="left:40px; top:130px; width:292px; height:64px;">Direct pressure · compression dressing<span class="nid">hem_01</span></div>
+      <div class="node visited q" style="left:370px; top:132px; width:196px; height:60px;">Active bleeding?<span class="nid" style="display:inline"> hem_02</span></div>
+
+      <!-- row 2 — CURRENT -->
+      <div class="node current" style="left:40px; top:250px; width:292px; height:64px;">Second compression bandage<span class="nid">hem_03 · TIER 2</span></div>
+      <div class="node future q" style="left:370px; top:252px; width:196px; height:60px;">Active bleeding?<span class="nid" style="display:inline"> hem_04</span></div>
+
+      <!-- row 3 (future) -->
+      <div class="node future" style="left:40px; top:370px; width:292px; height:64px;">Tourniquet — one palm above wound<span class="nid">hem_05&nbsp;·&nbsp;terminal</span></div>
+      <div class="node future q" style="left:370px; top:372px; width:196px; height:60px;">Active bleeding?<span class="nid" style="display:inline"> hem_06</span></div>
+
+      <!-- leaves -->
+      <div class="node future leaf" style="left:616px; top:186px; width:224px; height:50px; font-size:15px;">Transport to health center<span class="nid" style="display:inline">&nbsp;hem_08</span></div>
+      <div class="node future leaf" style="left:616px; top:378px; width:224px; height:50px; font-size:15px;">URGENT transport<span class="nid" style="display:inline">&nbsp;hem_07</span></div>
+
+      <!-- edge labels: icon + text, never color alone -->
+      <div class="elabel yes" style="left:222px; top:212px;">
+        <svg class="glyph" viewBox="0 0 12 14"><path d="M6 0.8C6 0.8 2.2 5.6 2.2 8.4a3.8 3.8 0 0 0 7.6 0C9.8 5.6 6 0.8 6 0.8Z" fill="#CC0000"/></svg>
+        yes — still bleeding</div>
+      <div class="elabel yes dim" style="left:222px; top:332px;">
+        <svg class="glyph" viewBox="0 0 12 14"><path d="M6 0.8C6 0.8 2.2 5.6 2.2 8.4a3.8 3.8 0 0 0 7.6 0C9.8 5.6 6 0.8 6 0.8Z" fill="#CC0000"/></svg>
+        yes — still bleeding</div>
+      <div class="elabel no" style="left:588px; top:120px;">
+        <svg class="glyph" viewBox="0 0 12 12"><path d="M1.5 6.5 4.5 9.5 10.5 2.5" fill="none" stroke="#2D6A4F" stroke-width="2.2" stroke-linecap="round"/></svg>
+        no — controlled</div>
+      <div class="elabel no" style="left:588px; top:300px;">
+        <svg class="glyph" viewBox="0 0 12 12"><path d="M1.5 6.5 4.5 9.5 10.5 2.5" fill="none" stroke="#2D6A4F" stroke-width="2.2" stroke-linecap="round"/></svg>
+        no — controlled</div>
+      <div class="elabel no" style="left:570px; top:428px; font-size:13px;">
+        <svg class="glyph" viewBox="0 0 12 12"><path d="M1.5 6.5 4.5 9.5 10.5 2.5" fill="none" stroke="#2D6A4F" stroke-width="2.2" stroke-linecap="round"/></svg>
+        no</div>
+      <div class="elabel hold" style="left:196px; top:452px;">⚠ yes at terminal tier → HOLD, no tier 4 (flagged divergence)</div>
+    </div>
+
+    <!-- ════ ENGINE-STATE SIDEBAR ════ -->
+    <div class="side">
+      <h3>Engine state</h3>
+      <div class="sec">
+        <div class="lab">Working memory</div>
+        <span class="fact mono">Position(nid=hem_03)</span>
+        <span class="fact mono">Active(chart=hemorrhage)</span>
+        <span class="fact hot mono">Bleeding(tier=2)</span>
+      </div>
+      <div class="sec">
+        <div class="lab">Rule fired</div>
+        <div class="rule"><span class="name mono">hem_decide</span><span class="sal">salience 10</span></div>
+      </div>
+      <div class="sec">
+        <div class="lab">Δ this step</div>
+        <div class="delta out mono"><span class="op">−</span>Bleeding(tier=1) <span style="font-family:'Noto Sans';font-size:13px;">retract</span></div>
+        <div class="delta in mono"><span class="op">+</span>Bleeding(tier=2) <span style="font-family:'Noto Sans';font-size:13px;color:var(--ink-3);">declare</span></div>
+      </div>
+      <div class="sec" style="margin-top:auto;">
+        <div class="lab">Engine output (verbatim)</div>
+        <div class="trace mono">&gt;&gt; still bleeding -&gt; <b>ADVANCE tier 1 -&gt; 2</b>
+&gt;&gt; ESCALATION TIER 2: Second compression bandage…</div>
+        <div class="src">real session · presentation/traces/walkthrough_yes_branch_en.txt</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span class="cite">SARC chart #10 · p.10 · data/hemorrhage.json</span>
+    <div class="dots"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="now"></i><i></i><i></i><i></i></div>
+  </div>
+</div>
+
+<!-- ════════ THEME ANNOTATIONS — not part of the slide ════════ -->
+<div class="notes">
+  <h2>Theme lock — decisions &amp; flags (approve this, and the full deck inherits it)</h2>
+
+  <h4>Palette roles (from the app's design tokens, byte-identical)</h4>
+  <ul>
+    <li><span class="sw" style="background:#CC0000"></span><b>#CC0000</b> primary — wordmark, kicker, current node, danger/yes semantics, Δ-declare. On white ≈ 5.9:1 → safe for headings/accents.</li>
+    <li><span class="sw" style="background:#2D6A4F"></span><b>#2D6A4F</b> success — "controlled"/leaf semantics. On white ≈ 7:1.</li>
+    <li><span class="sw" style="background:#B54A00"></span><b>#B54A00</b> warning <i>text variant</i> (brand #E85D04 is only ≈3.5:1 on white — reserved for badges/large fills; text uses this darkened variant. FLAGGED adjustment).</li>
+    <li><span class="sw" style="background:#1A1A1A"></span>#1A1A1A / <span class="sw" style="background:#4A4A4A"></span>#4A4A4A / <span class="sw" style="background:#6B6B6B"></span>#6B6B6B ink scale · <span class="sw" style="background:#E0E0E0"></span>#E0E0E0 borders · <span class="sw" style="background:#F5F5F5"></span>#F5F5F5 surface chips.</li>
+    <li><span class="sw" style="background:#FFEAEA"></span>#FFEAEA / <span class="sw" style="background:#FFF3EB"></span>#FFF3EB tints — always paired with a colored border (projector-safe; never the sole signal).</li>
+  </ul>
+
+  <h4>Validator verdict (dataviz six-checks, light surface)</h4>
+  <ul>
+    <li><b>CVD separation PASS</b> — the red/green pair is ΔE 29.1 under protanopia (target ≥ 12). Additionally every yes/no edge carries an <b>icon + text label</b>, and path state is encoded by <b>stroke weight + darkness</b>, so meaning survives grayscale entirely.</li>
+    <li>#2D6A4F fails the <i>categorical-series</i> chroma floor — irrelevant here: green is used as a <b>status</b> color only (with icon+label), never as a data series.</li>
+    <li>Contrast vs surface: all three ≥ 3:1 (PASS).</li>
+  </ul>
+
+  <h4>Type &amp; shape</h4>
+  <ul>
+    <li>Noto Sans 400/600/700 + Noto Sans Mono (facts, rules, engine output) — same family pair as the app; Arabic narration needs no slide change (EN slides confirmed).</li>
+    <li>Sizes on THIS slide (the deck's densest): title 30px · node labels 15–17px · sidebar facts 16.5px mono · edge labels 13–14px. These are <i>labels</i>; prose/body on regular slides will be ≥ 24px (18pt). Smallest anywhere: 11.5px node-id captions — decorative, redundant with the label, acceptable to drop at approval if you disagree.</li>
+    <li>Shapes: ◇ diamond glyph = question · rounded rect = instruction · pill = leaf · dashed = jump — node <i>type</i> is never color-alone either. Radius 6/8/12, flat surfaces, level-1 shadow only on the current node + sidebar card. No gradients, no imagery (app austerity).</li>
+  </ul>
+
+  <h4>What to check before approving</h4>
+  <ul>
+    <li>Is the red "Δ edge" + glowing current node the right amount of emphasis?</li>
+    <li>Wordmark chip top-right on every slide, or only on title/closing slides?</li>
+    <li>Node-id captions (gen_01, hem_03…) — keep (KBS graders love ids) or drop for cleanliness?</li>
+    <li>Projector check: view at 2–3 m; if the #FFEAEA glow vanishes, we thicken the current-node border to 3px.</li>
+  </ul>
+</div>
+
+</body>
+</html>
